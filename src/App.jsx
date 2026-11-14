@@ -83,14 +83,11 @@ export default function App() {
   const [astraOpen, setAstraOpen] = useState(false)
   const closeAstra = useCallback(() => setAstraOpen(false), [])
   // Astra is a desktop app: on phones and touch tablets it opens in a new tab instead.
-  // This checks the device (screen size, touch), not the window, so a narrow browser
-  // window or side panel on a laptop still gets the in-site window.
-  const openAstra = (e) => {
-    const small = window.screen.width < 900 || window.matchMedia('(hover: none) and (pointer: coarse)').matches
-    if (small) return // let the link open normally
-    e.preventDefault()
-    setAstraOpen(true)
-  }
+  // On desktop the Solution is a plain button (not a link), so no host page or browser
+  // can intercept the click and send it to a new tab.
+  const [isTouch] = useState(
+    () => window.screen.width < 900 || window.matchMedia('(hover: none) and (pointer: coarse)').matches,
+  )
   return (
     <main className="home">
       <header className="intro">
@@ -103,13 +100,23 @@ export default function App() {
         ))}
       </section>
 
-      <a className="solution" href={ASTRA_URL} target="_blank" rel="noopener noreferrer" onClick={openAstra}>
+      {isTouch ? (
+        <a className="solution" href={ASTRA_URL} target="_blank" rel="noopener noreferrer">
         <span className="solution-label">The Solution</span>
         <span className="solution-mark" aria-hidden>
           <Star size={30.5} inset={0.0855} color="#fff" x={6.2} y={6.2} />
         </span>
         <span className="solution-name">Astra</span>
       </a>
+      ) : (
+        <button type="button" className="solution" onClick={() => setAstraOpen(true)}>
+        <span className="solution-label">The Solution</span>
+        <span className="solution-mark" aria-hidden>
+          <Star size={30.5} inset={0.0855} color="#fff" x={6.2} y={6.2} />
+        </span>
+        <span className="solution-name">Astra</span>
+      </button>
+      )}
 
       <AstraWindow open={astraOpen} onClose={closeAstra} />
     </main>
