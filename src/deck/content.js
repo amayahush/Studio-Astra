@@ -30,7 +30,7 @@ export const PEOPLE = [
   {
     id: 'P3', role: 'Designer', title: 'Designer / service design researcher', context: 'Runs discovery and stakeholder workshops',
     ai: 0.4, reviews: false,
-    uses: '[Confirm how P3 uses AI]',
+    uses: null,
     wish: 'To be part of discovery from the start. Big multi-stakeholder workshops surface contradictory mental models that cause overruns.',
   },
   {

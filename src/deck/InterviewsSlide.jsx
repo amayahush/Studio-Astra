@@ -85,8 +85,10 @@ export default function InterviewsSlide({ step }) {
               <button type="button" className="iv-close" onClick={() => setOpen(null)} aria-label="Close">×</button>
               <p className="iv-tip-head"><b className="hand">{person.id}</b> {person.title}</p>
               <p className="iv-tip-ctx">{person.context}</p>
-              <h4>How they use AI</h4>
-              <p>{person.uses}</p>
+              {person.uses && (<>
+                <h4>How they use AI</h4>
+                <p>{person.uses}</p>
+              </>)}
               <h4>What they wish for</h4>
               <p>{person.wish}</p>
             </aside>
