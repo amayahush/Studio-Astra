@@ -16,13 +16,13 @@ export const SLIDES = [
 // reviews: made a point of a person checking AI output before trusting it.
 export const PEOPLE = [
   {
-    id: 'P1', role: 'Developer', title: 'Full-stack developer', context: 'Large aerospace company · ~1.5 yrs on the team',
+    id: 'P1', role: 'Developer', title: 'Full-stack developer', context: 'Large company · ~1.5 yrs on the team',
     ai: 0.45, reviews: true,
-    uses: 'Uses Codex in a scoped plan mode where every change needs approval, mostly for tasks that copy an existing pattern. Commits his own work first so AI changes stay in a separate diff.',
+    uses: 'Uses Codex in a scoped plan mode where every change needs approval, mostly for tasks that copy an existing pattern. Commits their own work first so AI changes stay in a separate diff.',
     wish: 'An AI that chats with engineers and business leaders until the requirements are fully defined, then hands them to a PM to break into tickets.',
   },
   {
-    id: 'P2', role: 'Developer', title: 'Senior developer', context: '~15 yrs · pharmacy software, aerospace, embedded',
+    id: 'P2', role: 'Developer', title: 'Senior developer', context: '~15 yrs of experience',
     ai: 0.08, reviews: true,
     uses: 'Only ever takes small pieces of AI output, never uses it wholesale, and avoids agents editing code on their own.',
     wish: 'Would rather AI didn’t exist. Thinks a better AI workflow might mean leaving AI out of some steps on purpose, and worries new hires can’t debug what they submit.',
@@ -34,10 +34,10 @@ export const PEOPLE = [
     wish: 'To be part of discovery from the start. Big multi-stakeholder workshops surface contradictory mental models that cause overruns.',
   },
   {
-    id: 'P4', role: 'Developer', title: 'Senior full-stack developer', context: '16 yrs · defense / government contracting',
+    id: 'P4', role: 'Developer', title: 'Senior full-stack developer', context: '16 yrs of experience',
     ai: 0.88, reviews: true,
-    uses: 'AI is his first stop for both bugs and new features. Gives it past projects for context and has it explain itself step by step to catch hallucinations, then reviews everything before pushing.',
-    wish: 'Access to newer AI tools than his company’s restrictions allow.',
+    uses: 'AI is their first stop for both bugs and new features. Gives it past projects for context and has it explain itself step by step to catch hallucinations, then reviews everything before pushing.',
+    wish: 'Access to newer AI tools than their company’s restrictions allow.',
   },
   {
     id: 'P5', role: 'PM', title: 'Product manager', context: 'Owns requirements and the roadmap',
@@ -46,15 +46,15 @@ export const PEOPLE = [
     wish: 'A fast way to prototype and test with real customers before development, and designers involved earlier.',
   },
   {
-    id: 'P6', role: 'Developer', title: 'CTO / software engineer', context: 'Six-person startup building a research tool',
+    id: 'P6', role: 'Developer', title: 'CTO / software engineer', context: 'Small company · six-person startup',
     ai: 0.8, reviews: false,
-    uses: 'Builds with agentic tools like Cursor and connects his team’s research boards to them as context.',
+    uses: 'Builds with agentic tools like Cursor and connects their team’s research boards to them as context.',
     wish: 'A way for someone new to pick up months of research quickly, and for requirements to keep a record of how they changed.',
   },
   {
     id: 'P7', role: 'Designer', title: 'UX/UI designer', context: 'Mobile app team · lead designer, PMs and engineers',
     ai: 0.96, reviews: true,
-    uses: 'Built his own AI-first workflow with Claude that pulls tasks from his tracker and works through them. Treats it almost like another peer.',
+    uses: 'Built their own AI-first workflow with Claude that pulls tasks from their tracker and works through them. Treats it almost like another peer.',
     wish: 'For the intent behind a design to survive the handoff. A ticket marked done with a Figma link still doesn’t mean the developer knows why.',
   },
 ]
