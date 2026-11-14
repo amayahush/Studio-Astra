@@ -20,6 +20,11 @@ const DIRECTIONS = [
     title: 'When stakeholders disagree',
     body: 'In workshops, customers and teams often bring contradictory mental models, and that is where projects run over. Astra can flag a conflict, but it doesn\'t help anyone work through one. I want to study how teams actually settle these and what the system should show in that moment.',
   },
+  {
+    label: 'Quick variations',
+    title: 'Testing ideas while the team is still talking',
+    body: 'The PM I interviewed wanted a fast way to prototype and test with customers before anything gets built. Astra already hears the requirements forming in meetings, so I want to explore how it could spin up quick variations right there, to put in front of users or compare side by side, and tie what we learn back to the requirement.',
+  },
 ]
 
 export default function AstraWindow({ open, onClose }) {
