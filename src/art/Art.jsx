@@ -247,9 +247,8 @@ export function PovHmwArt() {
   return (
     <>
       <PovArt stars={[[47, 153], [222, 150]]} />
-      <span className="abs hmw-puff" style={{ left: 166, top: 80, width: 6, height: 6, '--d': '2000ms' }} />
-      <span className="abs hmw-puff" style={{ left: 174, top: 68, width: 9, height: 9, '--d': '2180ms' }} />
-      <div className="abs hmw-chip hmw-thought" style={{ left: 170, top: 36, '--d': '2380ms' }}>
+      <span className="abs hmw-puff" style={{ left: 169, top: 88, width: 8, height: 8, '--d': '2050ms' }} />
+      <div className="abs hmw-chip hmw-thought" style={{ left: 180, top: 60, '--d': '2250ms' }}>
         HMW…?
       </div>
     </>
