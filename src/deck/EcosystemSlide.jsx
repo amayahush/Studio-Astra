@@ -245,8 +245,8 @@ export default function EcosystemSlide({ step }) {
         </div>
 
         <div className="eco-zoom" role="group" aria-label="Zoom">
-          <button type="button" onClick={() => zoomAt(1.4)} aria-label="Zoom in">+</button>
           <button type="button" onClick={() => zoomAt(1 / 1.4)} aria-label="Zoom out" disabled={zoom <= 1}>−</button>
+          <button type="button" onClick={() => zoomAt(1.4)} aria-label="Zoom in">+</button>
           <button type="button" className="is-fit" onClick={resetView} disabled={zoom === 1 && !pan.x && !pan.y}>Fit</button>
         </div>
 
