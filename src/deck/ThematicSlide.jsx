@@ -170,21 +170,40 @@ export default function ThematicSlide({ step }) {
   )
 }
 
-// The thematic map: PM, designer and developer as overlapping circles, AI tools in the middle,
-// and the paths requirements actually take between them.
-const PEOPLE = {
-  pm: { x: 375, y: 300, r: 205, fill: '#ffd76a', label: 'Product Manager (PM)', lx: 270, ly: 262, pill: '#f6c54a', ink: '#3a2c00' },
-  ds: { x: 620, y: 285, r: 205, fill: '#f6a6dd', label: 'Designer', lx: 700, ly: 262, pill: '#e159bd', ink: '#fff' },
-  dv: { x: 500, y: 455, r: 205, fill: '#a9e3b4', label: 'Developer', lx: 500, ly: 585, pill: '#69c97c', ink: '#0d3315' },
+// The thematic map: PM, designer and developer as overlapping pencil circles, AI tools in the
+// middle as the Astra star, and the paths requirements actually take between them.
+const STAR = 'M8.1 0.6C8.5 -0.2 9.7 -0.2 10.0 0.6L11.9 5.7C12.0 5.9 12.2 6.2 12.5 6.3L17.5 8.1C18.4 8.5 18.4 9.7 17.5 10.0L12.5 11.9C12.2 12.0 12.0 12.2 11.9 12.5L10.0 17.5C9.7 18.4 8.5 18.4 8.1 17.5L6.3 12.5C6.2 12.2 5.9 12.0 5.7 11.9L0.6 10.0C-0.2 9.7 -0.2 8.5 0.6 8.1L5.7 6.3C5.9 6.2 6.2 5.9 6.3 5.7L8.1 0.6Z'
+
+// a pencil loop: lumpy circle that overshoots where it started
+function pencil(cx, cy, r, seed) {
+  const pts = []
+  const steps = 64
+  for (let s = 0; s <= steps; s++) {
+    const t = (s / steps) * Math.PI * 2 * 1.04 - Math.PI / 2 + seed
+    const rr = r + Math.sin(t * 3 + seed * 2) * 2.4 + Math.cos(t * 5 + seed) * 1.6 + (s / steps) * 4
+    pts.push([cx + Math.cos(t) * rr, cy + Math.sin(t) * rr])
+  }
+  return pts.map(([x, y], n) => `${n ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join('')
 }
+
+const CIRCLES = [
+  { id: 'pm', x: 385, y: 290, r: 175, seed: 0.4 },
+  { id: 'ds', x: 615, y: 290, r: 175, seed: 2.1 },
+  { id: 'dv', x: 500, y: 445, r: 175, seed: 4.0 },
+]
+const ROLES = [
+  { text: 'Product Manager', x: 262, y: 250 },
+  { text: 'Designer', x: 738, y: 250 },
+  { text: 'Developer', x: 500, y: 566 },
+]
 const EDGES = [
-  { d: 'M 455 52 C 300 70 270 150 270 245', label: 'Gives strict orders on what has to be done', lx: 250, ly: 120 },
-  { d: 'M 700 245 C 700 150 640 70 545 52', label: 'Walkthrough feedback', lx: 700, ly: 120, both: true },
-  { d: 'M 345 262 L 650 262', label: 'Problem and jobs to be done', lx: 500, ly: 250 },
-  { d: 'M 230 278 C 200 330 300 360 470 345', label: 'Visualize solutions quickly', lx: 235, ly: 318 },
-  { d: 'M 210 270 C 120 360 220 560 440 585', label: 'Create Jira stories', lx: 150, ly: 450 },
-  { d: 'M 760 278 C 840 380 760 560 560 585', label: 'Handoff, mostly one-way', lx: 830, ly: 450 },
-  { d: 'M 500 568 L 500 362', label: 'Scoping out a task', lx: 500, ly: 470 },
+  { d: 'M 448 52 C 330 56 268 120 262 228', label: 'gives strict orders on what has to be done', lx: 228, ly: 108 },
+  { d: 'M 552 52 C 670 56 732 120 738 228', label: 'walkthrough feedback', lx: 790, ly: 108, both: true },
+  { d: 'M 350 252 C 440 244 560 244 652 252', label: 'problem and jobs to be done', lx: 500, ly: 228 },
+  { d: 'M 285 270 C 300 340 400 352 470 346', label: 'visualize solutions quickly', lx: 318, ly: 372 },
+  { d: 'M 232 272 C 140 400 250 566 440 568', label: 'create Jira stories', lx: 168, ly: 470 },
+  { d: 'M 768 272 C 860 400 750 566 560 568', label: 'handoff, mostly one-way', lx: 838, ly: 470 },
+  { d: 'M 500 546 C 498 480 502 420 500 376', label: 'scoping out a task', lx: 566, ly: 450 },
 ]
 
 function ThematicMap({ on }) {
@@ -192,24 +211,29 @@ function ThematicMap({ on }) {
     <div className={`tm${on ? ' is-on' : ''}`} aria-hidden={!on}>
       <svg className="tm-svg" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs>
-          <marker id="tm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#5b5b5b" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          <marker id="tm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 1.5 1.5 L 8.5 5 L 1.5 8.5" fill="none" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
           </marker>
         </defs>
-        {Object.entries(PEOPLE).map(([k, p], i) => (
-          <circle key={k} className="tm-circle" cx={p.x} cy={p.y} r={p.r} fill={p.fill} style={{ '--d': `${i * 160}ms` }} />
+        {CIRCLES.map((c, i) => (
+          <g key={c.id} style={{ '--d': `${i * 220}ms` }}>
+            <circle className="tm-fill" cx={c.x} cy={c.y} r={c.r} />
+            <path className="tm-circle" d={pencil(c.x, c.y, c.r, c.seed)} pathLength="1" />
+            <path className="tm-circle is-ghost" d={pencil(c.x + 1.5, c.y - 1, c.r - 1.5, c.seed + 0.7)} pathLength="1" />
+          </g>
         ))}
         {EDGES.map((e, i) => (
-          <path key={i} className="tm-edge" d={e.d} pathLength="1" markerEnd="url(#tm-arrow)" markerStart={e.both ? 'url(#tm-arrow)' : undefined} style={{ '--d': `${700 + i * 140}ms` }} />
+          <path key={i} className="tm-edge" d={e.d} pathLength="1" markerEnd="url(#tm-arrow)" markerStart={e.both ? 'url(#tm-arrow)' : undefined} style={{ '--d': `${900 + i * 150}ms` }} />
         ))}
+        <g className="tm-star" transform="translate(487 318) scale(1.35)"><path d={STAR} /></g>
       </svg>
-      {Object.entries(PEOPLE).map(([k, p], i) => (
-        <span key={k} className="tm-pill" style={{ left: p.lx, top: p.ly, background: p.pill, color: p.ink, '--d': `${400 + i * 120}ms` }}>{p.label}</span>
+      {ROLES.map((r, i) => (
+        <span key={r.text} className="tm-role hand" style={{ left: r.x, top: r.y, '--d': `${500 + i * 150}ms` }}>{r.text}</span>
       ))}
-      <span className="tm-pill is-ai" style={{ left: 500, top: 345, '--d': '700ms' }}>AI tools</span>
-      <span className="tm-pill is-bl" style={{ left: 500, top: 40, '--d': '600ms' }}>Business leaders<br />&amp; customers</span>
+      <span className="tm-role tm-ai hand" style={{ left: 500, top: 362, '--d': '850ms' }}>AI tools</span>
+      <span className="tm-role tm-bl hand" style={{ left: 500, top: 40, '--d': '700ms' }}>business leaders &amp; customers</span>
       {EDGES.map((e, i) => (
-        <span key={i} className="tm-edge-label" style={{ left: e.lx, top: e.ly, '--d': `${1000 + i * 140}ms` }}>{e.label}</span>
+        <span key={i} className="tm-edge-label hand" style={{ left: e.lx, top: e.ly, '--d': `${1200 + i * 150}ms` }}>{e.label}</span>
       ))}
     </div>
   )
