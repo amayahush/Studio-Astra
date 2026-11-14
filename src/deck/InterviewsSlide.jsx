@@ -111,7 +111,7 @@ export default function InterviewsSlide({ step }) {
         <ol className="iv-method">
           <li><b>Recruit</b><span>Cold outreach, a few dead ends and pivots, all kept in my research log.</span></li>
           <li><b>Ask for a story</b><span>“Tell me about the last thing you took from an idea to something built.”</span></li>
-          <li><b>Record</b><span>Recorded and transcribed in Granola, Aug 25 to Oct 3, 2026.</span></li>
+          <li><b>Record</b><span>Recorded and transcribed every conversation, Aug 25 to Oct 3, 2026.</span></li>
           <li><b>Clean up</b><span>Anonymized every transcript before tagging it for the thematic analysis.</span></li>
         </ol>
       </section>
