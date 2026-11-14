@@ -48,6 +48,7 @@
 .dk-label { font-size: 22px; }
 .dk-hook { margin: 0; font-size: 32px; font-weight: 600; line-height: 1.22; color: #000; }
 .dk-hook span { color: var(--muted); }
+.dk-tag { display: inline-block; margin-right: 8px; padding: 3px 10px; border-radius: 999px; background: #e2effb; color: #2c6aa3; font-size: 13px; font-weight: 600; line-height: 1.4; vertical-align: 1px; }
 .dk-context { margin: 0; font-size: 14px; font-weight: 500; color: var(--muted); line-height: 1.5; }
 .dk-caption { margin-top: 10px; padding: 16px 18px; border-radius: 14px; background: #f5f5f5; display: flex; flex-direction: column; gap: 12px; }
 .dk-caption p { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.45; color: var(--ink); animation: caption-in 0.45s ease both; }
