@@ -218,6 +218,7 @@
   padding: 10px 12px; border-radius: 10px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.14);
   font-size: 13px; line-height: 1.45; color: #2a2a2a; text-wrap: pretty;
 }
+.ta-peek.is-above { transform: translate(-50%, calc(-100% - 30px)); }
 .ta-peek b { color: var(--astra); font-weight: 400; font-size: 15px; margin-right: 3px; }
 .ta-label {
   position: absolute; z-index: 150; transform: translateX(-50%); width: 150px; text-align: center; line-height: 1.25; text-wrap: balance;

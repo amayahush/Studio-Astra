@@ -157,7 +157,10 @@ export default function ThematicSlide({ step }) {
           <ThematicMap on={step >= 4} />
 
           {hover !== null && step === 0 && (
-            <div className="ta-peek" style={{ left: L.wall[hover][0], top: L.wall[hover][1] }}>
+            <div
+              className={`ta-peek${L.wall[hover][1] > H * 0.55 ? ' is-above' : ''}`}
+              style={{ left: Math.min(Math.max(L.wall[hover][0], 115), W - 115), top: L.wall[hover][1] }}
+            >
               <b className="hand">{NOTES[hover].p}</b> {NOTES[hover].text}
             </div>
           )}
