@@ -1,0 +1,140 @@
+/* Card hover build-ins. Each hover remounts .card-stage with .play,
+   so the illustration resets and builds back in its own way.
+   Timing is deliberately slow and soft: --t scales every duration and delay. */
+:root {
+  --t: 2.1;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);        /* long, gentle ease-out */
+  --ease-soft: cubic-bezier(0.33, 1.12, 0.5, 1); /* tiny settle, no bounce */
+}
+.card-stage.play * { animation-fill-mode: both; }
+
+/* Crossfade between the static design and the animated layer */
+.rest-layer { transition: opacity 0.32s ease; }
+.rest-layer.is-hidden { opacity: 0; transition-duration: 0.18s; }
+.card-stage.play { transition: opacity 0.32s ease; }
+.card-stage.play.leaving { opacity: 0; }
+.card-stage.play.leaving, .card-stage.play.leaving * { animation-play-state: paused !important; }
+
+/* 1. Interviews: each person drops in and starts talking (typing bubble), one after another.
+   Once everyone has spoken, the coded answers get tinted green / pink with a little happy nod. */
+.talk { opacity: 0; pointer-events: none; transform-origin: 4px 14px; }
+.play .face-unit { animation: arrive 0.7s var(--ease-soft) var(--fd) both; }
+.play .talk { animation: talk 1.5s ease calc(var(--fd) + 0.3s) both; }
+.play .talk-dot { animation: dot 0.6s ease-in-out infinite; }
+.play .blob { animation: none; background: #d9d9d9; }
+.play .is-coded .blob { animation: tint 0.6s ease var(--tint) both; }
+.play .is-coded .face-wobble { animation: nod 0.6s ease-in-out var(--tint) both; }
+.face-wobble { position: absolute; inset: 0; transform-origin: 50% 90%; }
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(-12px) scale(0.7); }
+  60% { opacity: 1; transform: translateY(2px) scale(1.04); }
+}
+@keyframes talk {
+  from { opacity: 0; transform: scale(0.4); }
+  15% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.85) translateY(-3px); }
+}
+@keyframes dot { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes tint {
+  from { background: #d9d9d9; transform: scale(1); }
+  45% { transform: scale(1.15); }
+  to { background: var(--c); transform: scale(1); }
+}
+@keyframes nod {
+  25% { transform: rotate(-8deg); }
+  60% { transform: rotate(6deg); }
+}
+
+/* 2. Thematic Analysis: both stickies are placed together, then both write their text at once */
+.play .sticky-box { animation: settle calc(0.65s * var(--t)) var(--ease-soft) calc(var(--d) * var(--t)) both; }
+/* Text writes itself in once the sticky has landed */
+.play .tch { animation: type-in 1ms linear var(--td) both; }
+@keyframes type-in { from { visibility: hidden; } to { visibility: visible; } }
+@keyframes settle {
+  from { opacity: 0; transform: translateY(-34px) rotate(-7deg) scale(1.06); }
+  45% { opacity: 1; }
+}
+
+/* 3. Ecosystem Map: ring sweeps around, crosshair stretches from the center, quadrant unfolds */
+@property --sweep { syntax: '<angle>'; inherits: false; initial-value: 360deg; }
+.play .eco-ring {
+  -webkit-mask: conic-gradient(#000 var(--sweep), transparent 0);
+  mask: conic-gradient(#000 var(--sweep), transparent 0);
+  animation: sweep calc(0.85s * var(--t)) cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.play .eco-v { transform-origin: center; animation: grow-y calc(0.55s * var(--t)) var(--ease) calc(0.4s * var(--t)) both; }
+.play .eco-h { transform-origin: center; animation: grow-x calc(0.55s * var(--t)) var(--ease) calc(0.4s * var(--t)) both; }
+.play .eco-quad { transform-origin: bottom left; animation: unfold calc(0.6s * var(--t)) var(--ease) calc(0.65s * var(--t)) both; }
+@keyframes sweep { from { --sweep: 0deg; } to { --sweep: 360deg; } }
+@keyframes grow-y { from { transform: scaleY(0); } }
+@keyframes grow-x { from { transform: scaleX(0); } }
+@keyframes unfold { from { opacity: 0; transform: scale(0); } }
+
+/* 4. Journey Map: fills in left to right like a timeline, then the pain-point column glows */
+.play .jm-block { transform-origin: left center; animation: grow-x calc(0.5s * var(--t)) var(--ease) calc(var(--d) * var(--t)) both; }
+.play .jm-hl { transform-origin: top center; animation: highlight calc(0.7s * var(--t)) var(--ease) calc(0.55s * var(--t)) both; }
+@keyframes highlight {
+  from { opacity: 0; transform: scaleY(0.7); }
+  55% { opacity: 1; box-shadow: 0 0 0 4px rgba(217, 128, 255, 0.3); }
+  to { box-shadow: 0 0 0 0 rgba(217, 128, 255, 0); }
+}
+
+/* 5. How might we: columns of dots fade in left to right, then the three HMW chips arrive one by one */
+.play .hmw-col { animation: fade 0.6s ease var(--d) both; }
+.play .hmw-chip { animation: rise 0.6s var(--ease) var(--d) both; }
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+
+/* 6. POV / User Model: the engineer is sketched line by line, then the stars turn in */
+.play .draw-stroke { stroke-dasharray: 1; animation: draw-on var(--sl) cubic-bezier(0.45, 0, 0.4, 1) var(--sd) both; }
+/* Hidden until its turn, so round caps don't leave dots ahead of the pencil */
+@keyframes draw-on { from { stroke-dashoffset: 1; opacity: 0; } 2% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
+.play .draw-fill { animation: wash 0.9s ease 3.9s both; }
+@keyframes wash { from { opacity: 0; } }
+.play .pov-star { animation: twinkle calc(0.6s * var(--t)) var(--ease) calc(var(--d) * var(--t)) both; }
+@keyframes twinkle { from { opacity: 0; transform: scale(0.2) rotate(-120deg); } }
+
+/* 7. Mind Mapping: the idea grows, connectors draw themselves, then the new box sketches in */
+.play .mm-a { transform-origin: left center; animation: grow-x calc(0.45s * var(--t)) var(--ease) both; }
+.play .mm-dash { transform-origin: top center; animation: grow-y calc(0.4s * var(--t)) var(--ease) calc(0.3s * var(--t)) both; }
+.play .mm-b { transform-origin: left center; animation: grow-x calc(0.45s * var(--t)) var(--ease) calc(0.55s * var(--t)) both; }
+.play .mm-elbow { stroke-dasharray: 1; animation: draw-on calc(0.55s * var(--t)) cubic-bezier(0.65, 0, 0.35, 1) calc(0.3s * var(--t)) both; }
+.play .mm-target { animation: sketch-box calc(0.5s * var(--t)) var(--ease) calc(0.75s * var(--t)) both; }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes sketch-box { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* 8. Ideating: each Astra iteration slides in, getting stronger, star turns into place */
+.play .idea-row { animation: slide-in 0.7s var(--ease) calc(var(--d) * var(--t)) both; }
+.play .idea-star { animation: spin-in 0.75s var(--ease) calc(var(--d) * var(--t)) both; }
+/* Earlier versions get crossed out as the next one lands. Only while hovered, so the
+   resting card still matches the Figma design; strikes fade away when the cursor leaves. */
+.idea-strike { opacity: 0; }
+.play .idea-strike path { stroke-dasharray: 1; animation: draw-on 0.4s cubic-bezier(0.45, 0, 0.4, 1) var(--sd) both; }
+.play .idea-strike { opacity: 1; }
+@keyframes slide-in { from { opacity: 0; transform: translateX(-22px); } }
+@keyframes spin-in { from { transform: rotate(-90deg) scale(0.5); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .play, .play * { animation: none !important; }
+}
+
+/* Focus the hovered card: it keeps its original grey and lifts slightly; the other cards'
+   backgrounds lighten. Only the card surfaces change, the illustrations stay full strength. */
+.card {
+  transition: transform 0.45s var(--ease), background-color 0.45s ease;
+  will-change: transform;
+}
+.card:hover, .card:focus-visible { transform: scale(1.025); z-index: 1; }
+.grid:has(.card:hover) .card:not(:hover),
+.grid:has(.card:focus-visible) .card:not(:focus-visible) {
+  background: #f7f7f7;
+}
+@media (hover: none) {
+  .card:hover { transform: none; }
+  .grid:has(.card:hover) .card:not(:hover) { background: var(--card); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: background-color 0.2s ease; }
+  .card:hover, .card:focus-visible { transform: none; }
+}

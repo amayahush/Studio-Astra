@@ -1,0 +1,181 @@
+/* In-site Astra: a Mac-style window over a soft grey view, future directions below */
+html.no-scroll { overflow: hidden; }
+
+.astra-view {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #f2f2f2;
+  animation: view-in 0.4s ease both;
+}
+.astra-scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: 28px 24px 0;
+}
+@keyframes view-in { from { opacity: 0; } }
+
+.mac-window {
+  width: min(1440px, 100%);
+  /* a little shorter than the screen so "What's next" peeks out underneath */
+  height: calc(100vh - 104px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.18), 0 24px 60px rgba(0, 0, 0, 0.16), 0 6px 18px rgba(0, 0, 0, 0.08);
+  animation: window-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1), height 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.3s ease;
+}
+@keyframes window-in { from { opacity: 0; transform: translateY(24px) scale(0.97); } }
+.astra-view.is-full .astra-scroll { padding: 0; }
+.astra-view.is-full .mac-window { width: 100%; height: 100vh; border-radius: 0; }
+
+.mac-bar {
+  position: relative;
+  flex: none;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: #ececec;
+  border-bottom: 1px solid #dcdcdc;
+}
+.mac-lights { display: flex; gap: 8px; }
+.light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+.light.red { background: #ff5f57; }
+.light.yellow { background: #febc2e; }
+.light.green { background: #28c840; }
+/* the little glyphs only show on hover, like macOS */
+.light::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 700 9px/1 var(--sans);
+  color: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.light.red::after { content: '×'; font-size: 11px; }
+.light.yellow::after { content: '−'; }
+.light.green::after { content: '+'; }
+.mac-lights:hover .light::after { opacity: 1; }
+.light:focus-visible { outline: 2px solid var(--astra); outline-offset: 2px; }
+
+.mac-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 500 13px/1 var(--sans);
+  color: #4a4a4a;
+}
+.mac-title-mark {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--astra);
+}
+.mac-newtab {
+  font: 500 12px/1 var(--sans);
+  color: #6b6b6b;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.mac-newtab:hover { background: #e0e0e0; color: var(--ink); }
+
+.mac-body { position: relative; flex: 1; background: #fff; }
+.mac-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.mac-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: italic 400 18px/1 var(--hand);
+  -webkit-text-stroke: 0.3px currentColor;
+  color: var(--muted);
+}
+
+.whats-next-cue {
+  display: block;
+  margin: 22px auto 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: italic 400 19px/1 var(--hand);
+  -webkit-text-stroke: 0.35px currentColor;
+  color: var(--ink);
+  animation: nudge 2.4s ease-in-out 1.2s infinite;
+}
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.astra-view.is-full .whats-next-cue { display: none; }
+
+/* Future directions */
+.future {
+  width: min(var(--content-w), 100%);
+  margin: 0 auto;
+  padding: 120px 0 96px;
+}
+.future-headline {
+  margin: 17px 0 0;
+  max-width: 963px;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: normal;
+  color: #000;
+}
+.future-grid {
+  margin-top: 37px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+}
+.future-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px 21px 22px;
+}
+.future-label {
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 17px;
+  -webkit-text-stroke: 0.35px var(--ink);
+  color: var(--ink);
+}
+.future-card h3 { margin: 28px 0 8px; font: 600 20px/1.25 var(--sans); color: #000; }
+.future-card p { margin: 0; font: 500 14px/1.5 var(--sans); color: #4a4a4a; max-width: 52ch; }
+.future-back {
+  margin-top: 48px;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: italic 400 20px/1 var(--hand);
+  -webkit-text-stroke: 0.35px currentColor;
+  color: var(--ink);
+}
+.future-back:hover { color: var(--astra); }
+
+@media (max-width: 900px) {
+  .future-grid { grid-template-columns: 1fr; }
+  .future-headline { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .astra-view, .mac-window, .whats-next-cue { animation: none; }
+}

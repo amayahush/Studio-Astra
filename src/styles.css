@@ -1,0 +1,250 @@
+/* Values come straight from the Figma homepage frame (MacBook Pro 14", 1512 x 982). */
+:root {
+  --ink: #282828;
+  --muted: #707070;
+  --card: #e9e9e9;
+  --astra: #c439ff;
+  --card-w: 272px;
+  --card-h: 254px;
+  --gap: 22px;
+  --content-w: calc(var(--card-w) * 4 + var(--gap) * 3); /* 1154px */
+  --hand: 'Gaegu', 'Figma Hand', cursive;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #fff; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+.home {
+  width: min(var(--content-w), 100% - 48px);
+  margin: 0 auto;
+  padding: 93px 0 48px;
+}
+
+/* Intro */
+.meta {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: normal;
+  color: var(--muted);
+}
+.headline-stack { position: relative; display: grid; margin-top: 17px; }
+.headline-stack > * { grid-area: 1 / 1; }
+.headline-ghost { visibility: hidden; }
+.headline {
+  margin: 0;
+  max-width: 963px;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: normal;
+  color: #000;
+}
+.headline-muted { color: var(--muted); }
+
+/* Typing intro */
+.ch-hidden { visibility: hidden; }
+.word { white-space: nowrap; }
+.caret {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+}
+.caret::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  bottom: -0.2em;
+  width: 2px;
+  height: 1.05em;
+  background: #000;
+}
+/* Solid while typing, then blinks a few times and fades out */
+.caret-done::after { animation: caret-blink 1s step-end 3, caret-out 0.3s ease 3s forwards; }
+@keyframes caret-blink { 50% { opacity: 0; } }
+@keyframes caret-out { to { opacity: 0; } }
+
+/* Grid */
+.grid {
+  margin-top: 37px;
+  display: grid;
+  grid-template-columns: repeat(4, var(--card-w));
+  gap: var(--gap);
+}
+
+.card {
+  position: relative;
+  display: block;
+  height: var(--card-h);
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+  outline-offset: 3px;
+}
+.card:focus-visible { outline: 2px solid var(--astra); }
+
+.card-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--card-w);
+  height: var(--card-h);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.card-label {
+  position: absolute;
+  top: 13px;
+  left: 21px;
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 21px;
+  color: var(--ink);
+  -webkit-text-stroke: 0.35px var(--ink); /* a touch heavier, still reads as pen */
+}
+
+.card-caption {
+  position: absolute;
+  left: 21px;
+  bottom: 12px;
+  width: 234px;
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: normal;
+  color: var(--ink);
+}
+
+/* Shared art primitives */
+.abs { position: absolute; display: block; }
+.blob { width: 37px; height: 29px; border-radius: 50%; }
+
+.sticky-box {
+  width: 116.1px;
+  height: 105.8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sticky {
+  flex: none;
+  width: 110px;
+  height: 99px;
+  padding: 8.6px;
+}
+.sticky > span {
+  display: block;
+  font-size: 7.5px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #1e1e1e;
+}
+
+.journey-highlight {
+  background: rgba(217, 128, 255, 0.2);
+  border: 0.5px solid rgba(217, 128, 255, 0.78);
+  border-radius: 4px;
+}
+
+.hmw-chip {
+  width: 77px;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e6ffed;
+  border: 1px solid #74b769;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.astra-chip { width: 31px; height: 31px; border-radius: 6px; }
+.astra-chip-label { font-weight: 500; font-size: 14px; line-height: 17px; }
+
+/* The Solution */
+.solution {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  margin: 70px auto 0;
+  outline-offset: 6px;
+  border-radius: 10px;
+}
+.solution:focus-visible { outline: 2px solid var(--astra); }
+.solution-label {
+  font-family: var(--hand);
+  font-style: italic;
+  font-size: 21px;
+  color: var(--ink);
+  -webkit-text-stroke: 0.35px var(--ink);
+  margin-right: 12.6px;
+}
+.solution-mark {
+  position: relative;
+  width: 43px;
+  height: 43px;
+  border-radius: 8.32px;
+  background: var(--astra);
+}
+.solution-name {
+  margin-left: 11px;
+  font-weight: 500;
+  font-size: 19.4px;
+  color: var(--astra);
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1240px) {
+  .home { width: min(calc(var(--card-w) * 2 + var(--gap)), 100% - 48px); padding-top: 64px; }
+  .grid { grid-template-columns: repeat(2, var(--card-w)); }
+  .headline { font-size: 30px; }
+}
+
+/* Phone: 1 column, cards stretch, art stays centred */
+@media (max-width: 640px) {
+  .home { width: calc(100% - 40px); padding-top: 48px; }
+  .grid { grid-template-columns: 1fr; margin-top: 28px; gap: 16px; }
+  .headline { font-size: 24px; }
+}
+
+/* Flip: the grey lead-in is clickable. Hover gives it a soft underline and a small
+   handwritten note fades in at the end of the meta line. */
+.flip-trigger {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  transition: text-decoration-color 0.3s ease, color 0.3s ease;
+  border-radius: 4px;
+}
+.flip-trigger:hover { text-decoration-color: #c9c9c9; color: #5f5f5f; }
+.flip-trigger:focus-visible { outline: 2px solid var(--astra); outline-offset: 4px; }
+.meta { position: relative; width: fit-content; }
+.flip-hint {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  margin-left: 14px;
+  transform: translate(-4px, -50%);
+  pointer-events: none;
+  white-space: nowrap;
+  font: italic 400 16px/1 var(--hand);
+  -webkit-text-stroke: 0.3px currentColor;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.flip-hint.is-on { opacity: 1; transform: translate(0, -50%); }
+@media (hover: none) { .flip-hint { display: none; } }
