@@ -221,7 +221,7 @@ function ThematicMap({ on }) {
   useEffect(() => { if (!on) setActive(null) }, [on])
   const act = CALLOUTS.find((c) => c.n === active)
   const litEdge = (i) => (act ? (act.edges.includes(i) ? ' is-hl' : ' is-dim') : '')
-  const litRole = (id) => (act ? (act.roles.includes(id) ? '' : ' is-dim') : '')
+  const litRole = (id) => (act ? (act.roles.includes(id) ? ' is-lit' : '') : '')
   return (
     <div className={`tm${on ? ' is-on' : ''}${act ? ' has-active' : ''}`} aria-hidden={!on} style={act ? { '--hl': THEMES[act.n - 1].ink } : undefined}>
       {on && act && <button type="button" className="tm-clear" aria-label="Clear highlight" onClick={() => setActive(null)} />}
@@ -230,6 +230,11 @@ function ThematicMap({ on }) {
           <marker id="tm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 1.5 1.5 L 8.5 5 L 1.5 8.5" fill="none" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
           </marker>
+          {THEMES.map((t, k) => (
+            <marker key={t.id} id={`tm-arrow-${k + 1}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 1.5 1.5 L 8.5 5 L 1.5 8.5" fill="none" stroke={t.ink} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </marker>
+          ))}
         </defs>
         {CIRCLES.map((c, i) => (
           <g key={c.id} style={{ '--d': `${i * 220}ms` }}>
@@ -239,7 +244,10 @@ function ThematicMap({ on }) {
           </g>
         ))}
         {EDGES.map((e, i) => (
-          <path key={i} className={`tm-edge${litEdge(i)}`} d={e.d} pathLength="1" markerEnd="url(#tm-arrow)" markerStart={e.both ? 'url(#tm-arrow)' : undefined} style={{ '--d': `${900 + i * 150}ms` }} />
+          <path key={i} className={`tm-edge${litEdge(i)}`} d={e.d} pathLength="1"
+            markerEnd={`url(#${act && act.edges.includes(i) ? `tm-arrow-${act.n}` : 'tm-arrow'})`}
+            markerStart={e.both ? `url(#${act && act.edges.includes(i) ? `tm-arrow-${act.n}` : 'tm-arrow'})` : undefined}
+            style={{ '--d': `${900 + i * 150}ms` }} />
         ))}
       </svg>
       {ROLES.map((r, i) => (
@@ -257,9 +265,16 @@ function ThematicMap({ on }) {
           aria-pressed={active === c.n}
         >
           <b>{c.n}</b>
-          <span>{c.text}{active === c.n && <em>Theme {c.n}: {THEMES[c.n - 1].name}</em>}</span>
+          <span>{c.text}</span>
         </button>
       ))}
+      {act && (
+        <div key={act.n} className="tm-detail" style={{ '--k': THEMES[act.n - 1].ink, '--c': THEMES[act.n - 1].color }}>
+          <span className="hand">Theme {act.n}</span>
+          <b>{THEMES[act.n - 1].name}</b>
+          <small>Click the number again or anywhere on the map to reset</small>
+        </div>
+      )}
       {EDGES.map((e, i) => (
         <span key={i} className={`tm-edge-label${litEdge(i)}`} style={{ left: e.lx, top: e.ly, '--d': `${1200 + i * 150}ms` }}>{e.label}</span>
       ))}
