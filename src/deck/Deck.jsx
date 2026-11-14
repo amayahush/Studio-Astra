@@ -152,7 +152,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
                   {su && (
                     <div className="dk-caption">
                       <p key={st}>{su.captions[st]}</p>
-                      <StepMarks total={max} at={st} />
+                      <StepMarks total={max} at={st} onGo={(n) => setSteps((all) => all.map((v, j) => (j === k ? n : v)))} />
                     </div>
                   )}
                   <span className="dk-next hand">

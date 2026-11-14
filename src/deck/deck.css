@@ -176,7 +176,11 @@
 .dk-slide h2, .dk-slide h3, .dk-hook { text-wrap: balance; }
 
 /* Step marks: outlined stars → grey stars → purple Astra star on the current step */
-.sm { display: flex; gap: 8px; align-items: center; }
+.sm { display: flex; gap: 2px; align-items: center; margin-left: -6px; }
+.sm-btn { display: grid; place-items: center; padding: 6px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; }
+.sm-btn:hover { background: rgba(0,0,0,.05); }
+.sm-btn:hover .sm-mark.is-next .sm-star path, .sm-btn:hover .sm-mark.is-done .sm-star path { stroke: var(--astra); }
+.sm-btn:focus-visible { outline: 2px solid var(--astra); outline-offset: 1px; }
 .sm-mark { overflow: visible; }
 .sm-star { transform-box: fill-box; transform-origin: center; }
 .sm-star path { fill: #9a9a9a; fill-opacity: 0; stroke: #9a9a9a; stroke-width: 1.4; stroke-linejoin: round;
