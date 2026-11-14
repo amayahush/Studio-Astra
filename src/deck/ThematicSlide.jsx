@@ -10,7 +10,7 @@ export const THEMATIC_CAPTIONS = [
   'I tagged every note. Sixteen tags answered my research question. Six didn’t, so I set them aside.',
   'Then I grouped the tags by where they sit in a requirement’s life: where it starts, how it’s handed off, how it changes, and where AI fits.',
   'The groups didn’t hold as findings, so I rebuilt them into themes. Some tags crossed groups, and two didn’t make it in.',
-  'Read it as a relay. Requirements start with business leaders and pass through the PM to design and development. Each number marks where one of my themes breaks that relay. Click one to see its path.',
+  'Requirements start with business leaders and pass through the PM to design and development. Each number marks where one of my themes breaks that relay. Click one to see its path.',
 ]
 
 const W = 1000
