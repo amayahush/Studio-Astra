@@ -25,6 +25,8 @@ const CATS = [
 ]
 const CAT_COLOR = Object.fromEntries(CATS.map((c) => [c.id, c.color]))
 
+// the map is laid out in big Figma units; K shrinks it so the moving layer stays small for the GPU
+const K = 0.25
 const R = { core: 435, needs: 1000, inter: 1801, touch: 2702, outer: 3120 }
 // camera per step: center (map units) and the box that has to fit
 const VIEWS = [
@@ -81,8 +83,64 @@ export default function EcosystemSlide({ step }) {
   }, [])
 
   const v = VIEWS[step] ?? VIEWS[0]
-  const s = Math.min(size.w / v.w, size.h / v.h)
-  const toScreen = (x, y) => [size.w / 2 + (x - v.cx) * s, size.h / 2 + (y - v.cy) * s]
+  const base = Math.min(size.w / v.w, size.h / v.h)
+  // user zoom + pan on top of the step's camera; reset whenever the step changes
+  const [zoom, setZoom] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
+  const [moving, setMoving] = useState(false)
+  const [dragging, setDragging] = useState(false)
+  const moveTimer = useRef(null)
+  const flagMove = () => {
+    setMoving(true)
+    clearTimeout(moveTimer.current)
+    moveTimer.current = setTimeout(() => setMoving(false), 1250)
+  }
+  useEffect(() => { setZoom(1); setPan({ x: 0, y: 0 }); flagMove() }, [step])
+  const s = base * zoom
+  const tx = size.w / 2 + pan.x - v.cx * s
+  const ty = size.h / 2 + pan.y - v.cy * s
+  const toScreen = (x, y) => [tx + x * s, ty + y * s]
+
+  const zoomAt = (factor, px = size.w / 2, py = size.h / 2, animate = true) => {
+    const z2 = Math.min(5, Math.max(0.6, zoom * factor))
+    const k = z2 / zoom
+    const cx = px - size.w / 2
+    const cy = py - size.h / 2
+    setPan({ x: cx - (cx - pan.x) * k, y: cy - (cy - pan.y) * k })
+    setZoom(z2)
+    if (animate) flagMove()
+  }
+  const resetView = () => { setZoom(1); setPan({ x: 0, y: 0 }); flagMove() }
+
+  const drag = useRef(null)
+  const onPointerDown = (e) => {
+    if (e.button !== 0 || e.target.closest('.eco-legend, .eco-zoom, button')) return
+    e.preventDefault()
+    drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y, moved: false }
+  }
+  const onPointerMove = (e) => {
+    const d = drag.current
+    if (!d) return
+    const dx = e.clientX - d.x
+    const dy = e.clientY - d.y
+    if (!d.moved && Math.hypot(dx, dy) < 4) return
+    if (!d.moved) { d.moved = true; setDragging(true); setHover(null); e.currentTarget.setPointerCapture?.(e.pointerId) }
+    setPan({ x: d.px + dx, y: d.py + dy })
+  }
+  const endDrag = () => { drag.current = null; setDragging(false) }
+  useEffect(() => {
+    const el = boxRef.current
+    if (!el) return
+    // pinch on a trackpad (or ctrl/cmd + scroll) zooms around the cursor
+    const onWheel = (e) => {
+      if (!e.ctrlKey && !e.metaKey) return
+      e.preventDefault()
+      const r = el.getBoundingClientRect()
+      zoomAt(Math.exp(-e.deltaY * 0.01), e.clientX - r.left, e.clientY - r.top, false)
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  })
 
   const links = useMemo(() => {
     const m = {}
@@ -109,8 +167,17 @@ export default function EcosystemSlide({ step }) {
 
   return (
     <div className="eco">
-      <div className={`eco-stage is-step-${step}${filter ? ' is-filtering' : ''}`} ref={boxRef}>
-        <div className="eco-canvas" style={{ transform: `translate(${size.w / 2 - v.cx * s}px, ${size.h / 2 - v.cy * s}px) scale(${s})` }}>
+      <div
+        className={`eco-stage is-step-${step}${filter ? ' is-filtering' : ''}${moving || dragging ? ' is-moving' : ''}${dragging ? ' is-dragging' : ''}${zoom !== 1 || pan.x || pan.y ? ' is-zoomed' : ''}`}
+        ref={boxRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onPointerLeave={endDrag}
+      >
+        <div className="eco-canvas" style={{ transform: `translate(${tx}px, ${ty}px) scale(${s / K})` }}>
+         <div className="eco-world" style={{ transform: `scale(${K})` }}>
           <svg className="eco-svg" viewBox="-4000 -4000 8000 8000" width="8000" height="8000" style={{ left: -4000, top: -4000 }}>
             <defs>
               <marker id="eco-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
@@ -169,6 +236,13 @@ export default function EcosystemSlide({ step }) {
               </div>
             )
           })}
+         </div>
+        </div>
+
+        <div className="eco-zoom" role="group" aria-label="Zoom">
+          <button type="button" onClick={() => zoomAt(1.4)} aria-label="Zoom in">+</button>
+          <button type="button" onClick={() => zoomAt(1 / 1.4)} aria-label="Zoom out">−</button>
+          <button type="button" className="is-fit" onClick={resetView} disabled={zoom === 1 && !pan.x && !pan.y}>Fit</button>
         </div>
 
         <div className="eco-legend" role="group" aria-label="Filter the map">
