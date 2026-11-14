@@ -10,7 +10,7 @@ export const THEMATIC_CAPTIONS = [
   'I tagged every note. Sixteen tags answered my research question. Six didn’t, so I set them aside.',
   'Then I grouped the tags by where they sit in a requirement’s life: where it starts, how it’s handed off, how it changes, and where AI fits.',
   'The groups didn’t hold as findings, so I rebuilt them into themes. Some tags crossed groups, and two didn’t make it in.',
-  'Mapped back onto the people, the themes show where requirements actually travel, and where AI sits in the middle.',
+  'Read it as a relay. Requirements start with business leaders and pass through the PM to design and development. Each number marks where one of my themes breaks that relay.',
 ]
 
 const W = 1000
@@ -206,6 +206,14 @@ const EDGES = [
   { d: 'M 500 546 C 498 480 502 420 500 380', label: 'Scoping out a task', lx: 566, ly: 450 },
 ]
 
+// where each theme shows up on the relay (my reading of the map)
+const CALLOUTS = [
+  { n: 1, x: 122, y: 352, text: 'Requirements show up only after building starts' },
+  { n: 2, x: 845, y: 395, text: 'The why gets lost in a one-way handoff' },
+  { n: 3, x: 500, y: 168, text: 'The real coordination happens in conversation' },
+  { n: 4, x: 660, y: 360, text: 'AI executes, people still define' },
+]
+
 function ThematicMap({ on }) {
   return (
     <div className={`tm${on ? ' is-on' : ''}`} aria-hidden={!on}>
@@ -231,6 +239,11 @@ function ThematicMap({ on }) {
       ))}
       <span className="tm-role tm-ai" style={{ left: 500, top: 360, '--d': '850ms' }}>AI tools</span>
       <span className="tm-role tm-bl" style={{ left: 500, top: 46, '--d': '700ms' }}>Business leaders &amp; customers</span>
+      {CALLOUTS.map((c, i) => (
+        <span key={c.n} className="tm-callout" style={{ left: c.x, top: c.y, '--c': THEMES[c.n - 1].color, '--k': THEMES[c.n - 1].ink, '--d': `${2400 + i * 350}ms` }}>
+          <b>{c.n}</b>{c.text}
+        </span>
+      ))}
       {EDGES.map((e, i) => (
         <span key={i} className="tm-edge-label" style={{ left: e.lx, top: e.ly, '--d': `${1200 + i * 150}ms` }}>{e.label}</span>
       ))}

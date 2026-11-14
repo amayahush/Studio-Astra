@@ -260,5 +260,11 @@
 .tm-role { padding: 7px 14px; border-radius: 8px; font-size: 17px; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
 .tm-ai { padding: 6px 12px; background: #fff; color: #1a1a1a; border: 1.5px solid #2f2f2f; font-size: 15px; font-weight: 700; }
 .tm-bl { padding: 6px 12px; background: #fff; color: #1a1a1a; font-size: 14px; font-weight: 600; border: 1.5px solid #9a9a9a; }
+.tm-callout { position: absolute; z-index: 3; display: flex; align-items: center; gap: 8px; width: max-content; max-width: 215px;
+  transform: translate(-50%, -50%) scale(.9); opacity: 0; padding: 6px 10px 6px 6px; border-radius: 10px; background: #fff;
+  border: 2px solid var(--k); box-shadow: 0 4px 14px rgba(0,0,0,.12); font-size: 13px; font-weight: 600; line-height: 1.3; color: #111; text-wrap: balance;
+  transition: opacity .4s ease, transform .5s cubic-bezier(.3,1.5,.5,1); }
+.tm-callout b { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k); color: #fff; font-size: 13px; }
+.tm.is-on .tm-callout { opacity: 1; transform: translate(-50%, -50%); transition-delay: var(--d); }
 .tm-edge-label { padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,.92); font-size: 13.5px; font-weight: 500; color: #1f1f1f; }
 @media (prefers-reduced-motion: reduce) { .ta-note, .tm * { transition: none !important; animation: none !important; } }
