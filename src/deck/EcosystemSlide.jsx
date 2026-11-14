@@ -102,11 +102,12 @@ export default function EcosystemSlide({ step }) {
   const toScreen = (x, y) => [tx + x * s, ty + y * s]
 
   const zoomAt = (factor, px = size.w / 2, py = size.h / 2, animate = true) => {
-    const z2 = Math.min(5, Math.max(0.6, zoom * factor))
+    // never smaller than the step's own framing; back at 1x it snaps to center
+    const z2 = Math.min(5, Math.max(1, zoom * factor))
     const k = z2 / zoom
     const cx = px - size.w / 2
     const cy = py - size.h / 2
-    setPan({ x: cx - (cx - pan.x) * k, y: cy - (cy - pan.y) * k })
+    setPan(z2 === 1 ? { x: 0, y: 0 } : { x: cx - (cx - pan.x) * k, y: cy - (cy - pan.y) * k })
     setZoom(z2)
     if (animate) flagMove()
   }
@@ -241,7 +242,7 @@ export default function EcosystemSlide({ step }) {
 
         <div className="eco-zoom" role="group" aria-label="Zoom">
           <button type="button" onClick={() => zoomAt(1.4)} aria-label="Zoom in">+</button>
-          <button type="button" onClick={() => zoomAt(1 / 1.4)} aria-label="Zoom out">−</button>
+          <button type="button" onClick={() => zoomAt(1 / 1.4)} aria-label="Zoom out" disabled={zoom <= 1}>−</button>
           <button type="button" className="is-fit" onClick={resetView} disabled={zoom === 1 && !pan.x && !pan.y}>Fit</button>
         </div>
 
