@@ -103,8 +103,8 @@ export default function EcosystemSlide({ step }) {
 
   return (
     <div className="eco">
-      <div className={`eco-stage is-step-${step}`} ref={boxRef}>
-        <div className="eco-canvas" style={{ transform: `translate(${size.w / 2}px, ${size.h / 2}px) scale(${s}) translate(${-v.cx}px, ${-v.cy}px)` }}>
+      <div className={`eco-stage is-step-${step}${hover ? ' is-hovering' : ''}${filter ? ' is-filtering' : ''}`} ref={boxRef}>
+        <div className="eco-canvas" style={{ transform: `translate(${size.w / 2 - v.cx * s}px, ${size.h / 2 - v.cy * s}px) scale(${s})` }}>
           <svg className="eco-svg" viewBox="-4000 -4000 8000 8000" width="8000" height="8000" style={{ left: -4000, top: -4000 }}>
             <defs>
               <marker id="eco-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
@@ -112,7 +112,7 @@ export default function EcosystemSlide({ step }) {
               </marker>
             </defs>
             <circle r={R.outer} className="eco-ring is-outer" />
-            {v.q && <path d={wedge(v.q)} className="eco-wedge" />}
+            {v.q && <path key={v.q} d={wedge(v.q)} className="eco-wedge" />}
             <circle r={R.touch} className={`eco-ring${step === 1 ? ' is-hl-touch' : ''}`} />
             <circle r={R.inter} className={`eco-ring${step === 1 ? ' is-hl-inter' : ''}`} />
             <circle r={R.needs} className={`eco-ring is-dash${step === 1 ? ' is-hl-needs' : ''}`} />

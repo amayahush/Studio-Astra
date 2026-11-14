@@ -298,14 +298,14 @@
 
 /* ---------- Ecosystem map ---------- */
 .eco-stage { position: relative; height: calc(100vh - 170px); min-height: 520px; border-radius: 16px; background: var(--card); overflow: hidden; }
-.eco-canvas { position: absolute; left: 0; top: 0; transform-origin: 0 0; transition: transform 1.2s cubic-bezier(.6,.05,.25,1); }
+.eco-canvas { position: absolute; left: 0; top: 0; transform-origin: 0 0; transition: transform 1.1s cubic-bezier(.65,0,.35,1); will-change: transform; }
 .eco-svg { position: absolute; overflow: visible; }
 .eco-ring { fill: none; stroke: #b9b9b9; stroke-width: 6; transition: stroke .5s, stroke-width .5s; }
 .eco-ring.is-outer { fill: #f4f4f4; stroke: #c9c9c9; }
 .eco-ring.is-dash { stroke-dasharray: 30 24; }
 .eco-ring[class*='is-hl'] { stroke: #2a2a2a; stroke-width: 12; }
 .eco-axis { stroke: #c9c9c9; stroke-width: 5; stroke-dasharray: 26 26; }
-.eco-wedge { fill: #f3e6ff; animation: ta-in .6s ease both; }
+.eco-wedge { fill: #f3e6ff; animation: ta-in .5s ease .7s both; }
 .eco-core { fill: #2a2a2a; }
 .eco-edge { stroke: #9a9a9a; stroke-width: 5; transition: stroke .2s, stroke-width .2s, opacity .3s; }
 .eco-edge.is-dash { stroke-dasharray: 20 16; }
@@ -330,8 +330,9 @@
   position: absolute; z-index: 2; max-width: 400px; width: max-content; transform: translate(-50%, -50%);
   padding: 8px 16px; border-radius: 10px; background: #fff; border: 3px solid #cfcfcf;
   font-size: 32px; font-weight: 500; line-height: 1.22; color: #222; text-align: center; text-wrap: balance;
-  transition: opacity .4s ease, background .3s ease, border-color .3s ease;
+  transition: opacity .45s ease .45s, background .3s ease, border-color .3s ease;
 }
+.eco-stage.is-hovering .eco-node, .eco-stage.is-filtering .eco-node { transition-delay: 0s; }
 .eco-node.is-dash { border-style: dashed; border-color: #9a9a9a; }
 .eco-node.is-dim { opacity: .14; }
 .eco-node[class*='is-ring-'] { opacity: .3; }
