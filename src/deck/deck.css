@@ -88,8 +88,8 @@
 .iv-face img { position: absolute; left: 7px; top: -3px; width: 90.6px; height: 71.3px; }
 .iv-person:hover .iv-face { transform: scale(1.07); }
 .iv-person:focus-visible { outline: 2px solid var(--astra); outline-offset: 6px; border-radius: 12px; }
-.iv-person.is-open .iv-blob { box-shadow: 0 0 0 3px var(--astra); }
 .iv-person.is-agreed .iv-blob { background: #a3d8b3; }
+.iv-person.is-open .iv-blob, .iv-person.is-open.is-agreed .iv-blob { background: #e2b6ff; }
 .iv-person.is-dimmed { opacity: 0.35; }
 .iv-tag { font-size: 13px; color: #4a4a4a; white-space: nowrap; }
 .iv-tag b { font-weight: 600; color: var(--ink); }
