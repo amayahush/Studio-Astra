@@ -166,3 +166,7 @@
 @media (prefers-reduced-motion: reduce) {
   .deck, .dk-track, .iv-person, .iv-line { transition: none; }
 }
+
+/* no orphans: last line never holds a single word */
+.dk-slide p, .dk-slide li, .dk-slide blockquote, .iv p, .iv li, .iv blockquote, .dk-sub, .dk-caption p { text-wrap: pretty; }
+.dk-slide h2, .dk-slide h3, .dk-hook { text-wrap: balance; }

@@ -118,7 +118,7 @@ export default function InterviewsSlide({ step }) {
 
       <section className="iv-more iv-stuck">
         <h3 className="hand">A line that stuck with me</h3>
-        <blockquote>“Since we work off of such loose requirements, it’s hard for us to prompt an AI tool to say, this is exactly what I need, because oftentimes we don’t even know ourselves.”</blockquote>
+        <blockquote>“Since we work off of such loose requirements, it’s hard for us to prompt an AI tool to say, this is exactly what I need, because oftentimes we don’t even know ourselves.”</blockquote>
         <cite>P1, full-stack developer</cite>
       </section>
     </div>
