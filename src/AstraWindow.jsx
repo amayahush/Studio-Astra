@@ -3,27 +3,22 @@ import { Star } from './art/Art.jsx'
 
 export const ASTRA_URL = 'https://astra-studioresearch-prototype.vercel.app/'
 
-// Draft directions pulled from the research gaps in my notes. Rewrite in my own words.
+// Future research directions (picked by me; wording is a draft to keep editing).
 const DIRECTIONS = [
   {
-    label: 'Accountability',
-    title: 'Who answers for what the AI writes?',
-    body: 'Human oversight of AI output came up more than anything else in my interviews, but it is the least developed part of Astra. I want to study how approval and responsibility should work when an agent drafted the requirement.',
+    label: 'Agent permissions',
+    title: 'What can an agent approve on its own?',
+    body: 'Right now every change in Astra waits for the PM. Some updates are small, like a renamed field or a moved date, and probably don\'t need a person. I want to map which changes agents can approve, which they can only suggest, and who is accountable when an agent gets it wrong.',
   },
   {
-    label: 'Restricted tools',
-    title: 'Working inside enterprise limits',
-    body: 'Many of the engineers I talked to can only use approved AI tools. Next I want to test how Astra holds up when the agents it depends on are locked down or unavailable.',
+    label: 'Docs for AI',
+    title: 'Writing requirements agents can read',
+    body: 'Better documentation leads to better spec-driven development. I want to test how requirements should be structured so AI can spot patterns across them, like recurring gaps or risky changes, while staying easy for people to read.',
   },
   {
     label: 'Conflicting input',
     title: 'When stakeholders disagree',
-    body: 'Requirements often arrive as contradictory asks from different roles. I want to explore how the system shows a conflict without deciding it for the team.',
-  },
-  {
-    label: 'Discovery',
-    title: 'Not skipping the messy part',
-    body: 'AI makes it easy to jump straight to ideas. I want to look at whether a tool like Astra helps teams stay in problem discovery long enough, or rushes them past it.',
+    body: 'In workshops, customers and teams often bring contradictory mental models, and that is where projects run over. Astra can flag a conflict, but it doesn\'t help anyone work through one. I want to study how teams actually settle these and what the system should show in that moment.',
   },
 ]
 
@@ -88,8 +83,8 @@ export default function AstraWindow({ open, onClose }) {
         <section className="future" aria-labelledby="future-title">
           <p className="meta">Future research directions</p>
           <h2 id="future-title" className="future-headline">
-            <span className="headline-muted">Astra answers part of the problem.</span> These are the questions I would
-            take on next.
+            <span className="headline-muted">Astra keeps one living source of truth.</span> Next I want to learn how much
+            of the work around it people can safely hand to agents.
           </h2>
           <div className="future-grid">
             {DIRECTIONS.map((d) => (

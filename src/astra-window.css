@@ -143,7 +143,7 @@ html.no-scroll { overflow: hidden; }
 .future-grid {
   margin-top: 37px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--gap);
 }
 .future-card {
@@ -172,8 +172,10 @@ html.no-scroll { overflow: hidden; }
 }
 .future-back:hover { color: var(--astra); }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .future-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
   .future-headline { font-size: 28px; }
 }
 @media (prefers-reduced-motion: reduce) {
