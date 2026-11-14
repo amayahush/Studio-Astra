@@ -82,9 +82,11 @@ function Card({ id, label, caption, Art }) {
 export default function App() {
   const [astraOpen, setAstraOpen] = useState(false)
   const closeAstra = useCallback(() => setAstraOpen(false), [])
-  // Astra is a desktop app: on phones and small tablets it opens in a new tab instead.
+  // Astra is a desktop app: on phones and touch tablets it opens in a new tab instead.
+  // This checks the device (screen size, touch), not the window, so a narrow browser
+  // window or side panel on a laptop still gets the in-site window.
   const openAstra = (e) => {
-    const small = window.matchMedia('(max-width: 900px), (hover: none)').matches
+    const small = window.screen.width < 900 || window.matchMedia('(hover: none) and (pointer: coarse)').matches
     if (small) return // let the link open normally
     e.preventDefault()
     setAstraOpen(true)
