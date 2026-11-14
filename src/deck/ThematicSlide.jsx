@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { NOTES, TAGS, GROUPS, SET_ASIDE, THEMES } from './thematicData.js'
 
 // Thematic analysis: every note from the interviews, then → tags them, groups the tags,
@@ -10,7 +10,7 @@ export const THEMATIC_CAPTIONS = [
   'I tagged every note. Sixteen tags answered my research question. Six didn’t, so I set them aside.',
   'Then I grouped the tags by where they sit in a requirement’s life: where it starts, how it’s handed off, how it changes, and where AI fits.',
   'The groups didn’t hold as findings, so I rebuilt them into themes. Some tags crossed groups, and two didn’t make it in.',
-  'Read it as a relay. Requirements start with business leaders and pass through the PM to design and development. Each number marks where one of my themes breaks that relay.',
+  'Read it as a relay. Requirements start with business leaders and pass through the PM to design and development. Each number marks where one of my themes breaks that relay. Click one to see its path.',
 ]
 
 const W = 1000
@@ -207,16 +207,24 @@ const EDGES = [
 ]
 
 // where each theme shows up on the relay (my reading of the map)
+// edges = indexes into EDGES, roles = which tags stay lit when the callout is clicked
 const CALLOUTS = [
-  { n: 1, x: 122, y: 352, text: 'Requirements show up only after building starts' },
-  { n: 2, x: 845, y: 395, text: 'The why gets lost in a one-way handoff' },
-  { n: 3, x: 500, y: 168, text: 'The real coordination happens in conversation' },
-  { n: 4, x: 660, y: 360, text: 'AI executes, people still define' },
+  { n: 1, x: 122, y: 352, text: 'Requirements show up only after building starts', edges: [0, 4], roles: ['bl', 'pm', 'dv'] },
+  { n: 2, x: 845, y: 395, text: 'The why gets lost in a one-way handoff', edges: [4, 5], roles: ['pm', 'ds', 'dv'] },
+  { n: 3, x: 500, y: 168, text: 'The real coordination happens in conversation', edges: [1, 2], roles: ['bl', 'pm', 'ds'] },
+  { n: 4, x: 660, y: 360, text: 'AI executes, people still define', edges: [3, 6], roles: ['pm', 'dv', 'ai'] },
 ]
+const ROLE_IDS = ['pm', 'ds', 'dv']
 
 function ThematicMap({ on }) {
+  const [active, setActive] = useState(null)
+  useEffect(() => { if (!on) setActive(null) }, [on])
+  const act = CALLOUTS.find((c) => c.n === active)
+  const litEdge = (i) => (act ? (act.edges.includes(i) ? ' is-hl' : ' is-dim') : '')
+  const litRole = (id) => (act ? (act.roles.includes(id) ? '' : ' is-dim') : '')
   return (
-    <div className={`tm${on ? ' is-on' : ''}`} aria-hidden={!on}>
+    <div className={`tm${on ? ' is-on' : ''}${act ? ' has-active' : ''}`} aria-hidden={!on} style={act ? { '--hl': THEMES[act.n - 1].ink } : undefined}>
+      {on && act && <button type="button" className="tm-clear" aria-label="Clear highlight" onClick={() => setActive(null)} />}
       <svg className="tm-svg" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs>
           <marker id="tm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
@@ -231,21 +239,29 @@ function ThematicMap({ on }) {
           </g>
         ))}
         {EDGES.map((e, i) => (
-          <path key={i} className="tm-edge" d={e.d} pathLength="1" markerEnd="url(#tm-arrow)" markerStart={e.both ? 'url(#tm-arrow)' : undefined} style={{ '--d': `${900 + i * 150}ms` }} />
+          <path key={i} className={`tm-edge${litEdge(i)}`} d={e.d} pathLength="1" markerEnd="url(#tm-arrow)" markerStart={e.both ? 'url(#tm-arrow)' : undefined} style={{ '--d': `${900 + i * 150}ms` }} />
         ))}
       </svg>
       {ROLES.map((r, i) => (
-        <span key={r.text} className="tm-role" style={{ left: r.x, top: r.y, background: r.bg, color: r.fg, '--d': `${500 + i * 150}ms` }}>{r.text}</span>
+        <span key={r.text} className={`tm-role${litRole(ROLE_IDS[i])}`} style={{ left: r.x, top: r.y, background: r.bg, color: r.fg, '--d': `${500 + i * 150}ms` }}>{r.text}</span>
       ))}
-      <span className="tm-role tm-ai" style={{ left: 500, top: 360, '--d': '850ms' }}>AI tools</span>
-      <span className="tm-role tm-bl" style={{ left: 500, top: 46, '--d': '700ms' }}>Business leaders &amp; customers</span>
+      <span className={`tm-role tm-ai${litRole('ai')}`} style={{ left: 500, top: 360, '--d': '850ms' }}>AI tools</span>
+      <span className={`tm-role tm-bl${litRole('bl')}`} style={{ left: 500, top: 46, '--d': '700ms' }}>Business leaders &amp; customers</span>
       {CALLOUTS.map((c, i) => (
-        <span key={c.n} className="tm-callout" style={{ left: c.x, top: c.y, '--c': THEMES[c.n - 1].color, '--k': THEMES[c.n - 1].ink, '--d': `${2400 + i * 350}ms` }}>
-          <b>{c.n}</b>{c.text}
-        </span>
+        <button
+          key={c.n}
+          type="button"
+          className={`tm-callout${active === c.n ? ' is-active' : act ? ' is-dim' : ''}`}
+          style={{ left: c.x, top: c.y, '--c': THEMES[c.n - 1].color, '--k': THEMES[c.n - 1].ink, '--d': `${2400 + i * 350}ms` }}
+          onClick={() => setActive(active === c.n ? null : c.n)}
+          aria-pressed={active === c.n}
+        >
+          <b>{c.n}</b>
+          <span>{c.text}{active === c.n && <em>Theme {c.n}: {THEMES[c.n - 1].name}</em>}</span>
+        </button>
       ))}
       {EDGES.map((e, i) => (
-        <span key={i} className="tm-edge-label" style={{ left: e.lx, top: e.ly, '--d': `${1200 + i * 150}ms` }}>{e.label}</span>
+        <span key={i} className={`tm-edge-label${litEdge(i)}`} style={{ left: e.lx, top: e.ly, '--d': `${1200 + i * 150}ms` }}>{e.label}</span>
       ))}
     </div>
   )
