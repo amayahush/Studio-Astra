@@ -2,10 +2,12 @@ import StepMarks from './StepMarks.jsx'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { SLIDES } from './content.js'
 import InterviewsSlide, { INTERVIEW_STEPS, INTERVIEW_CAPTIONS } from './InterviewsSlide.jsx'
+import ThematicSlide, { THEMATIC_STEPS, THEMATIC_CAPTIONS } from './ThematicSlide.jsx'
 
 // Per-slide setup: how many → steps it has before moving on, and the caption for each.
 const SETUP = {
   interviews: { steps: INTERVIEW_STEPS, captions: INTERVIEW_CAPTIONS, Body: InterviewsSlide },
+  'thematic-analysis': { steps: THEMATIC_STEPS, captions: THEMATIC_CAPTIONS, Body: ThematicSlide },
 }
 
 function PlaceholderBody({ slide }) {
