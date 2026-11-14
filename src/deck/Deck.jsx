@@ -142,6 +142,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
                 <div className="dk-text">
                   <span className="dk-label hand">{s.label}</span>
                   <h2 className="dk-hook"><span>{s.grey}</span>{s.black}</h2>
+                  {s.sub && <p className="dk-sub">{s.sub}</p>}
                   {s.id === 'interviews' && (
                     <p className="dk-context"><span className="dk-tag">8 conversations</span> Aug to Oct 2026<br />5 developers, 2 UX designers and a product manager</p>
                   )}

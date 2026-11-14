@@ -1,7 +1,7 @@
 // Copy for the deck. Hooks are drafts in my voice: grey lead-in, then the point.
 // Card order matches the homepage grid.
 export const SLIDES = [
-  { id: 'interviews', label: 'Interviews', grey: 'Before designing anything,', black: ' I needed to hear how product teams actually work with AI.' },
+  { id: 'interviews', label: 'Interviews', grey: 'Before designing anything,', sub: 'The engineers kept pointing to the people around them, the PM writing requirements and the designers handing work off, so I widened the circle to the whole team.', black: ' I needed to hear how engineers actually work with AI.' },
   { id: 'thematic-analysis', label: 'Thematic Analysis', grey: 'Eight people, one pattern:', black: ' the requirements were never really finished.' },
   { id: 'ecosystem-map', label: 'Ecosystem Map', grey: 'Requirements pass through a lot of hands,', black: ' so I mapped who touches them.' },
   { id: 'journey-map', label: 'Journey Map', grey: 'Following one engineer’s day', black: ' showed exactly where the workflow falls through.' },
