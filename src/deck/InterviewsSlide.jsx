@@ -9,7 +9,7 @@ export const INTERVIEW_STEPS = 3
 
 export const INTERVIEW_CAPTIONS = [
   'Eight people who touch requirements from different sides. Click anyone to hear from them.',
-  'Developers (the CTO is one of them), designers and a PM.',
+  'Developers, designers and a PM.',
   'Every developer, and one designer, made a point of checking AI’s work before trusting it.',
   'Same kind of work, very different relationships with AI.',
 ]
