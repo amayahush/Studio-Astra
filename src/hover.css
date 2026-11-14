@@ -138,3 +138,20 @@
   .card { transition: background-color 0.2s ease; }
   .card:hover, .card:focus-visible { transform: none; }
 }
+
+/* Competitive Analysis: tools pop in, each row of coverage fills across, then the empty
+   bottom row gets circled: the part none of the tools handle */
+.play .ca-tool { animation: pop 0.5s var(--ease-soft) var(--d) both; }
+.play .ca-row-label { transform-origin: left center; animation: grow-x 0.45s var(--ease) var(--d) both; }
+.play .ca-cell { animation: dot-pop 0.4s var(--ease-soft) var(--d) both; }
+.play .ca-gap { animation: sketch-box 0.6s var(--ease) 1.75s both, gap-pulse 1.2s ease-in-out 2.4s 2; }
+@keyframes dot-pop { from { opacity: 0; transform: scale(0); } }
+@keyframes gap-pulse { 50% { box-shadow: 0 0 0 4px rgba(255, 0, 247, 0.12); } }
+
+/* Wireframes: the user flow builds left to right, drops into the screens, earlier
+   versions stack in behind, then the front screen's panels fill in */
+.play .wf-node { animation: pop 0.5s var(--ease-soft) var(--d) both; }
+.play .wf-arrow path, .play .wf-drop path { stroke-dasharray: 1; animation: draw-on 0.35s ease var(--d) both; }
+.play .wf-frame { animation: frame-in 0.6s var(--ease) var(--d) both; }
+.play .wf-panel { transform-origin: top center; animation: grow-y 0.45s var(--ease) var(--d) both; }
+@keyframes frame-in { from { opacity: 0; transform: translate(14px, -8px); } }

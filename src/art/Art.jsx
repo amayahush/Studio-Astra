@@ -161,11 +161,11 @@ function Star({ size, inset, color, x, y, className = '', d = 0 }) {
 }
 export { Star }
 
-export function PovArt() {
+export function PovArt({ engX = 94.66, stars = [[47, 153], [174, 61]] }) {
   const uid = useId().replace(/:/g, '')
   return (
     <>
-      <svg className="abs pov-eng" style={{ left: 94.66, top: 78.62 }} width="80.75" height="104" viewBox="-0.34 -0.38 80.75 104" aria-hidden>
+      <svg className="abs pov-eng" style={{ left: engX, top: 78.62 }} width="80.75" height="104" viewBox="-0.34 -0.38 80.75 104" aria-hidden>
         {/* The pencil render is revealed through a mask that "draws" along each stroke,
             in the order a person would sketch it. Lines and fills are separate layers so no colour shows
             ahead of the pencil; fills wash in once the lines are down. */}
@@ -195,8 +195,9 @@ export function PovArt() {
         <image href={engineerHeadImg} x="-0.336" y="-0.375" width="72.27" height="56.86" mask={`url(#pov-head-${uid})`} />
         <image href={engineerBodyImg} x="4.281" y="46.109" width="76.05" height="57.41" mask={`url(#pov-body-${uid})`} />
       </svg>
-      <Star size={21} inset={0.0896} color="#656565" x={47} y={153} className="pov-star" d={2050} />
-      <Star size={21} inset={0.0896} color="#656565" x={174} y={61} className="pov-star" d={2200} />
+      {stars.map(([x, y], i) => (
+        <Star key={i} size={21} inset={0.0896} color="#656565" x={x} y={y} className="pov-star" d={2050 + i * 150} />
+      ))}
     </>
   )
 }
@@ -238,4 +239,94 @@ export function IdeatingArt() {
       )}
     </div>
   ))
+}
+
+// POV / User Model / HMW: the engineer is sketched on the left, then the three
+// How Might We chips arrive beside him once the head is drawn.
+export function PovHmwArt() {
+  return (
+    <>
+      <PovArt engX={36} stars={[[16, 150], [226, 64]]} />
+      {[1, 2, 3].map((n, i) => (
+        <div key={n} className="abs hmw-chip" style={{ left: 142, top: 92 + i * 32, '--d': `${1900 + i * 280}ms` }}>
+          {n}. HMW
+        </div>
+      ))}
+    </>
+  )
+}
+
+// Competitive Analysis: tools across the top, what each one covers down the side.
+// The last row (shaping and tracking requirements) is empty for every tool: the gap.
+export function CompetitiveArt() {
+  const cols = [116, 152, 188, 224] // centres of the four tool columns
+  const rows = [
+    { y: 92, cells: [1, 1, 1, 1], label: 46 },
+    { y: 116, cells: [1, 1, 1, 0], label: 38 },
+    { y: 140, cells: [1, 0, 1, 1], label: 52 },
+  ]
+  const gapY = 170
+  return (
+    <>
+      {cols.map((cx, i) => (
+        <div key={cx} className="abs ca-tool" style={{ left: cx - 13, top: 52, '--d': `${i * 120}ms` }} />
+      ))}
+      {rows.map((r, ri) => (
+        <div key={r.y}>
+          <div className="abs ca-row-label" style={{ left: 30, top: r.y - 4, width: r.label, '--d': `${500 + ri * 220}ms` }} />
+          {r.cells.map((on, ci) => (
+            <span
+              key={ci}
+              className={`abs ca-cell${on ? ' is-on' : ''}`}
+              style={{ left: cols[ci] - 5, top: r.y - 5, '--d': `${600 + ri * 220 + ci * 70}ms` }}
+            />
+          ))}
+        </div>
+      ))}
+      <div className="abs ca-row-label is-gap" style={{ left: 30, top: gapY - 4, width: 44, '--d': '1300ms' }} />
+      {cols.map((cx, ci) => (
+        <span key={cx} className="abs ca-cell is-empty" style={{ left: cx - 5, top: gapY - 5, '--d': `${1400 + ci * 70}ms` }} />
+      ))}
+      <div className="abs ca-gap" style={{ left: 22, top: gapY - 13, width: 222, height: 26 }} />
+    </>
+  )
+}
+
+// Wireframes (with the user flow inside): a small flow across the top feeds a stack of
+// screen versions; the front one is the current three-panel layout.
+export function WireframesArt() {
+  const nodes = [
+    { x: 58, c: '#D9D9D9' },
+    { x: 118, c: '#D9D9D9' },
+    { x: 178, c: '#D5C0FF' },
+  ]
+  const fx = 66
+  const fy = 96
+  return (
+    <>
+      {nodes.map((n, i) => (
+        <div key={n.x} className="abs wf-node" style={{ left: n.x, top: 50, background: n.c, '--d': `${i * 260}ms` }} />
+      ))}
+      {[0, 1].map((i) => (
+        <svg key={i} className="abs wf-arrow" style={{ left: nodes[i].x + 37, top: 52, '--d': `${180 + i * 260}ms` }} width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden>
+          <path d="M1 6H17M13 2l4 4-4 4" stroke="#606060" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" pathLength="1" />
+        </svg>
+      ))}
+      <svg className="abs wf-drop" style={{ left: 194, top: 68, '--d': '780ms' }} width="12" height="26" viewBox="0 0 12 26" fill="none" aria-hidden>
+        <path d="M6 1V23M2 19l4 4 4-4" stroke="#606060" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" pathLength="1" />
+      </svg>
+      <div className="abs wf-frame is-v1" style={{ left: fx + 16, top: fy - 12, '--d': '900ms' }} />
+      <div className="abs wf-frame is-v2" style={{ left: fx + 8, top: fy - 6, '--d': '1080ms' }} />
+      <div className="abs wf-frame is-front" style={{ left: fx, top: fy, '--d': '1260ms' }}>
+        <div className="wf-bar"><i /><i /><i /></div>
+        <div className="wf-panel wf-left" style={{ '--d': '1550ms' }} />
+        <div className="wf-panel wf-mid" style={{ '--d': '1650ms' }}>
+          <b style={{ width: '90%' }} /><b style={{ width: '70%' }} /><b style={{ width: '82%' }} /><b style={{ width: '55%' }} />
+        </div>
+        <div className="wf-panel wf-right" style={{ '--d': '1750ms' }}>
+          <span className="is-accent" /><span />
+        </div>
+      </div>
+    </>
+  )
 }

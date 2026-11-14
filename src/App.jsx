@@ -3,10 +3,10 @@ import {
   ThematicArt,
   EcosystemArt,
   JourneyArt,
-  HmwArt,
-  PovArt,
+  CompetitiveArt,
+  PovHmwArt,
   MindMapArt,
-  IdeatingArt,
+  WireframesArt,
   Star,
 } from './art/Art.jsx'
 import Headline from './Headline.jsx'
@@ -20,10 +20,10 @@ const CARDS = [
   { id: 'thematic-analysis', label: 'Thematic Analysis', caption: 'Analyzing the common pain points for Engineers', Art: ThematicArt },
   { id: 'ecosystem-map', label: 'Ecosystem Map', caption: 'Mapping out the Ecosystem to see who touches the requirements', Art: EcosystemArt },
   { id: 'journey-map', label: 'Journey Map', caption: 'Identifying where the workflow falls through', Art: JourneyArt },
-  { id: 'how-might-we', label: 'How might we...', caption: null, Art: HmwArt },
-  { id: 'pov-user-model', label: 'POV / User Model', caption: 'The Senior Engineer with deep technical and system knowledge', Art: PovArt },
+  { id: 'competitive-analysis', label: 'Competitive Analysis', caption: 'Finding the gap today’s AI coding tools leave open', Art: CompetitiveArt },
+  { id: 'pov-user-model-hmw', label: 'POV / User Model / HMW', caption: 'The Senior Engineer with deep technical and system knowledge', Art: PovHmwArt },
   { id: 'mind-mapping', label: 'Mind Mapping', caption: 'Brainstorming ways to improve requirement clarity', Art: MindMapArt },
-  { id: 'ideating', label: 'Ideating & More Ideating', caption: <>The transition from idea<br />to solution</>, Art: IdeatingArt },
+  { id: 'wireframes', label: 'Wireframes', caption: 'Turning user flows into screens, one version at a time', Art: WireframesArt },
 ]
 
 
