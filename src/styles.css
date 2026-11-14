@@ -293,3 +293,7 @@ html.fit-screen, html.fit-screen body { overflow: hidden; height: 100%; }
 /* Single HMW as a thought bubble from the engineer's head */
 .hmw-puff { border-radius: 50%; background: #e6ffed; box-shadow: inset 0 0 0 1px #74b769; }
 .hmw-thought { width: auto; padding: 0 10px; border-radius: 14px; }
+
+/* Competitive Analysis (v2): tool tiles, an empty slot, and a magnifying glass */
+.ca-tile { width: 34px; height: 34px; border-radius: 8px; background: #cfcccc; }
+.ca-slot { width: 34px; height: 34px; border-radius: 8px; border: 1.5px dashed #ff00f7; background: #f3e6ff; }

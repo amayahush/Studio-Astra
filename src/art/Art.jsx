@@ -256,38 +256,22 @@ export function PovHmwArt() {
   )
 }
 
-// Competitive Analysis: tools across the top, what each one covers down the side.
-// The last row (shaping and tracking requirements) is empty for every tool: the gap.
+// Competitive Analysis: a row of today's tools and one empty dashed slot at the end.
+// A magnifying glass checks each tool and comes to rest on the empty slot: the gap.
 export function CompetitiveArt() {
-  const cols = [116, 152, 188, 224] // centres of the four tool columns
-  const rows = [
-    { y: 92, cells: [1, 1, 1, 1], label: 46 },
-    { y: 116, cells: [1, 1, 1, 0], label: 38 },
-    { y: 140, cells: [1, 0, 1, 1], label: 52 },
-  ]
-  const gapY = 170
+  const xs = [31, 75, 119, 163] // existing tools
+  const gapX = 207
+  const y = 98
   return (
     <>
-      {cols.map((cx, i) => (
-        <div key={cx} className="abs ca-tool" style={{ left: cx - 13, top: 52, '--d': `${i * 120}ms` }} />
+      {xs.map((x, i) => (
+        <div key={x} className="abs ca-tile" style={{ left: x, top: y, '--d': `${i * 110}ms` }} />
       ))}
-      {rows.map((r, ri) => (
-        <div key={r.y}>
-          <div className="abs ca-row-label" style={{ left: 30, top: r.y - 4, width: r.label, '--d': `${500 + ri * 220}ms` }} />
-          {r.cells.map((on, ci) => (
-            <span
-              key={ci}
-              className={`abs ca-cell${on ? ' is-on' : ''}`}
-              style={{ left: cols[ci] - 5, top: r.y - 5, '--d': `${600 + ri * 220 + ci * 70}ms` }}
-            />
-          ))}
-        </div>
-      ))}
-      <div className="abs ca-row-label is-gap" style={{ left: 30, top: gapY - 4, width: 44, '--d': '1300ms' }} />
-      {cols.map((cx, ci) => (
-        <span key={cx} className="abs ca-cell is-empty" style={{ left: cx - 5, top: gapY - 5, '--d': `${1400 + ci * 70}ms` }} />
-      ))}
-      <div className="abs ca-gap" style={{ left: 22, top: gapY - 13, width: 222, height: 26 }} />
+      <div className="abs ca-slot" style={{ left: gapX, top: y }} />
+      <svg className="abs ca-lens" style={{ left: gapX + 17 - 18, top: y + 17 - 18 }} width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden>
+        <circle cx="18" cy="18" r="13" fill="rgba(255,255,255,0.35)" stroke="#545454" strokeWidth="3" />
+        <path d="M28 28L41 41" stroke="#545454" strokeWidth="4" strokeLinecap="round" />
+      </svg>
     </>
   )
 }

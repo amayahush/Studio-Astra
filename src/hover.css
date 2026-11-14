@@ -160,3 +160,23 @@
 .play .hmw-puff { animation: dot-pop 0.35s var(--ease-soft) var(--d) both; }
 .play .hmw-thought { transform-origin: 0% 100%; animation: bubble-in 0.55s var(--ease-soft) var(--d) both; }
 @keyframes bubble-in { from { opacity: 0; transform: scale(0.4) translateY(6px); } }
+
+/* Competitive Analysis (v2): tiles appear, the glass checks each tool in turn,
+   lands on the empty slot, and the slot fills in */
+.play .ca-tile { animation: pop 0.45s var(--ease-soft) var(--d) both; }
+.play .ca-slot { animation: slot-reveal 0.5s ease 2.55s both; }
+.play .ca-lens { animation: lens-scan 2.3s cubic-bezier(0.45, 0, 0.3, 1) 0.45s both; }
+@keyframes slot-reveal {
+  from { background: transparent; transform: scale(1); }
+  50% { transform: scale(1.12); }
+  to { background: #f3e6ff; transform: scale(1); }
+}
+@keyframes lens-scan {
+  0% { opacity: 0; transform: translateX(-176px); }
+  8% { opacity: 1; transform: translateX(-176px); }
+  22% { transform: translateX(-176px); }
+  36% { transform: translateX(-132px); }
+  50% { transform: translateX(-88px); }
+  64% { transform: translateX(-44px); }
+  84%, 100% { opacity: 1; transform: translateX(0); }
+}
