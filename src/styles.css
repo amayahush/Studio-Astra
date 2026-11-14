@@ -210,7 +210,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Tablet: 2 columns */
-@media (max-width: 1240px) {
+/* Tablet portrait: 2 columns (laptops and landscape tablets keep 4 and scale to fit) */
+@media (max-width: 899px) {
   .home { width: min(calc(var(--card-w) * 2 + var(--gap)), 100% - 48px); padding-top: 64px; }
   .grid { grid-template-columns: repeat(2, var(--card-w)); }
   .headline { font-size: 30px; }
@@ -253,3 +254,6 @@ a { color: inherit; text-decoration: none; }
 }
 .flip-hint.is-on { opacity: 1; transform: translate(0, -50%); }
 @media (hover: none) { .flip-hint { display: none; } }
+
+/* Desktop/laptop: the homepage scales to fit the window, so no scrollbar */
+html.fit-screen, html.fit-screen body { overflow: hidden; height: 100%; }

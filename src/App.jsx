@@ -10,6 +10,7 @@ import {
   Star,
 } from './art/Art.jsx'
 import Headline from './Headline.jsx'
+import useFitToScreen from './useFitToScreen.js'
 import AstraWindow, { ASTRA_URL } from './AstraWindow.jsx'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -88,8 +89,10 @@ export default function App() {
   const [isTouch] = useState(
     () => window.screen.width < 900 || window.matchMedia('(hover: none) and (pointer: coarse)').matches,
   )
+  const fitRef = useFitToScreen()
   return (
-    <main className="home">
+    <>
+    <main className="home" ref={fitRef}>
       <header className="intro">
         <Headline />
       </header>
@@ -118,7 +121,8 @@ export default function App() {
       </button>
       )}
 
-      <AstraWindow open={astraOpen} onClose={closeAstra} />
     </main>
+    <AstraWindow open={astraOpen} onClose={closeAstra} />
+    </>
   )
 }
