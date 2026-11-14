@@ -1,3 +1,4 @@
+import StepMarks from './StepMarks.jsx'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { SLIDES } from './content.js'
 import InterviewsSlide, { INTERVIEW_STEPS, INTERVIEW_CAPTIONS } from './InterviewsSlide.jsx'
@@ -149,9 +150,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
                   {su && (
                     <div className="dk-caption">
                       <p key={st}>{su.captions[st]}</p>
-                      <div className="dk-steps" aria-label={`Step ${st} of ${max}`}>
-                        {Array.from({ length: max }, (_, n) => <i key={n} className={n < st ? 'is-done' : ''} />)}
-                      </div>
+                      <StepMarks total={max} at={st} />
                     </div>
                   )}
                   <span className="dk-next hand">
