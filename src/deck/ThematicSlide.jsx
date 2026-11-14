@@ -266,13 +266,6 @@ function ThematicMap({ on }) {
           <span>{c.text}</span>
         </button>
       ))}
-      {act && (
-        <div key={act.n} className="tm-detail">
-          <span className="hand">Theme {act.n}</span>
-          <b>{THEMES[act.n - 1].name}</b>
-          <small>Click the number again or anywhere on the map to reset</small>
-        </div>
-      )}
       {EDGES.map((e, i) => (
         <span key={i} className={`tm-edge-label${litEdge(i)}`} style={{ left: e.lx, top: e.ly, '--d': `${1200 + i * 150}ms` }}>{e.label}</span>
       ))}
