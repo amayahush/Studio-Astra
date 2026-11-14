@@ -218,12 +218,19 @@ const ROLE_IDS = ['pm', 'ds', 'dv']
 
 function ThematicMap({ on }) {
   const [active, setActive] = useState(null)
-  useEffect(() => { if (!on) setActive(null) }, [on])
+  const [settled, setSettled] = useState(false)
+  // once the build-in has played (or the first click), changes snap instead of replaying delays
+  useEffect(() => {
+    if (!on) { setActive(null); setSettled(false); return }
+    const t = setTimeout(() => setSettled(true), 4200)
+    return () => clearTimeout(t)
+  }, [on])
+  useEffect(() => { if (active) setSettled(true) }, [active])
   const act = CALLOUTS.find((c) => c.n === active)
   const litEdge = (i) => (act ? (act.edges.includes(i) ? ' is-hl' : ' is-dim') : '')
   const litRole = (id) => (act ? (act.roles.includes(id) ? ' is-lit' : '') : '')
   return (
-    <div className={`tm${on ? ' is-on' : ''}${act ? ' has-active' : ''}`} aria-hidden={!on}>
+    <div className={`tm${on ? ' is-on' : ''}${settled ? ' is-settled' : ''}${act ? ' has-active' : ''}`} aria-hidden={!on}>
       {on && act && <button type="button" className="tm-clear" aria-label="Clear highlight" onClick={() => setActive(null)} />}
       <svg className="tm-svg" viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <defs>
