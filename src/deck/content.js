@@ -2,7 +2,7 @@
 // Card order matches the homepage grid.
 export const SLIDES = [
   { id: 'interviews', label: 'Interviews', grey: 'Before designing anything,', black: ' I needed to hear how engineers actually work with AI.' },
-  { id: 'thematic-analysis', label: 'Thematic Analysis', grey: 'Seven people, one pattern:', black: ' the requirements were never really finished.' },
+  { id: 'thematic-analysis', label: 'Thematic Analysis', grey: 'Eight people, one pattern:', black: ' the requirements were never really finished.' },
   { id: 'ecosystem-map', label: 'Ecosystem Map', grey: 'Requirements pass through a lot of hands,', black: ' so I mapped who touches them.' },
   { id: 'journey-map', label: 'Journey Map', grey: 'Following one engineer’s day', black: ' showed exactly where the workflow falls through.' },
   { id: 'competitive-analysis', label: 'Competitive Analysis', grey: 'AI coding tools write code from a spec,', black: ' and none of them help shape the spec.' },
@@ -46,7 +46,7 @@ export const PEOPLE = [
     wish: 'A fast way to prototype and test with real customers before development, and designers involved earlier.',
   },
   {
-    id: 'P6', role: 'CTO', title: 'CTO / software engineer', context: 'Six-person startup building a research tool',
+    id: 'P6', role: 'Developer', title: 'CTO / software engineer', context: 'Six-person startup building a research tool',
     ai: 0.8, reviews: false,
     uses: 'Builds with agentic tools like Cursor and connects his team’s research boards to them as context.',
     wish: 'A way for someone new to pick up months of research quickly, and for requirements to keep a record of how they changed.',

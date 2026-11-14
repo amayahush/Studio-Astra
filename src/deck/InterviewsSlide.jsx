@@ -9,18 +9,17 @@ export const INTERVIEW_STEPS = 3
 
 export const INTERVIEW_CAPTIONS = [
   'Seven people who touch requirements from different sides. Click anyone to hear from them.',
-  'Three developers, two designers, a PM and a CTO.',
+  'Developers (the CTO is one of them), designers and a PM.',
   'Every developer, and one designer, made a point of checking AI’s work before trusting it.',
   'Same kind of work, very different relationships with AI.',
 ]
 
 const GRID = { P1: [20, 36], P2: [40, 36], P3: [60, 36], P4: [80, 36], P5: [30, 68], P6: [50, 68], P7: [70, 68] }
-const GROUPED = { P1: [16, 40], P2: [29, 40], P4: [42, 40], P3: [66, 40], P7: [79, 40], P5: [34, 76], P6: [66, 76] }
+const GROUPED = { P1: [12, 40], P2: [24, 40], P4: [36, 40], P6: [48, 40], P3: [70, 40], P7: [82, 40], P5: [50, 76] }
 const GROUP_LABELS = [
-  { text: 'Developers', x: 29, y: 18 },
-  { text: 'Designers', x: 72.5, y: 18 },
-  { text: 'PM', x: 34, y: 56 },
-  { text: 'CTO', x: 66, y: 56 },
+  { text: 'Developers', x: 30, y: 18 },
+  { text: 'Designers', x: 76, y: 18 },
+  { text: 'PM', x: 50, y: 56 },
 ]
 // spread along the AI line, alternating above and below so nobody overlaps
 const SPLIT = (() => {
