@@ -4,7 +4,7 @@ export const SLIDES = [
   { id: 'interviews', label: 'Interviews', grey: 'Before designing anything,', sub: 'The engineers kept pointing to the people around them, the PM writing requirements and the designers handing work off, so I widened the circle to the whole team.', black: ' I needed to hear how engineers actually work with AI.' },
   { id: 'thematic-analysis', label: 'Thematic Analysis', grey: 'Eight people, one pattern:', black: ' the requirements were never really finished.' },
   { id: 'ecosystem-map', label: 'Ecosystem Map', grey: 'Requirements pass through a lot of hands,', black: ' so I mapped who touches them.' },
-  { id: 'journey-map', label: 'Journey Map', grey: 'Following one engineer’s day', black: ' showed exactly where the workflow falls through.' },
+  { id: 'journey-map', label: 'Journey Map', grey: 'Following one requirement from ask to release', black: ' showed where it falls apart: when something changes mid-build.' },
   { id: 'competitive-analysis', label: 'Competitive Analysis', grey: 'AI coding tools write code from a spec,', black: ' and none of them help shape the spec.' },
   { id: 'pov-user-model-hmw', label: 'POV / User Model / HMW', grey: 'The Senior Engineer knows the system best,', black: ' and still gets the requirements last.' },
   { id: 'mind-mapping', label: 'Mind Mapping', grey: 'With the problem framed,', black: ' I branched out every idea for keeping requirements clear.' },
