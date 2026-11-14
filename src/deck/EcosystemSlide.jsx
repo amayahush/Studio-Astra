@@ -7,13 +7,13 @@ import { NODES, EDGES, PRD_PATH } from './ecosystemData.js'
 export const ECO_STEPS = 6
 
 export const ECO_CAPTIONS = [
-  'Everyone and everything a single requirement touches, from first idea to launch. It’s a lot on purpose. Hover any note to read it.',
+  'Everyone and everything a single requirement touches, from first idea to launch. I focused on phase 1, identifying the need. Hover any note to read it.',
   'Read it from the middle out: what people need, how they work together to get it, and the people, tools and documents they touch.',
   'Phase 1, identifying a need. Requirements start as conversations: workshops, customer calls and prototypes, turned into a rough PRD from meeting notes, emails and decks.',
   'Phase 2, writing requirements. The PRD gets shared, broken into Jira tickets and planned into sprints, while the PM keeps talking to customers.',
   'Phase 3, building. Requirements change mid-build, so developers rework or reskin. Change requests land in Teams chats.',
   'Phase 4, deploying. The PM reviews requirements and shows customers, and after launch end users send feedback.',
-  'Post-launch feedback and mid-build changes become new requirements. The PRD is meant to be the source of truth, but it falls behind, and people go back and forth to recover context.',
+  'Post-launch feedback and mid-build changes become new requirements. The PRD is meant to be the source of truth, but it falls behind, and people go back and forth to recover context. That’s why I focused on phase 1, where requirements first take shape.',
 ]
 
 const CATS = [
@@ -187,6 +187,7 @@ export default function EcosystemSlide({ step }) {
             </defs>
             <circle r={R.outer} className="eco-ring is-outer" />
             {v.q && <path key={v.q} d={wedge(v.q)} className="eco-wedge" />}
+            {!v.q && step !== 1 && <path d={wedge(1)} className="eco-wedge is-focus" />}
             <circle r={R.touch} className={`eco-ring${step === 1 ? ' is-hl-touch' : ''}`} />
             <circle r={R.inter} className={`eco-ring${step === 1 ? ' is-hl-inter' : ''}`} />
             <circle r={R.needs} className={`eco-ring is-dash${step === 1 ? ' is-hl-needs' : ''}`} />
@@ -213,12 +214,15 @@ export default function EcosystemSlide({ step }) {
           ))}
 
           {PHASES.map((p) => (
-            <div key={p.n} className={`eco-phase${v.q === p.n ? ' is-active' : ''}${v.q && v.q !== p.n ? ' is-dim' : ''}`}>
+            <div key={p.n} className={`eco-phase${v.q === p.n || (!v.q && step !== 1 && p.n === 1) ? ' is-active' : ''}${v.q && v.q !== p.n ? ' is-dim' : ''}`}>
               <span className="eco-phase-n" style={{ left: p.x, top: p.y }}>{p.n}</span>
               <span className={`eco-phase-label hand is-${p.anchor}`} style={{ left: p.lx, top: p.ly }}>{p.label}</span>
             </div>
           ))}
 
+          {!v.q && step !== 1 && (
+            <span className="eco-focus-label hand" style={{ left: 2050, top: -2700 }}>my focus</span>
+          )}
           <span className={`eco-loop-label hand${showLoop ? ' is-on' : ''}`} style={{ left: 0, top: -3420 }}>loops back: feedback and mid-build changes become new requirements</span>
 
           {NODES.map((n) => {

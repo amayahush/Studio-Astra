@@ -317,6 +317,8 @@
 .eco-ring[class*='is-hl'] { stroke: #2a2a2a; stroke-width: 12; }
 .eco-axis { stroke: #c9c9c9; stroke-width: 5; stroke-dasharray: 26 26; }
 .eco-wedge { fill: #f3e6ff; animation: ta-in .5s ease .7s both; }
+.eco-wedge.is-focus { fill: #ecd6ff; }
+.eco-focus-label { position: absolute; transform: translate(-50%, -50%) rotate(8deg); white-space: nowrap; font-size: 120px; color: var(--astra); animation: ta-in .5s ease .9s both; pointer-events: none; }
 .eco-core { fill: #2a2a2a; }
 .eco-edge { stroke: #9a9a9a; stroke-width: 5; transition: stroke .15s, stroke-width .15s; }
 .eco-edge.is-dash { stroke-dasharray: 20 16; }
