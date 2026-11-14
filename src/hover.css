@@ -155,3 +155,8 @@
 .play .wf-frame { animation: frame-in 0.6s var(--ease) var(--d) both; }
 .play .wf-panel { transform-origin: top center; animation: grow-y 0.45s var(--ease) var(--d) both; }
 @keyframes frame-in { from { opacity: 0; transform: translate(14px, -8px); } }
+
+/* POV / HMW: the thought puffs pop one after another, then the bubble */
+.play .hmw-puff { animation: dot-pop 0.35s var(--ease-soft) var(--d) both; }
+.play .hmw-thought { transform-origin: 0% 100%; animation: bubble-in 0.55s var(--ease-soft) var(--d) both; }
+@keyframes bubble-in { from { opacity: 0; transform: scale(0.4) translateY(6px); } }

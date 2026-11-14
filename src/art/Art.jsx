@@ -241,17 +241,17 @@ export function IdeatingArt() {
   ))
 }
 
-// POV / User Model / HMW: the engineer is sketched on the left, then the three
-// How Might We chips arrive beside him once the head is drawn.
+// POV / User Model / HMW: the engineer is sketched in the centre, then a single
+// How Might We floats up out of his head as a thought bubble.
 export function PovHmwArt() {
   return (
     <>
-      <PovArt engX={36} stars={[[16, 150], [226, 64]]} />
-      {[1, 2, 3].map((n, i) => (
-        <div key={n} className="abs hmw-chip" style={{ left: 142, top: 92 + i * 32, '--d': `${1900 + i * 280}ms` }}>
-          {n}. HMW
-        </div>
-      ))}
+      <PovArt stars={[[47, 153], [222, 150]]} />
+      <span className="abs hmw-puff" style={{ left: 166, top: 80, width: 6, height: 6, '--d': '2000ms' }} />
+      <span className="abs hmw-puff" style={{ left: 174, top: 68, width: 9, height: 9, '--d': '2180ms' }} />
+      <div className="abs hmw-chip hmw-thought" style={{ left: 170, top: 36, '--d': '2380ms' }}>
+        HMW…?
+      </div>
     </>
   )
 }
