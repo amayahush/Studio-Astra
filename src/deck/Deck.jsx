@@ -115,7 +115,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
     <div ref={rootRef} className={`deck${ready ? ' is-ready' : ''}${hasMore ? ' has-more' : ''}`} role="dialog" aria-modal="true" aria-label={slide.label}>
       <header className="dk-top dk-fade">
         <button type="button" className="dk-home hand" onClick={close}>← Home</button>
-        <span className="dk-count">{slide.label} · {idx + 1} / {SLIDES.length}</span>
+        <span className="dk-count">{slide.label}</span>
         <div className="dk-arrows">
           <button type="button" onClick={back} disabled={idx === 0 && step === 0} aria-label="Back">‹</button>
           <button type="button" onClick={forward} aria-label="Forward">›</button>
