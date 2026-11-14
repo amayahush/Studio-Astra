@@ -307,7 +307,7 @@
 .eco-axis { stroke: #c9c9c9; stroke-width: 5; stroke-dasharray: 26 26; }
 .eco-wedge { fill: #f3e6ff; animation: ta-in .5s ease .7s both; }
 .eco-core { fill: #2a2a2a; }
-.eco-edge { stroke: #9a9a9a; stroke-width: 5; transition: stroke .2s, stroke-width .2s, opacity .3s; }
+.eco-edge { stroke: #9a9a9a; stroke-width: 5; transition: stroke .15s, stroke-width .15s; }
 .eco-edge.is-dash { stroke-dasharray: 20 16; }
 .eco-edge.is-hl { stroke: var(--astra); stroke-width: 12; }
 .eco-prd { fill: none; stroke: var(--astra); stroke-width: 14; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: eco-draw 2.2s ease forwards; }
@@ -332,14 +332,14 @@
   font-size: 32px; font-weight: 500; line-height: 1.22; color: #222; text-align: center; text-wrap: balance;
   transition: opacity .45s ease .45s, background .3s ease, border-color .3s ease;
 }
-.eco-stage.is-hovering .eco-node, .eco-stage.is-filtering .eco-node { transition-delay: 0s; }
+.eco-stage.is-filtering .eco-node { transition-delay: 0s; }
 .eco-node.is-dash { border-style: dashed; border-color: #9a9a9a; }
 .eco-node.is-dim { opacity: .14; }
 .eco-node[class*='is-ring-'] { opacity: .3; }
-.eco-node.is-lit { z-index: 4; border-color: var(--astra); }
+.eco-node.is-lit { z-index: 4; border-color: var(--astra); transition: border-color .15s ease; }
+.eco-node.is-hover { z-index: 6; border-color: var(--astra); box-shadow: 0 0 0 6px rgba(196,57,255,.18); }
 .eco-node.is-prd { z-index: 4; border-color: var(--astra); border-width: 5px; }
 .eco-node.is-cat { z-index: 4; border-color: transparent; }
-.eco-node:hover { z-index: 5; border-color: var(--astra); }
 .eco-legend { position: absolute; left: 14px; top: 14px; z-index: 10; display: flex; flex-wrap: wrap; gap: 6px; max-width: calc(100% - 28px); align-items: center; }
 .eco-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1.5px solid #d3d3d3; border-radius: 999px; background: #fff; font: inherit; font-size: 12.5px; font-weight: 600; color: #333; cursor: pointer; }
 .eco-chip i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
@@ -349,7 +349,7 @@
 .eco-chip.is-prd.is-on { background: var(--astra); color: #fff; }
 .eco-chip-note { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; font-size: 12px; color: #777; }
 .eco-chip-note i { width: 18px; height: 10px; border: 1.5px dashed #888; border-radius: 3px; }
-.eco-peek { position: absolute; z-index: 20; width: 240px; transform: translate(-50%, 18px); pointer-events: none; padding: 10px 12px; border-radius: 10px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.16); font-size: 13.5px; line-height: 1.45; color: #222; text-wrap: pretty; }
+.eco-peek { animation: ta-in .15s ease both; position: absolute; z-index: 20; width: 240px; transform: translate(-50%, 18px); pointer-events: none; padding: 10px 12px; border-radius: 10px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.16); font-size: 13.5px; line-height: 1.45; color: #222; text-wrap: pretty; }
 .eco-peek.is-above { transform: translate(-50%, calc(-100% - 18px)); }
 .eco-peek span { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #777; }
 .eco-peek span::before { content: ''; width: 9px; height: 9px; border-radius: 2px; background: var(--c); }

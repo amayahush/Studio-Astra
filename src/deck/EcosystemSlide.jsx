@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { NODES, EDGES, PRD_PATH } from './ecosystemData.js'
 
 // Ecosystem map: my final map, rebuilt from Figma. → walks from the whole map, to how to read the
@@ -62,6 +62,13 @@ export default function EcosystemSlide({ step }) {
   const [size, setSize] = useState({ w: 900, h: 700 })
   const [filter, setFilter] = useState(null) // category id or 'prd'
   const [hover, setHover] = useState(null)
+  // small delay so sweeping the mouse across the map doesn't flash every note
+  const hoverTimer = useRef(null)
+  const hoverTo = (id) => {
+    clearTimeout(hoverTimer.current)
+    hoverTimer.current = setTimeout(() => setHover(id), id ? 90 : 60)
+  }
+  useEffect(() => { setHover(null) }, [step])
 
   useLayoutEffect(() => {
     const el = boxRef.current
@@ -91,7 +98,6 @@ export default function EcosystemSlide({ step }) {
   const prdPts = PRD_PATH.map((id) => NODES.find((n) => n.id === id))
 
   function nodeState(n) {
-    if (hoverNeighbors) return hoverNeighbors.has(n.id) ? 'lit' : 'dim'
     if (filter === 'prd') return prdSet.has(n.id) ? 'prd' : 'dim'
     if (filter) return n.c === filter ? 'cat' : 'dim'
     if (step === 1) return 'ring-' + ring(n)
@@ -103,7 +109,7 @@ export default function EcosystemSlide({ step }) {
 
   return (
     <div className="eco">
-      <div className={`eco-stage is-step-${step}${hover ? ' is-hovering' : ''}${filter ? ' is-filtering' : ''}`} ref={boxRef}>
+      <div className={`eco-stage is-step-${step}${filter ? ' is-filtering' : ''}`} ref={boxRef}>
         <div className="eco-canvas" style={{ transform: `translate(${size.w / 2 - v.cx * s}px, ${size.h / 2 - v.cy * s}px) scale(${s})` }}>
           <svg className="eco-svg" viewBox="-4000 -4000 8000 8000" width="8000" height="8000" style={{ left: -4000, top: -4000 }}>
             <defs>
@@ -150,13 +156,14 @@ export default function EcosystemSlide({ step }) {
           {NODES.map((n) => {
             const st = nodeState(n)
             const colored = st === 'cat' || st === 'prd'
+            const lit = hoverNeighbors?.has(n.id)
             return (
               <div
                 key={n.id}
-                className={`eco-node is-${st}${n.s ? ' is-dash' : ''}`}
+                className={`eco-node is-${st}${n.s ? ' is-dash' : ''}${lit ? ' is-lit' : ''}${hover === n.id ? ' is-hover' : ''}`}
                 style={{ left: n.x, top: n.y, background: colored ? (st === 'prd' ? '#f3e3ff' : CAT_COLOR[n.c]) : undefined }}
-                onMouseEnter={() => setHover(n.id)}
-                onMouseLeave={() => setHover(null)}
+                onMouseEnter={() => st !== 'dim' && hoverTo(n.id)}
+                onMouseLeave={() => hoverTo(null)}
               >
                 {n.t}
               </div>
