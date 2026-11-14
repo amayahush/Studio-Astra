@@ -297,3 +297,6 @@ html.fit-screen, html.fit-screen body { overflow: hidden; height: 100%; }
 /* Competitive Analysis (v2): tool tiles, an empty slot, and a magnifying glass */
 .ca-tile { width: 34px; height: 34px; border-radius: 8px; background: #cfcccc; }
 .ca-slot { width: 34px; height: 34px; border-radius: 8px; border: 1.5px dashed #ff00f7; background: #f3e6ff; }
+
+/* Shared handwritten style (labels, notes, hints) */
+.hand { font-family: var(--hand); font-style: italic; -webkit-text-stroke: 0.35px currentColor; }

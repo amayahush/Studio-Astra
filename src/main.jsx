@@ -6,6 +6,7 @@ import '@fontsource/gaegu/latin-400.css'
 import './styles.css'
 import './hover.css'
 import './astra-window.css'
+import './deck/deck.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(<App />)
