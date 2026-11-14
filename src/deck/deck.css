@@ -108,22 +108,26 @@
 .iv-line span:last-child { right: 0; }
 .iv-stage.is-step-3 .iv-line { opacity: 1; transform: none; }
 
-.iv-panel {
-  position: absolute; top: 16px; right: 16px; bottom: 16px; width: 340px; overflow-y: auto;
-  padding: 22px 24px; border-radius: 14px; background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 12px 36px rgba(0, 0, 0, 0.1);
-  transform: translateX(380px); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+.iv-tip {
+  position: absolute; z-index: 5; width: 300px;
+  padding: 16px 18px 18px; border-radius: 14px; background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 10px 30px rgba(0, 0, 0, 0.12);
+  --tx: -50%; transform: translateX(var(--tx)); animation: tip-in 0.28s cubic-bezier(.2,.8,.3,1) both;
 }
-.iv-panel.is-on { transform: none; }
+.iv-tip.is-start { --tx: -48px; }
+.iv-tip.is-end { --tx: calc(-100% + 48px); }
+.iv-tip.is-below { --ty: -6px; }
+.iv-tip.is-above { --ty: 6px; }
+@keyframes tip-in { from { opacity: 0; transform: translateX(var(--tx)) translateY(var(--ty)); } }
 .iv-close {
-  position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border: 0; border-radius: 8px;
-  background: #f1f1f1; font-size: 18px; cursor: pointer; color: var(--ink);
+  position: absolute; top: 10px; right: 10px; width: 26px; height: 26px; border: 0; border-radius: 7px;
+  background: #f1f1f1; font-size: 16px; line-height: 1; cursor: pointer; color: var(--ink);
 }
-.iv-panel-id { margin: 0; font-size: 20px; }
-.iv-panel h3 { margin: 6px 0 4px; font-size: 20px; font-weight: 600; color: #000; }
-.iv-panel-ctx { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
-.iv-panel h4 { margin: 16px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
-.iv-panel p { margin: 0; font-size: 14px; line-height: 1.55; color: #3d3d3d; }
+.iv-tip-head { margin: 0 30px 2px 0 !important; font-size: 16px !important; font-weight: 600; color: #000 !important; }
+.iv-tip-head b { font-size: 18px; font-weight: 400; margin-right: 4px; color: var(--astra); }
+.iv-tip-ctx { margin: 0 0 6px !important; font-size: 12.5px !important; color: var(--muted) !important; }
+.iv-tip h4 { margin: 12px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.iv-tip p { margin: 0; font-size: 13.5px; line-height: 1.5; color: #3d3d3d; text-wrap: pretty; }
 .iv-quote { font-style: italic; color: #8a8a8a !important; }
 
 .iv-more { margin-top: 56px; }
@@ -157,7 +161,7 @@
   .dk-text { position: static; width: auto; height: auto; }
   .dk-hook { font-size: 24px; }
   .iv-stage, .dk-ph-grid { height: 70vh; }
-  .iv-panel { left: 12px; right: 12px; width: auto; }
+  .iv-tip { width: min(280px, calc(100% - 24px)); }
   .iv-method { grid-template-columns: 1fr 1fr; }
   .iv-person { transform: translate(-50%, -50%) scale(0.6); }
   .iv-role { display: none; }
@@ -188,3 +192,11 @@
 @keyframes sm-pop { from { scale: 0.3; rotate: -60deg; } }
 @keyframes sm-twinkle { 0%, 100% { scale: 1; rotate: 0deg; } 50% { scale: 1.14; rotate: 12deg; } }
 @media (prefers-reduced-motion: reduce) { .sm * { animation: none !important; transition: none !important; } }
+/* tooltip caret pointing at the face */
+.iv-tip { overflow: visible; }
+.iv-tip::before { content: ''; position: absolute; width: 14px; height: 14px; background: #fff; border-radius: 3px;
+  left: var(--cx, 50%); transform: translateX(-50%) rotate(45deg); }
+.iv-tip.is-start { --cx: 48px; }
+.iv-tip.is-end { --cx: calc(100% - 48px); }
+.iv-tip.is-below::before { top: -6px; }
+.iv-tip.is-above::before { bottom: -6px; }

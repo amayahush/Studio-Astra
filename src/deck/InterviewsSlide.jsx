@@ -40,7 +40,7 @@ export default function InterviewsSlide({ step }) {
   const person = PEOPLE.find((p) => p.id === open)
   return (
     <div className="iv">
-      <div className={`iv-stage is-step-${step}`}>
+      <div className={`iv-stage is-step-${step}`} onClick={(e) => { if (e.target === e.currentTarget) setOpen(null) }}>
         {GROUP_LABELS.map((g) => (
           <span key={g.text} className="iv-group hand" style={{ left: `${g.x}%`, top: `${g.y}%` }}>
             {g.text}
@@ -73,22 +73,25 @@ export default function InterviewsSlide({ step }) {
           )
         })}
 
-        <aside className={`iv-panel${person ? ' is-on' : ''}`} aria-live="polite">
-          {person && (
-            <>
+        {person && (() => {
+          const [px, py] = positionFor(person.id, step)
+          const below = py < 55
+          const align = px < 28 ? 'start' : px > 72 ? 'end' : 'mid'
+          const style = below
+            ? { left: `${px}%`, top: `calc(${py}% + 64px)` }
+            : { left: `${px}%`, bottom: `calc(${100 - py}% + 50px)` }
+          return (
+            <aside key={person.id} className={`iv-tip is-${below ? 'below' : 'above'} is-${align}`} style={style} aria-live="polite">
               <button type="button" className="iv-close" onClick={() => setOpen(null)} aria-label="Close">×</button>
-              <p className="iv-panel-id hand">{person.id}</p>
-              <h3>{person.title}</h3>
-              <p className="iv-panel-ctx">{person.context}</p>
+              <p className="iv-tip-head"><b className="hand">{person.id}</b> {person.title}</p>
+              <p className="iv-tip-ctx">{person.context}</p>
               <h4>How they use AI</h4>
               <p>{person.uses}</p>
               <h4>What they wish for</h4>
               <p>{person.wish}</p>
-              <h4>A line from the interview</h4>
-              <p className="iv-quote">[Pick a short line from the transcript]</p>
-            </>
-          )}
-        </aside>
+            </aside>
+          )
+        })()}
       </div>
 
       <section className="iv-more">
