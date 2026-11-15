@@ -7,7 +7,7 @@ import faceImg from '../art/img/face@4x.png'
 export const POV_STEPS = 2
 
 export const POV_CAPTIONS = [
-  'I started from the three roles. Each wants something different, and each is stuck in a different way. Hover a person.',
+  'Each role wants something different.',
   'The developer gets the requirements last, so I wrote my problem statement from where they sit.',
   'Which opened six How Might We questions. Astra answers all of them, some directly and some secondarily. Click one to see how.',
 ]
