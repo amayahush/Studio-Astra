@@ -300,3 +300,8 @@ html.fit-screen, html.fit-screen body { overflow: hidden; height: 100%; }
 
 /* Shared handwritten style (labels, notes, hints) */
 .hand { font-family: var(--hand); font-style: italic; -webkit-text-stroke: 0.35px currentColor; }
+
+/* Astra star spins once on hover */
+.solution-mark svg { transform-origin: center; transition: transform .7s cubic-bezier(.3, 1.3, .5, 1); }
+.solution:hover .solution-mark svg, .solution:focus-visible .solution-mark svg { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .solution-mark svg { transition: none; } }
