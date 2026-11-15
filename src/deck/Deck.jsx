@@ -38,9 +38,9 @@ const insetFor = (r) =>
 // The deck: each homepage card is one full-screen slide.
 // ← → change cards (→ steps through a card's highlights first), ↓ ↑ scroll a long card,
 // 1–8 jump, Esc goes home. It opens by growing out of the card that was clicked.
-export default function Deck({ start, originRect, getCardRect, onClose, onFinish }) {
+export default function Deck({ start, originRect, getCardRect, onClose, onFinish, startAtEnd }) {
   const [idx, setIdx] = useState(start)
-  const [steps, setSteps] = useState(() => SLIDES.map(() => 0))
+  const [steps, setSteps] = useState(() => SLIDES.map((s, k) => (startAtEnd && k === start ? SETUP[s.id]?.steps ?? 0 : 0)))
   const [ready, setReady] = useState(false)
   const [closing, setClosing] = useState(false)
   const [hasMore, setHasMore] = useState(false)

@@ -27,7 +27,8 @@ const DIRECTIONS = [
   },
 ]
 
-export default function AstraWindow({ open, onClose }) {
+// onBack is set when Astra was reached by stepping past the last card, so ← returns to that card.
+export default function AstraWindow({ open, onClose, onBack }) {
   const [loaded, setLoaded] = useState(false)
   const [full, setFull] = useState(false)
   const scrollRef = useRef(null)
@@ -36,20 +37,26 @@ export default function AstraWindow({ open, onClose }) {
     if (!open) return
     setLoaded(false)
     setFull(false)
-    const onKey = (e) => e.key === 'Escape' && onClose()
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose()
+      else if (onBack && (e.key === 'ArrowLeft' || e.key === 'PageUp') && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); onBack() }
+    }
     document.addEventListener('keydown', onKey)
     document.documentElement.classList.add('no-scroll')
     return () => {
       document.removeEventListener('keydown', onKey)
       document.documentElement.classList.remove('no-scroll')
     }
-  }, [open, onClose])
+  }, [open, onClose, onBack])
 
   if (!open) return null
 
   return (
     <div className={`astra-view${full ? ' is-full' : ''}`} role="dialog" aria-modal="true" aria-label="Astra prototype">
       <div className="astra-scroll" ref={scrollRef}>
+        {onBack && (
+          <button type="button" className="astra-back" onClick={onBack}>← Wireframes</button>
+        )}
         <div className="mac-window">
           <div className="mac-bar">
             <div className="mac-lights">
@@ -100,8 +107,8 @@ export default function AstraWindow({ open, onClose }) {
               </article>
             ))}
           </div>
-          <button className="future-back" onClick={onClose}>
-            ← Back to the process
+          <button className="future-back" onClick={onBack || onClose}>
+            {onBack ? '← Back to Wireframes' : '← Back to the process'}
           </button>
         </section>
       </div>

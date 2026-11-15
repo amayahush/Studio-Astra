@@ -31,6 +31,11 @@ html.no-scroll { overflow: hidden; }
 }
 @keyframes window-in { from { opacity: 0; transform: translateY(24px) scale(0.97); } }
 .astra-view.is-full .astra-scroll { padding: 0; }
+.astra-scroll { position: relative; }
+.astra-back { position: absolute; top: 4px; left: 24px; z-index: 2; border: 0; background: none; padding: 0; cursor: pointer;
+  font: italic 400 18px/1 var(--hand); -webkit-text-stroke: 0.35px currentColor; color: var(--ink); }
+.astra-back:hover { color: var(--astra); }
+.astra-view.is-full .astra-back { display: none; }
 .astra-view.is-full .mac-window { width: 100%; height: 100vh; border-radius: 0; }
 
 .mac-bar {

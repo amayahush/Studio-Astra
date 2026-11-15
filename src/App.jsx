@@ -87,6 +87,7 @@ function Card({ id, label, caption, Art, onOpen }) {
 
 export default function App() {
   const [astraOpen, setAstraOpen] = useState(false)
+  const [astraFromDeck, setAstraFromDeck] = useState(false)
   // Deck: which card it opened on, and that card's spot on screen (it grows out of it).
   // A link with a card's #id opens straight into that card.
   const [deck, setDeck] = useState(() => {
@@ -98,7 +99,13 @@ export default function App() {
     setDeck(null)
     try { history.replaceState(null, '', window.location.pathname + window.location.search) } catch (e) { /* ignore */ }
   }, [])
-  const closeAstra = useCallback(() => setAstraOpen(false), [])
+  const closeAstra = useCallback(() => { setAstraOpen(false); setAstraFromDeck(false) }, [])
+  // ← from Astra goes back into the deck, on the last card's last highlight
+  const backToDeck = useCallback(() => {
+    setAstraOpen(false)
+    setAstraFromDeck(false)
+    setDeck({ start: CARDS.length - 1, rect: null, atEnd: true })
+  }, [])
   // Astra is a desktop app: on phones and touch tablets it opens in a new tab instead.
   // On desktop the Solution is a plain button (not a link), so no host page or browser
   // can intercept the click and send it to a new tab.
@@ -128,7 +135,7 @@ export default function App() {
         <span className="solution-name">Astra</span>
       </a>
       ) : (
-        <button type="button" className="solution" onClick={() => setAstraOpen(true)}>
+        <button type="button" className="solution" onClick={() => { setAstraFromDeck(false); setAstraOpen(true) }}>
         <span className="solution-label">The Solution</span>
         <span className="solution-mark" aria-hidden>
           <Star size={30.5} inset={0.0855} color="#fff" x={6.2} y={6.2} />
@@ -144,10 +151,11 @@ export default function App() {
         originRect={deck.rect}
         getCardRect={cardRect}
         onClose={closeDeck}
-        onFinish={() => { closeDeck(); setAstraOpen(true) }}
+        startAtEnd={deck.atEnd}
+        onFinish={() => { closeDeck(); setAstraFromDeck(true); setAstraOpen(true) }}
       />
     )}
-    <AstraWindow open={astraOpen} onClose={closeAstra} />
+    <AstraWindow open={astraOpen} onClose={closeAstra} onBack={astraFromDeck ? backToDeck : undefined} />
     </>
   )
 }
