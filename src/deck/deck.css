@@ -510,3 +510,74 @@
 .pv-chip.is-open { z-index: 2; background: #fff; border-color: var(--astra); }
 .pv-chip.is-open .pv-chip-how { max-height: 120px; opacity: 1; margin-top: 10px; }
 @media (prefers-reduced-motion: reduce) { .pv-stage * { animation: none !important; } .pv-arrows path { stroke-dashoffset: 0; } }
+
+/* ---------- Mind map ---------- */
+.mm-stage { position: relative; height: calc(100vh - 170px); min-height: 480px; border-radius: 16px; background: var(--card); overflow: hidden; }
+.mm-canvas { position: absolute; left: 50%; top: 50%; transform-origin: center; }
+.mm-svg { position: absolute; inset: 0; overflow: visible; }
+.mm-stem { fill: none; stroke: #9a9a9a; stroke-width: 1.5; stroke-linejoin: round; animation: mm-fade .5s ease var(--d) both; transition: opacity .4s ease; }
+.mm-stem.is-dim { opacity: .3; }
+.mm-cause { fill: none; stroke: #c99a1c; stroke-width: 2; stroke-dasharray: 6 6; stroke-linecap: round; opacity: 0; transition: opacity .4s ease; }
+.mm-stage.is-step-1 .mm-cause { animation: mm-fade .5s ease var(--d) both; opacity: 1; }
+.mm-goal { position: absolute; transform: translateY(-50%); padding: 12px 16px 13px; border-radius: 10px; background: #1e1e1e; color: #fff; animation: mm-fade .5s ease both; }
+.mm-goal small { display: block; font-family: var(--hand); font-size: 15px; color: rgba(255,255,255,.65); }
+.mm-goal p { margin: 2px 0 0; font-size: 13px; line-height: 1.38; font-weight: 600; text-wrap: balance; }
+.mm-theme { position: absolute; display: flex; align-items: center; justify-content: center; padding: 6px 12px; border: 1.5px solid #222; border-radius: 10px; background: #fff;
+  font: inherit; font-size: 15px; line-height: 1.25; font-weight: 600; color: #111; text-align: center; text-wrap: balance; cursor: pointer;
+  animation: mm-pop .5s cubic-bezier(.3,1.4,.5,1) var(--d) both; transition: opacity .4s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease; }
+.mm-theme:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.mm-theme:focus-visible { outline: 2px solid var(--astra); outline-offset: 3px; }
+.mm-theme.is-open { border-color: var(--astra); box-shadow: 0 0 0 3px #ecd6ff; }
+.mm-theme.is-dim { opacity: .35; }
+.mm-theme.is-focus { background: #f3e6ff; border-color: var(--astra); }
+.mm-tag { position: absolute; left: -1.5px; top: -22px; padding: 1px 7px; border-radius: 6px 6px 0 0; background: #222; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: .02em; }
+.mm-theme.is-focus .mm-tag { background: var(--astra); }
+.mm-focus-tag { position: absolute; right: -6px; top: -12px; padding: 2px 8px; border-radius: 999px; background: var(--astra); color: #fff; font-family: var(--hand); font-style: normal; font-size: 14px; font-weight: 400; transform: rotate(4deg); animation: mm-pop .45s cubic-bezier(.3,1.4,.5,1) .4s both; }
+.mm-note { position: absolute; margin: 0; font-family: var(--hand); font-size: 15px; line-height: 1.2; color: #6b6b6b; text-align: center; opacity: 0; transition: opacity .4s ease .3s; }
+.mm-note.is-on { opacity: 1; }
+.mm-cause-label { position: absolute; transform: translate(-50%, -50%); padding: 3px 10px; border-radius: 999px; background: #ffe7a3; color: #4a3605; white-space: nowrap;
+  font-family: var(--hand); font-size: 15px; line-height: 1.2; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.mm-stage.is-step-1 .mm-cause-label { animation: mm-fade .45s ease var(--d) both; opacity: 1; }
+.mm-taken { position: absolute; left: 300px; top: 500px; width: 400px; text-align: center; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.mm-stage.is-step-2 .mm-taken { opacity: 1; pointer-events: auto; }
+.mm-taken > small { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--astra); }
+.mm-taken-row { display: flex; gap: 12px; }
+.mm-taken-card { flex: 1; padding: 9px 12px 10px; border-radius: 10px; background: #fff; border: 1.5px dashed var(--astra); text-align: left; }
+.mm-stage.is-step-2 .mm-taken-card { animation: mm-pop .5s cubic-bezier(.3,1.4,.5,1) var(--d) both; }
+.mm-taken-card span { display: block; font-family: var(--hand); font-size: 14px; color: #6b6b6b; }
+.mm-taken-card p { margin: 2px 0 0; font-size: 14px; line-height: 1.3; font-weight: 600; color: #111; }
+
+.mm-branch { position: absolute; right: 24px; top: 24px; bottom: 24px; width: 430px; z-index: 5; overflow-y: auto; padding: 20px 22px; border-radius: 16px; background: #fff;
+  box-shadow: 0 18px 50px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.05); animation: mm-slide .35s cubic-bezier(.2,.9,.3,1) both; }
+.mm-branch.is-left { right: auto; left: 24px; }
+.mm-branch > small { display: inline-block; padding: 1px 7px; border-radius: 6px; background: #222; color: #fff; font-size: 11px; font-weight: 600; }
+.mm-branch h4 { margin: 8px 30px 12px 0; font-size: 19px; line-height: 1.25; font-weight: 600; color: #111; }
+.mm-branch-x { position: absolute; right: 12px; top: 12px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: #f1f1f1; font-size: 20px; line-height: 1; cursor: pointer; color: #222; }
+.mm-branch-x:hover { background: #e6e6e6; }
+.mm-branch > ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mm-branch > ul > li { display: grid; grid-template-columns: 12px 1fr; gap: 10px; align-items: start; }
+.mm-branch > ul > li > i { width: 12px; height: 12px; margin-top: 3px; border-radius: 3px; }
+.mm-branch li.is-pain > i { background: #ff7c7c; }
+.mm-branch li.is-work > i { background: #ffcc73; }
+.mm-branch li.is-idea > i { border: 1.5px dashed #a16ee8; }
+.mm-branch li.is-core > i { background: #d6a8ff; }
+.mm-kind { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #8a8a8a; }
+.mm-branch p { margin: 1px 0 0; font-size: 14.5px; line-height: 1.35; font-weight: 500; color: #1e1e1e; }
+.mm-subs { margin: 5px 0 0; padding: 0 0 0 14px; border-left: 1.5px solid #e2e2e2; list-style: none; display: grid; gap: 3px; }
+.mm-subs li { font-size: 13.5px; line-height: 1.35; color: #555; }
+
+.mm-full-btn { position: absolute; right: 16px; bottom: 14px; z-index: 4; padding: 7px 14px; border: 1.5px solid #222; border-radius: 999px; background: #fff; font-family: var(--hand); font-size: 16px; color: #111; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.mm-full-btn:hover { border-color: var(--astra); color: var(--astra); }
+.mm-stage.has-open .mm-full-btn { opacity: 0; pointer-events: none; }
+.mm-lightbox { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; background: rgba(18,18,18,.86); animation: mm-fade .25s ease both; }
+.mm-lightbox-scroll { flex: 1; min-height: 0; display: grid; place-items: center; padding: 28px 28px 0; overflow: hidden; }
+.mm-lightbox-scroll img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+.mm-lightbox-scroll.is-zoomed { display: block; overflow: auto; }
+.mm-lightbox-scroll.is-zoomed img { width: 2400px; height: auto; max-width: none; cursor: zoom-out; }
+.mm-lightbox-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px 16px; color: rgba(255,255,255,.75); font-size: 14px; }
+.mm-lightbox-bar button { padding: 7px 16px; border: 0; border-radius: 999px; background: #fff; font: inherit; font-weight: 600; color: #111; cursor: pointer; }
+
+@keyframes mm-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mm-pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; } }
+@keyframes mm-slide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .mm-stage *, .mm-lightbox { animation: none !important; } }
