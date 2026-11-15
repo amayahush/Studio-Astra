@@ -9,7 +9,7 @@ export const POV_STEPS = 2
 export const POV_CAPTIONS = [
   'Each role wants something different.',
   'The developer gets the requirements last, so I wrote my problem statement from where they sit.',
-  'Which opened six How Might We questions. Astra answers all of them, some directly and some secondarily. Click one to see how.',
+  'Which opened six How Might We questions. Astra answers all of them, some directly and some secondarily. Hover one to see how.',
 ]
 
 const W = 1000
@@ -57,7 +57,8 @@ export default function PovSlide({ step }) {
   const box = useRef(null)
   const s = useFit(box)
   const [open, setOpen] = useState(null)
-  useEffect(() => setOpen(null), [step])
+  const [pinned, setPinned] = useState(null) // a click keeps a chip open after the mouse leaves
+  useEffect(() => { setOpen(null); setPinned(null) }, [step])
   const later = step > 0
 
   return (
@@ -101,7 +102,10 @@ export default function PovSlide({ step }) {
               type="button"
               className={`pv-chip${h.main ? ' is-main' : ''}${open === i ? ' is-open' : ''}`}
               style={{ left: h.x, top: h.y, '--d': `${i * 110}ms` }}
-              onClick={(e) => { e.currentTarget.blur(); setOpen(open === i ? null : i) }}
+              onMouseEnter={() => setOpen(i)}
+              onMouseLeave={() => setOpen(pinned)}
+              onFocus={() => setOpen(i)}
+              onClick={(e) => { e.currentTarget.blur(); const p = pinned === i ? null : i; setPinned(p); setOpen(p ?? i) }}
               aria-expanded={open === i}
             >
               <span className="pv-chip-q"><b>HMW</b> {h.q}</span>
