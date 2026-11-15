@@ -464,39 +464,37 @@
 /* ---------- POV / User model / HMW ---------- */
 .pv-stage { position: relative; height: calc(100vh - 170px); min-height: 480px; border-radius: 16px; background: var(--card); overflow: hidden; }
 .pv-canvas { position: absolute; left: 50%; top: 50%; transform-origin: center; }
-.pv-eng { position: absolute; left: 130px; top: 112px; width: 262px; height: 337px; overflow: visible; }
-/* vector pencil developer */
-.df-line { fill: none; stroke: #3c3c3c; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
-.df-line.is-ghost { stroke: #6b6b6b; stroke-width: .7; opacity: .7; }
-.df-line.is-draw { animation: draw-on var(--sl) cubic-bezier(.45,0,.4,1) var(--sd) both; }
-.df-mouth { transition: d .35s ease; }
-.df-fill.is-draw { animation: wash .9s ease 3.6s both; }
-.df-eye { fill: #2e2e2e; transition: cx .25s ease-out, cy .25s ease-out, transform .08s; }
-.df-eye.is-draw { animation: wash .3s ease var(--sd) both; }
-.df-head { transform-box: view-box; transform-origin: 35px 52px; transition: transform .45s cubic-bezier(.3,1.3,.5,1); }
-
 .pv-notes, .pv-thought, .pv-hmws { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s ease; }
-.pv-notes.is-on, .pv-thought.is-on, .pv-hmws.is-on { opacity: 1; pointer-events: auto; transition-delay: .2s; }
-.pv-arrows { position: absolute; left: 0; top: 0; overflow: visible; }
-.pv-arrows path { fill: none; stroke: #4a4a4a; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.pv-notes.is-on .pv-arrows path { animation: eco-draw .6s ease 1.4s forwards; }
-.pv-note, .pv-others { position: absolute; width: 440px; }
-.pv-note span, .pv-others > span { display: block; font-size: 24px; color: #6a6a6a; }
-.pv-note b { display: block; margin-top: 2px; font-size: 30px; line-height: 1.2; font-weight: 600; color: #111; text-wrap: balance; }
-.pv-notes.is-on .pv-note { animation: jm-in .5s ease 1.6s both; }
-.pv-notes.is-on .pv-note + .pv-note { animation-delay: 1.9s; }
-.pv-others p { margin: 4px 0 0; font-size: 17px; color: #444; }
-.pv-others i { font-style: normal; font-weight: 700; color: #111; }
-.pv-notes.is-on .pv-others { animation: jm-in .5s ease 2.3s both; }
+.pv-thought.is-on, .pv-hmws.is-on { opacity: 1; pointer-events: auto; transition-delay: .5s; }
+
+/* people: interview faces + sticky notes */
+.pv-person { position: absolute; width: 0; display: flex; flex-direction: column; align-items: center; transition: left .8s cubic-bezier(.6,0,.3,1), top .8s cubic-bezier(.6,0,.3,1), opacity .4s ease; animation: jm-in .5s ease var(--d) both; }
+.pv-person.is-gone { opacity: 0; pointer-events: none; }
+.pv-face { position: relative; flex: none; width: 92px; height: 72px; transition: transform .35s cubic-bezier(.34,1.4,.5,1); }
+.pv-blob { position: absolute; inset: 0; border-radius: 50%; background: #d9d9d9; transition: background .3s ease; }
+.pv-face img { position: absolute; left: 7px; top: -3px; width: 90.6px; height: 71.3px; pointer-events: none; }
+.pv-role { margin-top: 10px; white-space: nowrap; font-size: 17px; font-weight: 600; color: #111; }
+.pv-sticky { position: relative; flex: none; margin-top: 18px; width: 230px; height: 210px; transform: rotate(-2deg); transition: transform .35s cubic-bezier(.34,1.4,.5,1), opacity .35s ease; }
+.pv-person:nth-child(2) .pv-sticky { transform: rotate(1.6deg); }
+.pv-person:nth-child(3) .pv-sticky { transform: rotate(-1deg); }
+.pv-sticky-back { position: absolute; left: 6px; top: 6px; right: -6px; bottom: -6px; background: var(--k); }
+.pv-sticky-front { position: absolute; inset: 0; padding: 18px 18px; background: var(--c); }
+.pv-sticky small { display: block; font-family: var(--hand); font-size: 17px; color: rgba(0,0,0,.55); }
+.pv-sticky p { margin: 0 0 12px; font-size: 18px; line-height: 1.3; font-weight: 600; color: #1e1e1e; text-wrap: balance; }
+.pv-sticky p.is-now { margin: 0; font-weight: 500; font-size: 16px; }
+.pv-person:hover .pv-face { transform: translateY(-6px) rotate(-4deg); }
+.pv-person:hover .pv-blob { background: var(--c); }
+.pv-person:hover .pv-sticky { transform: rotate(0deg) scale(1.04); }
+.pv-sticky.is-tucked { opacity: 0; transform: scale(.6) !important; pointer-events: none; }
 
 .pv-puff, .pv-bubble { position: absolute; background: #e6ffed; border: 2px solid #74b769; }
 .pv-puff { border-radius: 50%; }
-.pv-bubble { width: 480px; padding: 24px 28px; border-radius: 28px; }
+.pv-bubble { width: 560px; padding: 26px 30px; border-radius: 30px; }
 .pv-bubble small { font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #3f8a35; }
 .pv-bubble p { margin: 8px 0 0; font-size: 27px; line-height: 1.4; font-weight: 600; color: #111; text-wrap: pretty; }
-.pv-thought.is-on .pv-puff { animation: dot-pop .35s cubic-bezier(.3,1.5,.5,1) .2s both; }
-.pv-thought.is-on .pv-puff + .pv-puff { animation-delay: .35s; }
-.pv-thought.is-on .pv-bubble { transform-origin: 0% 100%; animation: bubble-in .6s cubic-bezier(.3,1.4,.5,1) .5s both; }
+.pv-thought.is-on .pv-puff { animation: dot-pop .35s cubic-bezier(.3,1.5,.5,1) .8s both; }
+.pv-thought.is-on .pv-puff + .pv-puff { animation-delay: .95s; }
+.pv-thought.is-on .pv-bubble { transform-origin: 0% 100%; animation: bubble-in .6s cubic-bezier(.3,1.4,.5,1) 1.1s both; }
 
 .pv-chip { position: absolute; width: 250px; padding: 14px 16px; border-radius: 18px; background: #e6ffed; border: 2px solid #74b769; text-align: left; font: inherit; cursor: pointer; transform-origin: 0 100%;
   transition: background .2s, border-color .2s, box-shadow .2s; }

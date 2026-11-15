@@ -1,19 +1,25 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import DevFigure from './DevFigure.jsx'
+import faceImg from '../art/img/face@4x.png'
 
-// POV / User model / HMW, told around the pencil developer from the homepage card.
-// Step 0: what they want and what's in the way (sketch notes). Step 1: the problem (POV) as a
-// thought bubble. Step 2: the bubble opens into How Might We chips; click one to see how Astra answers.
+// POV / User model / HMW, built from the same pieces as the other cards: the interview faces
+// and sticky notes. Step 0: three people and what they want (sticky notes). Step 1: the
+// developer's note becomes the problem (POV) thought bubble. Step 2: How Might We chips.
 export const POV_STEPS = 2
 
 export const POV_CAPTIONS = [
-  'I started from the people. The senior developer wants one place to see and change requirements, and right now gets late reworks and scattered docs.',
-  'That became my problem statement.',
+  'I started from the three roles. Each wants something different, and each is stuck in a different way. Hover a person.',
+  'The developer gets the requirements last, so I wrote my problem statement from where they sit.',
   'Which opened six How Might We questions. Astra answers all of them, some directly and some secondarily. Click one to see how.',
 ]
 
 const W = 1000
 const H = 600
+
+const PEOPLE = [
+  { role: 'Senior Developer', want: 'One place to see and change requirements', now: 'Late reworks and scattered docs', color: '#d5c0ff', shade: '#9275cd' },
+  { role: 'Designer', want: 'The why behind a design to survive the handoff', now: 'Devs build without the why', color: '#ffa3df', shade: '#db86be' },
+  { role: 'Product Manager', want: 'Every stakeholder’s input in one place', now: 'Requirements scattered across tools', color: '#fff0a8', shade: '#d8c66e' },
+]
 
 const POV = 'Senior developers need to know what changed in a requirement and why, because decisions get lost once building starts.'
 
@@ -24,6 +30,13 @@ const HMW = [
   { q: 'show non-technical stakeholders feasibility early?', how: 'Every item shows in its native view (Jira, Figma, Codex), so feasibility is visible.', main: false, x: 730, y: 225 },
   { q: 'make early decisions reflect design and engineering?', how: 'Everyone stays updated and gets a say before a change is final.', main: false, x: 450, y: 420 },
   { q: 'build trust we’re solving the right customer problem?', how: 'Every requirement keeps its reason and source.', main: false, x: 730, y: 420 },
+]
+
+// where each person sits: step 0 = three across; later = developer on the left, others gone
+const SPOT = [
+  [[230, 120], [140, 230]],
+  [[500, 120], [140, 230]],
+  [[770, 120], [140, 230]],
 ]
 
 function useFit(ref) {
@@ -44,45 +57,37 @@ export default function PovSlide({ step }) {
   const box = useRef(null)
   const s = useFit(box)
   const [open, setOpen] = useState(null)
-  const [worried, setWorried] = useState(false)
-  const [lookAt, setLookAt] = useState(null)
-  useEffect(() => { setOpen(null); setWorried(false); setLookAt(null) }, [step])
-  // look at whatever the presenter points to
-  const lookHere = (e) => { const r = e.currentTarget.getBoundingClientRect(); setLookAt([r.left + r.width / 2, r.top + r.height / 2]) }
-  const lookAway = () => setLookAt(null)
+  useEffect(() => setOpen(null), [step])
+  const later = step > 0
 
   return (
     <div className={`pv-stage is-step-${step}`} ref={box}>
       <div className="pv-canvas" style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${s})` }}>
-        {/* the developer, drawn in pencil once when the card opens */}
-        <DevFigure className="pv-eng" mood={worried ? 'worried' : 'happy'} target={lookAt} />
+        {PEOPLE.map((p, i) => {
+          const [x, y] = SPOT[i][later ? 1 : 0]
+          const gone = later && i > 0
+          return (
+            <div key={p.role} className={`pv-person${gone ? ' is-gone' : ''}`} style={{ left: x, top: y, '--c': p.color, '--k': p.shade, '--d': `${i * 140}ms` }}>
+              <div className="pv-face"><span className="pv-blob" /><img src={faceImg} alt="" draggable="false" /></div>
+              <b className="pv-role">{p.role}</b>
+              <div className={`pv-sticky${later ? ' is-tucked' : ''}`}>
+                <span className="pv-sticky-back" />
+                <div className="pv-sticky-front">
+                  <small>wants</small>
+                  <p>{p.want}</p>
+                  <small>right now</small>
+                  <p className="is-now">{p.now}</p>
+                </div>
+              </div>
+            </div>
+          )
+        })}
 
-        {/* step 0: sketch notes */}
-        <div className={`pv-notes${step === 0 ? ' is-on' : ''}`}>
-          <svg className="pv-arrows" width={W} height={H} aria-hidden>
-            <path d="M 395 175 C 430 150, 445 140, 470 138" pathLength="1" />
-            <path d="M 420 360 C 440 345, 455 330, 470 326" pathLength="1" />
-          </svg>
-          <div className="pv-note" style={{ left: 480, top: 96 }} onMouseEnter={lookHere} onMouseLeave={lookAway}>
-            <span className="hand">wants</span>
-            <b>One place to see and change requirements</b>
-          </div>
-          <div className="pv-note" style={{ left: 480, top: 286 }} onMouseEnter={(e) => { lookHere(e); setWorried(true) }} onMouseLeave={() => { lookAway(); setWorried(false) }}>
-            <span className="hand">but right now</span>
-            <b>Late reworks and scattered docs</b>
-          </div>
-          <div className="pv-others" style={{ left: 480, top: 450 }}>
-            <span className="hand">also in the room</span>
-            <p><i>Designer</i> wants the why behind a design to survive the handoff</p>
-            <p><i>PM</i> wants every stakeholder’s input in one place</p>
-          </div>
-        </div>
-
-        {/* step 1: the problem, as a thought bubble */}
+        {/* step 1: the problem, as a thought bubble from the developer */}
         <div className={`pv-thought${step === 1 ? ' is-on' : ''}`}>
-          <span className="pv-puff" style={{ left: 392, top: 150, width: 14, height: 14 }} />
-          <span className="pv-puff" style={{ left: 418, top: 118, width: 22, height: 22 }} />
-          <div className="pv-bubble" style={{ left: 455, top: 70 }} onMouseEnter={lookHere} onMouseLeave={lookAway}>
+          <span className="pv-puff" style={{ left: 262, top: 212, width: 14, height: 14 }} />
+          <span className="pv-puff" style={{ left: 290, top: 176, width: 24, height: 24 }} />
+          <div className="pv-bubble" style={{ left: 330, top: 80 }}>
             <small>Problem (POV)</small>
             <p>{POV}</p>
           </div>
@@ -97,8 +102,6 @@ export default function PovSlide({ step }) {
               className={`pv-chip${h.main ? ' is-main' : ''}${open === i ? ' is-open' : ''}`}
               style={{ left: h.x, top: h.y, '--d': `${i * 110}ms` }}
               onClick={(e) => { e.currentTarget.blur(); setOpen(open === i ? null : i) }}
-              onMouseEnter={lookHere}
-              onMouseLeave={lookAway}
               aria-expanded={open === i}
             >
               <span className="pv-chip-q"><b>HMW</b> {h.q}</span>
