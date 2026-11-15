@@ -11,55 +11,34 @@ export const POV_CAPTIONS = [
 ]
 
 const HMW = {
-  complete: { q: 'help stakeholders and developers arrive at “complete enough” requirements without slowing down iteration?', how: 'The PRD stays living, so it can be complete enough to start and still change.', main: true },
-  feasibility: { q: 'give non-technical stakeholders a lightweight way to see technical feasibility early, before a design is fully built?', how: 'Each item shows in its native view (Jira, Figma, Codex), so feasibility is visible to everyone.', main: false },
-  judgment: { q: 'make sure early product decisions reflect both design and engineering judgment?', how: 'Everyone stays updated and gets a say before a change is final.', main: false },
-  trust: { q: 'build trust that developers and designers are building for the correct customer problem?', how: 'Everyone sees the reason and source behind each requirement, and has a say when it changes.', main: false },
-  aligned: { q: 'keep everyone aligned when requirements change mid-process?', how: 'A change shows as pending in every role’s view until the PM approves it.', main: true },
-  context: { q: 'structure a shared requirements artifact so it also works as reusable context for developers working with AI agents?', how: 'The approved PRD becomes defined context for AI agents.', main: true },
+  complete: { q: 'arrive at “complete enough” requirements without slowing iteration?', how: 'A living PRD', main: true },
+  feasibility: { q: 'show non-technical stakeholders feasibility early?', how: 'Native views of every item', main: false },
+  judgment: { q: 'make early decisions reflect design and engineering?', how: 'Everyone gets a say', main: false },
+  trust: { q: 'build trust we’re solving the right customer problem?', how: 'Reason and source on every requirement', main: false },
+  aligned: { q: 'keep everyone aligned when requirements change?', how: 'Pending changes in every view', main: true },
+  context: { q: 'make requirements reusable context for AI agents?', how: 'The approved PRD feeds the agents', main: true },
 }
 
 const ROLES = [
   {
     id: 'dev', role: 'Senior Developer',
-    story: {
-      want: 'Easily access and make changes to the requirements and specs.',
-      goal: 'Understand the scope, work spec-driven, align feasibility with stakeholders, and have one source of truth that also gives AI tools context.',
-      gap: 'Large reworks late in the build, and documentation too scattered to scale or give AI proper context.',
-    },
-    pov: [
-      ['user', 'Senior software developers'],
-      ['need', 'need a way to know what changed in a requirement, why, and whether it’s final,'],
-      ['why', 'because requirements keep shifting after building starts and the decisions behind them get lost in chats, emails and meetings.'],
-    ],
+    want: 'One place to see and change requirements',
+    pain: 'Late reworks and scattered docs',
+    pov: ['Senior developers', 'need to know what changed in a requirement and why, because decisions get lost once building starts.'],
     hmw: ['complete', 'aligned', 'context'],
   },
   {
     id: 'design', role: 'Designer',
-    story: {
-      want: 'Talk with customers early.',
-      goal: 'Understand the true problem to design for.',
-      gap: 'The team solves the wrong problem, or builds from rigid requirements without speaking to customers.',
-    },
-    pov: [
-      ['user', 'Designers'],
-      ['need', 'need a way to hear from customers and developers while they design,'],
-      ['why', 'because requirements surface through prototypes, and feedback that comes late means solving the wrong problem.'],
-    ],
+    want: 'Talk with customers early',
+    pain: 'Building for the wrong problem',
+    pov: ['Designers', 'need to hear from customers and developers while they design, because late feedback means solving the wrong problem.'],
     hmw: ['trust', 'judgment', 'feasibility'],
   },
   {
     id: 'pm', role: 'Product Manager',
-    story: {
-      want: 'All stakeholder conversations and requirements in one place.',
-      goal: 'Build a solid PRD that breaks down every requirement and phase.',
-      gap: 'Requirements stay scattered across email, Teams, PowerPoint and Jira, which leads to back-and-forth and missed deadlines.',
-    },
-    pov: [
-      ['user', 'Product managers'],
-      ['need', 'need a way to consolidate every early stakeholder requirement into one PRD,'],
-      ['why', 'because it sets the initial scope and lets developers break the work down properly.'],
-    ],
+    want: 'Every stakeholder’s input in one place',
+    pain: 'Requirements scattered across tools',
+    pov: ['PMs', 'need every stakeholder’s input in one PRD, because that sets the scope developers build from.'],
     hmw: ['aligned', 'feasibility', 'complete'],
   },
 ]
@@ -81,41 +60,26 @@ export default function PovSlide({ step }) {
 
       <div className="pv-chain" key={r.id}>
         <section className="pv-col" style={{ '--d': '0ms' }}>
-          <h4><b>1</b>User model</h4>
-          <div className="pv-card">
-            <p className="pv-want">{r.story.want}</p>
-            <dl>
-              <dt>So they can</dt><dd>{r.story.goal}</dd>
-              <dt>Right now it’s causing</dt><dd>{r.story.gap}</dd>
-            </dl>
-          </div>
+          <h4>User model</h4>
+          <p className="pv-big">{r.want}</p>
+          <p className="pv-small">Right now: {r.pain.toLowerCase()}</p>
         </section>
 
-        <span className="pv-arrow" aria-hidden style={{ '--d': '180ms' }}>→</span>
-
-        <section className="pv-col" style={{ '--d': '260ms' }}>
-          <h4><b>2</b>Problem (POV)</h4>
-          <div className="pv-card is-pov">
-            <p>
-              {r.pov.map(([k, t]) => (
-                <span key={k} className={`pv-part is-${k}`}><i>{k}</i>{t} </span>
-              ))}
-            </p>
-          </div>
+        <section className="pv-col" style={{ '--d': '200ms' }}>
+          <h4>Problem (POV)</h4>
+          <p className="pv-pov"><b>{r.pov[0]}</b> {r.pov[1]}</p>
         </section>
 
-        <span className="pv-arrow" aria-hidden style={{ '--d': '440ms' }}>→</span>
-
-        <section className="pv-col" style={{ '--d': '520ms' }}>
-          <h4><b>3</b>How might we…</h4>
-          <ol className="pv-hmw">
+        <section className="pv-col" style={{ '--d': '400ms' }}>
+          <h4>How might we…</h4>
+          <ul className="pv-hmw">
             {r.hmw.map((k) => (
               <li key={k} className={HMW[k].main ? 'is-main' : ''}>
-                <p>…{HMW[k].q}</p>
-                <small><em>{HMW[k].main ? 'Astra' : 'Astra, secondarily'}</em>{HMW[k].how}</small>
+                <p>{HMW[k].q}</p>
+                <small>{HMW[k].how}</small>
               </li>
             ))}
-          </ol>
+          </ul>
         </section>
       </div>
     </div>
