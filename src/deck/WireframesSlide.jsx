@@ -41,19 +41,28 @@ const CHAPTERS = [
     alt: 'First Map view tracing R4 to Jira, GitLab, Figma and people',
   },
   {
-    tag: 'Map · Recorder',
-    title: 'A record of how a requirement moved',
-    body: 'Like a flight data recorder, it replays every event on a requirement and shows where the PRD fell behind the code and the design, and who knew what.',
-    shot: 'recorder',
-    alt: 'Recorder view with a timeline of R4 across conversation, PRD, code, design and decisions',
+    tag: 'Live in Astra',
+    title: 'Catch assumptions before anyone builds',
+    body: 'Before v1 goes out, Astra lists every requirement nobody has confirmed, and who could confirm it. The PM can still publish, but those stay marked Assumed in every slice.',
+    shot: 'live-assume',
+    alt: 'Live Astra Doc view with the assumption check panel listing unconfirmed requirements',
+    live: true,
   },
   {
-    tag: 'Map · latest',
-    title: 'The PRD and the spec do different jobs',
-    body: 'The Map became a live transit map where each line is an agent. Spec fixes stay on the execution side. Crossing the river means changing the PRD, which needs a human, and the Sync line carries that approved change back to the spec.',
-    shot: 'map-live',
-    alt: 'Latest Map in Astra: a transit-style map with execution, control and ops zones split by a river',
-    latest: true,
+    tag: 'Live in Astra',
+    title: 'The PRD and the spec stay separate',
+    body: 'The spec stays a file in the developer’s repo, broken into tasks by the coding agent. Astra only tags each task with the requirement it came from, so when R4 changes, the tasks it touches are the ones that reopen.',
+    shot: 'live-spec',
+    alt: 'Live Codex view showing specs/lab-15-refresh.md with tasks grouped under R1 and R4',
+    live: true,
+  },
+  {
+    tag: 'Live in Astra',
+    title: 'The Map replays the whole record',
+    body: 'The Map shows where a requirement came from, the work it drives and the people on it. The tape at the bottom replays the story, so you can see who knew what at any moment.',
+    shot: 'live-map',
+    alt: 'Live Astra Map view for R4 with sources, linked work, people and a replay timeline',
+    live: true,
   },
 ]
 
@@ -63,9 +72,10 @@ export const WIRE_CAPTIONS = [
   'Scroll through each version, oldest first. Each one is a single big change.',
   'Mid-fi turned the boxes into a real PRD.',
   'Then I took it to where people actually work.',
-  'The Map is where my thinking changed the most.',
-  'From a snapshot to a full history.',
-  'And the biggest lesson: knowing what belongs in the PRD and what belongs in the spec.',
+  'The first Map traced what one change touched.',
+  'From here on, it’s what’s live in Astra now.',
+  'The biggest lesson: the PRD and the spec do different jobs.',
+  'And the Map became a record you can replay.',
 ]
 
 export default function WireframesSlide({ step, onStep }) {
@@ -124,11 +134,11 @@ export default function WireframesSlide({ step, onStep }) {
   return (
     <div className="wr">
       {CHAPTERS.map((c, i) => (
-        <article key={c.shot} ref={(el) => { refs.current[i] = el }} className={`wr-ch${i === step ? ' is-here' : ''}${c.latest ? ' is-latest' : ''}`}>
+        <article key={c.shot} ref={(el) => { refs.current[i] = el }} className={`wr-ch${i === step ? ' is-here' : ''}${c.live ? ' is-latest' : ''}`}>
           <header className="wr-head">
             <span className="wr-num">{String(i + 1).padStart(2, '0')}</span>
             <span className="wr-tag">{c.tag}</span>
-            {c.latest && <span className="wr-now">now</span>}
+            {c.live && <span className="wr-now">what it does now</span>}
           </header>
           <h3>{c.title}</h3>
           <p className="wr-body">{c.body}</p>
