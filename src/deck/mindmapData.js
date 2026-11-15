@@ -71,11 +71,11 @@ export const THEMES = [
 
 // the yellow dashed "cross-theme cause" links, in the order they read as a chain
 export const CAUSES = [
-  { from: 't2', to: 't1', label: 'schedule pressure skips discovery & validation', d: 'M 120 203 C 92 280, 92 340, 120 417', lx: 175, ly: 310 },
-  { from: 't2', to: 're', label: 'dev starts before design → rework', d: 'M 210 147 C 230 95, 300 95, 398 95', lx: 280, ly: 90 },
-  { from: 't1', to: 're', label: 'needs only surface once people see something', d: 'M 262 418 C 330 380, 300 170, 430 119', lx: 330, ly: 372 },
-  { from: 're', to: 't3', label: 'changes scatter across channels', d: 'M 602 95 C 720 95, 800 100, 818 147', lx: 712, ly: 90 },
-  { from: 't3', to: 't4', label: 'scattered input limits AI & review', d: 'M 880 203 C 908 280, 908 340, 880 417', lx: 825, ly: 310 },
+  { from: 't2', to: 't1', label: 'schedule pressure skips discovery & validation', a: ['bottom', .22], b: ['top', .22], k: 60, lx: 175, ly: 310 },
+  { from: 't2', to: 're', label: 'dev starts before design → rework', a: ['top', .7], b: ['left', .5], k: 60, lx: 280, ly: 90 },
+  { from: 't1', to: 're', label: 'needs only surface once people see something', a: ['top', .85], b: ['bottom', .2], k: 130, lx: 330, ly: 372 },
+  { from: 're', to: 't3', label: 'changes scatter across channels', a: ['right', .5], b: ['top', .4], k: 70, lx: 712, ly: 90 },
+  { from: 't3', to: 't4', label: 'scattered input limits AI & review', a: ['bottom', .78], b: ['top', .78], k: 60, lx: 825, ly: 310 },
 ]
 
 // the ideas on my focus branches that I carried into Astra
