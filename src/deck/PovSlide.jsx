@@ -62,6 +62,7 @@ export default function PovSlide({ step }) {
   const later = step > 0
 
   return (
+    <>
     <div className={`pv-stage is-step-${step}`} ref={box}>
       <div className="pv-canvas" style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${s})` }}>
         {PEOPLE.map((p, i) => {
@@ -115,6 +116,42 @@ export default function PovSlide({ step }) {
           ))}
         </div>
       </div>
+    </div>
+    <PovPhone step={step} />
+    </>
+  )
+}
+
+// Phones: the same three beats stacked, so every line can be read without zooming.
+function PovPhone({ step }) {
+  return (
+    <div className={`pv-m is-step-${step}`}>
+      {step === 0 && PEOPLE.map((p) => (
+        <div key={p.role} className="pv-m-person">
+          <div className="pv-m-who"><img src={faceImg} alt="" /><b>{p.role}</b></div>
+          <div className="pv-m-sticky" style={{ '--c': p.color, '--s': p.shade }}>
+            <small>wants</small><p>{p.want}</p>
+            <small>right now</small><p className="is-now">{p.now}</p>
+          </div>
+        </div>
+      ))}
+      {step === 1 && (
+        <div className="pv-m-pov">
+          <div className="pv-m-who"><img src={faceImg} alt="" /><b>Senior Developer</b></div>
+          <div className="pv-m-bubble"><small>Problem (POV)</small><p>{POV}</p></div>
+        </div>
+      )}
+      {step === 2 && (
+        <>
+          <p className="pv-m-from"><small>From the POV</small>{POV}</p>
+          {HMW.map((h) => (
+            <div key={h.q} className={`pv-m-hmw${h.main ? ' is-main' : ''}`}>
+              <p><b>HMW</b> {h.q}</p>
+              <p className="pv-m-how"><em>{h.main ? 'Astra' : 'Astra, secondarily'}</em> {h.how}</p>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   )
 }

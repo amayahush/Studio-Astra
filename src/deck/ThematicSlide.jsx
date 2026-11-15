@@ -166,6 +166,32 @@ export default function ThematicSlide({ step }) {
           )}
         </div>
       </div>
+      <ThematicPhone step={step} />
+    </div>
+  )
+}
+
+// Phones: the board shrinks to a thumbnail, so the words it holds are listed under it.
+function ThematicPhone({ step }) {
+  const chip = (id) => <span key={id} className="ta-m-chip">{TAGS[id].name} <i>{TAGS[id].used}</i></span>
+  if (step === 0) return null
+  return (
+    <div className="ta-m">
+      {step === 1 && (
+        <div className="ta-m-chips">{TAG_IDS.filter((id) => TAGS[id].group !== 'X').map(chip)}</div>
+      )}
+      {step === 2 && GROUPS.map((g) => (
+        <div key={g.id} className="ta-m-block"><b className="hand">{g.name}</b><div className="ta-m-chips">{g.tags.map(chip)}</div></div>
+      ))}
+      {step === 3 && THEMES.map((t, i) => (
+        <div key={t.id} className="ta-m-block" style={{ '--ink': t.ink }}>
+          <span className="hand ta-m-num">Theme {i + 1}</span><b>{t.name}</b>
+          <div className="ta-m-chips">{t.tags.map(chip)}</div>
+        </div>
+      ))}
+      {step === 4 && (
+        <ol className="ta-m-callouts">{CALLOUTS.map((c) => <li key={c.n}><i>{c.n}</i>{c.text}</li>)}</ol>
+      )}
     </div>
   )
 }

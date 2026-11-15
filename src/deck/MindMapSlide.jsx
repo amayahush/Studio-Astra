@@ -154,6 +154,8 @@ export default function MindMapSlide({ step }) {
   const focusStep = step === 2
 
   return (
+    <>
+    <MindPhone step={step} onFull={() => { setFull(true); setZoomed(false) }} />
     <div className={`mm-stage is-step-${step}${open ? ' has-open' : ''}`} ref={box} onClick={() => setOpen(null)}>
       <div className="mm-canvas" style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${s})` }}>
         <svg className="mm-svg" viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true">
@@ -225,6 +227,59 @@ export default function MindMapSlide({ step }) {
         </div>,
         document.body,
       )}
+    </div>
+    </>
+  )
+}
+
+const KIND_LABEL = { pain: 'Pain point', work: 'Workaround', idea: 'Idea', core: 'Core concept' }
+const themeName = (id) => THEMES.find((t) => t.id === id)?.label
+
+// Phones: the goal, then the themes as a list you tap to open. Same three beats as the map.
+function MindPhone({ step, onFull }) {
+  return (
+    <div className={`mm-m is-step-${step}`}>
+      {step !== 1 && (
+        <div className="mm-m-goal"><small>The goal</small><p>{GOAL}</p></div>
+      )}
+      {step === 1 ? (
+        <ol className="mm-m-causes">
+          {CAUSES.map((c) => (
+            <li key={c.label}>
+              <span className="mm-m-path">{themeName(c.from)} <i>→</i> {themeName(c.to)}</span>
+              <span className="mm-m-why">{c.label}</span>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <div className="mm-m-themes">
+          {THEMES.map((t) => (
+            <details key={t.id} className={`mm-m-theme${step === 2 ? (t.focus ? ' is-focus' : ' is-dim') : ''}`}>
+              <summary>
+                <span className="mm-tag-m">{t.tag}</span>
+                <b>{t.label}</b>
+                {step === 2 && t.focus && <em>my focus</em>}
+              </summary>
+              <ul>
+                {t.items.map((it) => (
+                  <li key={it.text} className={`is-${it.kind}`}>
+                    <small>{KIND_LABEL[it.kind]}</small>{it.text}
+                    {it.subs && <ul>{it.subs.map((x) => <li key={x}>{x}</li>)}</ul>}
+                  </li>
+                ))}
+              </ul>
+              {step === 2 && t.note && <p className="mm-m-note">{t.note}</p>}
+            </details>
+          ))}
+        </div>
+      )}
+      {step === 2 && (
+        <div className="mm-m-taken">
+          <small>What I carried into Astra</small>
+          {TAKEN.map((t) => <div key={t.text}><span>from {t.from}</span><p>{t.text}</p></div>)}
+        </div>
+      )}
+      <button type="button" className="mm-m-full" onClick={onFull}>See my full map ↗</button>
     </div>
   )
 }
