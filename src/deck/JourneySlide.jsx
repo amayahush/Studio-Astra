@@ -6,7 +6,7 @@ import { PHASES, FOCUS, LEARNED } from './journeyData.js'
 export const JOURNEY_STEPS = 1
 
 export const JOURNEY_CAPTIONS = [
-  'Six phases a requirement moves through. Scroll to follow it, and watch how it feels on the left. The lowest point is phase 05.',
+  'Six phases a requirement moves through, in order. Scroll to follow it. It feels worst at phase 05.',
   'My focus: something changes mid-build. This is where my prototype starts.',
 ]
 
@@ -70,16 +70,15 @@ export default function JourneySlide({ step }) {
 
   return (
     <div className="jm" ref={wrap}>
-      <div className="jm-key hand">how it feels</div>
-      <FeelSpine pts={pts} />
       <ol className="jm-list">
         {PHASES.map((p, i) => (
           <li key={p.n} ref={(el) => (rows.current[i] = el)} className={`jm-phase${i === FOCUS ? ' is-focus' : ''}`} style={{ '--d': `${i * 90}ms` }}>
+            <span className="jm-dot">{p.n}</span>
             <header>
-              <small>{p.n}{i === FOCUS && <em className="hand">my focus</em>}</small>
+              {i === FOCUS && <em className="hand">my focus</em>}
               <h3>{p.name}</h3>
-              <span className="jm-feel">{p.feel}</span>
               <p className="jm-lead">Led by {p.lead.join(', ')}</p>
+              <span className="jm-feel">Feels: {p.feel.toLowerCase()}</span>
             </header>
             <div className="jm-body">
               <p className="jm-goal">{p.goal}</p>

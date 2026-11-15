@@ -372,15 +372,19 @@
 .dk-slide:not(.is-current) *, .dk-slide:not(.is-current) *::before { animation-play-state: paused !important; }
 
 /* ---------- Journey map ---------- */
-.jm { position: relative; padding-left: 84px; }
+.jm { position: relative; padding-left: 52px; }
 .jm.is-focus { padding-left: 0; }
 .jm-key { position: absolute; left: 0; top: -8px; width: 80px; text-align: center; font-size: 15px; color: var(--muted); }
 .jm-spine { position: absolute; left: 0; top: 0; overflow: visible; }
 .jm-spine-line { fill: none; stroke: #2a2a2a; stroke-width: 2; }
 .jm-spine circle { fill: #fff; stroke: #2a2a2a; stroke-width: 2; }
 .jm-spine circle.is-focus { fill: var(--astra); stroke: var(--astra); }
-.jm-list { position: relative; margin: 0; padding: 14px 0 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
-.jm-phase { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 24px; padding: 20px 22px; border-radius: 14px; background: #fff; animation: jm-in .5s ease var(--d) both; }
+.jm-list::before { content: ''; position: absolute; left: -35px; top: 30px; bottom: 30px; width: 2px; background: #dcdcdc; }
+.jm-dot { position: absolute; left: -52px; top: 20px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #2a2a2a; color: #fff; font-size: 12px; font-weight: 700; }
+.jm-phase.is-focus .jm-dot { background: var(--astra); }
+.jm-phase header em { display: block; font-style: normal; font-size: 17px; color: var(--astra); }
+.jm-list { position: relative; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.jm-phase { position: relative; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 24px; padding: 20px 22px; border-radius: 14px; background: #fff; animation: jm-in .5s ease var(--d) both; }
 .jm-phase.is-focus { background: #f3e6ff; box-shadow: inset 0 0 0 1.5px var(--astra); }
 @keyframes jm-in { from { opacity: 0; transform: translateY(8px); } }
 .jm-phase header small { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; color: var(--muted); }
@@ -388,7 +392,7 @@
 .jm-phase h3 { margin: 4px 0 8px; font-size: 20px; line-height: 1.2; color: #111; text-wrap: balance; }
 .jm-feel { display: inline-block; padding: 3px 10px; border-radius: 999px; background: #f0f0f0; font-size: 12px; font-weight: 600; color: #333; }
 .jm-phase.is-focus .jm-feel { background: var(--astra); color: #fff; }
-.jm-lead { margin: 10px 0 0; font-size: 12.5px; color: var(--muted); }
+.jm-lead { margin: 0 0 10px; font-size: 12.5px; color: var(--muted); }
 .jm-goal { margin: 0 0 14px; font-size: 16px; font-weight: 600; line-height: 1.4; color: #111; text-wrap: pretty; }
 .jm-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; }
 .jm-body h4, .jm-focus-card h4 { margin: 0 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
