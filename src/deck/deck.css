@@ -422,3 +422,41 @@
   .jm-cols, .jm-focus { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .jm *, .jm-phase { animation: none !important; } }
+
+/* ---------- Competitive analysis ---------- */
+.cp-table { display: flex; flex-direction: column; border-radius: 14px; background: #fff; padding: 6px 10px; }
+.cp-row { display: grid; grid-template-columns: minmax(170px, 1.6fr) repeat(8, minmax(0, 1fr)); align-items: center; min-height: 54px; border-top: 1px solid #efefef; animation: jm-in .45s ease var(--d, 0s) both; }
+.cp-row.is-head { border-top: 0; min-height: 64px; animation: none; align-items: end; padding-bottom: 8px; }
+.cp-job { padding: 8px 12px 8px 4px; font-size: 13.5px; font-weight: 600; line-height: 1.35; color: #1a1a1a; text-wrap: pretty; }
+.cp-tool { padding: 0 4px; text-align: center; }
+.cp-tool b { display: block; font-size: 12px; line-height: 1.2; color: #111; text-wrap: balance; }
+.cp-tool small { display: block; margin-top: 2px; font-size: 10.5px; color: var(--muted); }
+.cp-cell { display: grid; place-items: center; height: 100%; }
+.cp-tool.is-astra, .cp-cell.is-astra { opacity: 0; transition: opacity .5s ease, background .5s ease; }
+.cp-tool.is-astra.is-on, .cp-cell.is-astra.is-on { opacity: 1; background: #f3e6ff; }
+.cp-tool.is-astra b { color: var(--astra); }
+.cp-row.is-gap { background: linear-gradient(90deg, rgba(196,57,255,.06), rgba(196,57,255,0)); border-radius: 8px; }
+.cp-row.is-gap .cp-job { color: var(--astra); }
+.cp-mark { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #2a2a2a; }
+.cp-mark.is-2 { background: #2a2a2a; }
+.cp-mark.is-1 { background: linear-gradient(90deg, #2a2a2a 50%, transparent 50%); }
+.cp-mark.is-0 { border-color: #d0d0d0; }
+.cp-cell.is-astra .cp-mark.is-2 { background: var(--astra); border-color: var(--astra); }
+.cp-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 12px 4px 0; font-size: 12px; color: #555; }
+.cp-key span { display: inline-flex; align-items: center; gap: 6px; }
+.cp-key .cp-mark { width: 11px; height: 11px; }
+.cp-key em { font-style: normal; color: var(--muted); }
+.cp-why { margin-top: 28px; }
+.cp-why h3 { margin: 0 0 12px; font-size: 26px; font-weight: 400; color: #1a1a1a; }
+.cp-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.cp-card { padding: 16px 18px; border-radius: 12px; background: #fff; animation: jm-in .45s ease var(--d) both; }
+.cp-card h4 { margin: 0 0 8px; font-size: 15px; color: #111; }
+.cp-card p { margin: 0 0 8px; font-size: 13px; line-height: 1.5; color: #333; text-wrap: pretty; }
+.cp-card p b { color: #111; }
+.cp-card a { font-size: 12px; font-weight: 600; color: var(--astra); text-decoration: none; }
+.cp-card a:hover { text-decoration: underline; }
+.cp-honest { margin: 18px 0 0; padding: 14px 18px; border-left: 3px solid var(--astra); border-radius: 0 10px 10px 0; background: #f3e6ff; font-size: 15px; line-height: 1.55; color: #1a1a1a; text-wrap: pretty; }
+@media (max-width: 899px) {
+  .cp-table { overflow-x: auto; }
+  .cp-row { min-width: 780px; }
+}

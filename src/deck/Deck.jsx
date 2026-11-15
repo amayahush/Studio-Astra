@@ -5,6 +5,7 @@ import InterviewsSlide, { INTERVIEW_STEPS, INTERVIEW_CAPTIONS } from './Intervie
 import ThematicSlide, { THEMATIC_STEPS, THEMATIC_CAPTIONS } from './ThematicSlide.jsx'
 import EcosystemSlide, { ECO_STEPS, ECO_CAPTIONS } from './EcosystemSlide.jsx'
 import JourneySlide, { JOURNEY_STEPS, JOURNEY_CAPTIONS } from './JourneySlide.jsx'
+import CompetitiveSlide, { COMP_STEPS, COMP_CAPTIONS } from './CompetitiveSlide.jsx'
 
 // Per-slide setup: how many → steps it has before moving on, and the caption for each.
 const SETUP = {
@@ -12,6 +13,7 @@ const SETUP = {
   'thematic-analysis': { steps: THEMATIC_STEPS, captions: THEMATIC_CAPTIONS, Body: ThematicSlide },
   'ecosystem-map': { steps: ECO_STEPS, captions: ECO_CAPTIONS, Body: EcosystemSlide },
   'journey-map': { steps: JOURNEY_STEPS, captions: JOURNEY_CAPTIONS, Body: JourneySlide },
+  'competitive-analysis': { steps: COMP_STEPS, captions: COMP_CAPTIONS, Body: CompetitiveSlide },
 }
 
 function PlaceholderBody({ slide }) {

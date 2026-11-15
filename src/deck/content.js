@@ -5,7 +5,7 @@ export const SLIDES = [
   { id: 'thematic-analysis', label: 'Thematic Analysis', grey: 'Eight people, one pattern:', black: ' the requirements were never really finished.' },
   { id: 'ecosystem-map', label: 'Ecosystem Map', grey: 'Requirements pass through a lot of hands,', black: ' so I mapped who touches them.' },
   { id: 'journey-map', label: 'Journey Map', grey: 'Following one requirement from ask to release', black: ' showed where it falls apart: when something changes mid-build.' },
-  { id: 'competitive-analysis', label: 'Competitive Analysis', grey: 'AI coding tools write code from a spec,', black: ' and none of them help shape the spec.' },
+  { id: 'competitive-analysis', label: 'Competitive Analysis', grey: 'Most of the pieces already exist.', black: ' What’s missing is the moment a requirement changes mid-build.' },
   { id: 'pov-user-model-hmw', label: 'POV / User Model / HMW', grey: 'The Senior Engineer knows the system best,', black: ' and still gets the requirements last.' },
   { id: 'mind-mapping', label: 'Mind Mapping', grey: 'With the problem framed,', black: ' I branched out every idea for keeping requirements clear.' },
   { id: 'wireframes', label: 'Wireframes', grey: 'The flow came first,', black: ' then the screens, version after version.' },
