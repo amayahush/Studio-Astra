@@ -464,8 +464,16 @@
 /* ---------- POV / User model / HMW ---------- */
 .pv-stage { position: relative; height: calc(100vh - 170px); min-height: 480px; border-radius: 16px; background: var(--card); overflow: hidden; }
 .pv-canvas { position: absolute; left: 50%; top: 50%; transform-origin: center; }
-.pv-eng { position: absolute; left: 140px; top: 120px; width: 80px; height: 104px; transform: scale(3.1); transform-origin: 0 0; --t: 1; }
-.pv-eng .pov-eng { top: 0 !important; }
+.pv-eng { position: absolute; left: 130px; top: 112px; width: 262px; height: 337px; overflow: visible; }
+/* vector pencil developer */
+.df-line { fill: none; stroke: #3c3c3c; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+.df-line.is-ghost { stroke: #6b6b6b; stroke-width: .7; opacity: .7; }
+.df-line.is-draw { animation: draw-on var(--sl) cubic-bezier(.45,0,.4,1) var(--sd) both; }
+.df-mouth { transition: d .35s ease; }
+.df-fill.is-draw { animation: wash .9s ease 3.6s both; }
+.df-eye { fill: #2e2e2e; transition: cx .25s ease-out, cy .25s ease-out, transform .08s; }
+.df-eye.is-draw { animation: wash .3s ease var(--sd) both; }
+.df-head { transform-box: view-box; transform-origin: 35px 52px; transition: transform .45s cubic-bezier(.3,1.3,.5,1); }
 
 .pv-notes, .pv-thought, .pv-hmws { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s ease; }
 .pv-notes.is-on, .pv-thought.is-on, .pv-hmws.is-on { opacity: 1; pointer-events: auto; transition-delay: .2s; }

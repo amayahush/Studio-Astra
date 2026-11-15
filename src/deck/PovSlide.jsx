@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { PovArt } from '../art/Art.jsx'
+import DevFigure from './DevFigure.jsx'
 
 // POV / User model / HMW, told around the pencil developer from the homepage card.
 // Step 0: what they want and what's in the way (sketch notes). Step 1: the problem (POV) as a
@@ -44,15 +44,18 @@ export default function PovSlide({ step }) {
   const box = useRef(null)
   const s = useFit(box)
   const [open, setOpen] = useState(null)
-  useEffect(() => setOpen(null), [step])
+  const [worried, setWorried] = useState(false)
+  const [lookAt, setLookAt] = useState(null)
+  useEffect(() => { setOpen(null); setWorried(false); setLookAt(null) }, [step])
+  // look at whatever the presenter points to
+  const lookHere = (e) => { const r = e.currentTarget.getBoundingClientRect(); setLookAt([r.left + r.width / 2, r.top + r.height / 2]) }
+  const lookAway = () => setLookAt(null)
 
   return (
     <div className={`pv-stage is-step-${step}`} ref={box}>
       <div className="pv-canvas" style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${s})` }}>
         {/* the developer, drawn in pencil once when the card opens */}
-        <div className="pv-eng play" aria-hidden>
-          <PovArt engX={0} stars={[]} />
-        </div>
+        <DevFigure className="pv-eng" mood={worried ? 'worried' : 'happy'} target={lookAt} />
 
         {/* step 0: sketch notes */}
         <div className={`pv-notes${step === 0 ? ' is-on' : ''}`}>
@@ -60,11 +63,11 @@ export default function PovSlide({ step }) {
             <path d="M 395 175 C 430 150, 445 140, 470 138" pathLength="1" />
             <path d="M 420 360 C 440 345, 455 330, 470 326" pathLength="1" />
           </svg>
-          <div className="pv-note" style={{ left: 480, top: 96 }}>
+          <div className="pv-note" style={{ left: 480, top: 96 }} onMouseEnter={lookHere} onMouseLeave={lookAway}>
             <span className="hand">wants</span>
             <b>One place to see and change requirements</b>
           </div>
-          <div className="pv-note" style={{ left: 480, top: 286 }}>
+          <div className="pv-note" style={{ left: 480, top: 286 }} onMouseEnter={(e) => { lookHere(e); setWorried(true) }} onMouseLeave={() => { lookAway(); setWorried(false) }}>
             <span className="hand">but right now</span>
             <b>Late reworks and scattered docs</b>
           </div>
@@ -79,7 +82,7 @@ export default function PovSlide({ step }) {
         <div className={`pv-thought${step === 1 ? ' is-on' : ''}`}>
           <span className="pv-puff" style={{ left: 392, top: 150, width: 14, height: 14 }} />
           <span className="pv-puff" style={{ left: 418, top: 118, width: 22, height: 22 }} />
-          <div className="pv-bubble" style={{ left: 455, top: 70 }}>
+          <div className="pv-bubble" style={{ left: 455, top: 70 }} onMouseEnter={lookHere} onMouseLeave={lookAway}>
             <small>Problem (POV)</small>
             <p>{POV}</p>
           </div>
@@ -94,6 +97,8 @@ export default function PovSlide({ step }) {
               className={`pv-chip${h.main ? ' is-main' : ''}${open === i ? ' is-open' : ''}`}
               style={{ left: h.x, top: h.y, '--d': `${i * 110}ms` }}
               onClick={(e) => { e.currentTarget.blur(); setOpen(open === i ? null : i) }}
+              onMouseEnter={lookHere}
+              onMouseLeave={lookAway}
               aria-expanded={open === i}
             >
               <span className="pv-chip-q"><b>HMW</b> {h.q}</span>
