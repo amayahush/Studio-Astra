@@ -9,7 +9,7 @@ const VERSIONS = {
   ],
   insight: [
     { text: 'Requirements surface mid-build from scattered conversations,', muted: true, trigger: true },
-    { text: ' so I built Astra, a living source of truth: AI tracks every change, people decide what ships.' },
+    { text: " so I built Astra, a living source of truth that keeps engineers’ specs current: AI tracks every change, people decide what ships." },
   ],
 }
 
