@@ -101,7 +101,6 @@ export default function CompetitiveSlide({ step }) {
         <span><Mark v={2} /> documented</span>
         <span><Mark v={1} /> partly</span>
         <span><Mark v={0} /> not found</span>
-        <em>From each product’s public pages, Nov 2026. Astra is a design concept, so its column shows what it’s designed to do.</em>
       </p>
 
       {astra && (
