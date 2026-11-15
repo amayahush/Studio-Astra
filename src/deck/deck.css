@@ -499,6 +499,8 @@
 .pv-chip { position: absolute; width: 250px; padding: 14px 16px; border-radius: 18px; background: #e6ffed; border: 2px solid #74b769; text-align: left; font: inherit; cursor: pointer; transform-origin: 0 100%;
   transition: background .2s, border-color .2s, box-shadow .2s; }
 .pv-chip:not(.is-main) { border-style: dashed; }
+.pv-hmw-from { position: absolute; left: 95px; top: 28px; width: 810px; margin: 0; font-size: 16px; line-height: 1.4; color: #555; text-wrap: balance; }
+.pv-hmw-from small { margin-right: 8px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #3f8a35; }
 .pv-hmws.is-on .pv-chip { animation: bubble-in .55s cubic-bezier(.3,1.4,.5,1) calc(.3s + var(--d)) both; }
 .pv-chip:hover { box-shadow: 0 6px 18px rgba(0,0,0,.1); }
 .pv-chip-q { display: block; font-size: 17px; line-height: 1.35; font-weight: 600; color: #111; }

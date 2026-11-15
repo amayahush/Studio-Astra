@@ -24,12 +24,12 @@ const PEOPLE = [
 const POV = 'Senior developers need to know what changed in a requirement and why, because decisions get lost once building starts.'
 
 const HMW = [
-  { q: 'arrive at “complete enough” requirements without slowing iteration?', how: 'A living PRD: complete enough to start, still free to change.', main: true, x: 450, y: 30 },
-  { q: 'keep everyone aligned when requirements change?', how: 'A change shows as pending in every role’s view until the PM approves it.', main: true, x: 730, y: 30 },
-  { q: 'make requirements reusable context for AI agents?', how: 'The approved PRD becomes defined context for the agents.', main: true, x: 450, y: 225 },
-  { q: 'show non-technical stakeholders feasibility early?', how: 'Every item shows in its native view (Jira, Figma, Codex), so feasibility is visible.', main: false, x: 730, y: 225 },
-  { q: 'make early decisions reflect design and engineering?', how: 'Everyone stays updated and gets a say before a change is final.', main: false, x: 450, y: 420 },
-  { q: 'build trust we’re solving the right customer problem?', how: 'Every requirement keeps its reason and source.', main: false, x: 730, y: 420 },
+  { q: 'arrive at “complete enough” requirements without slowing iteration?', how: 'A living PRD: complete enough to start, still free to change.', main: true, x: 95, y: 120 },
+  { q: 'keep everyone aligned when requirements change?', how: 'A change shows as pending in every role’s view until the PM approves it.', main: true, x: 375, y: 120 },
+  { q: 'make requirements reusable context for AI agents?', how: 'The approved PRD becomes defined context for the agents.', main: true, x: 655, y: 120 },
+  { q: 'show non-technical stakeholders feasibility early?', how: 'Every item shows in its native view (Jira, Figma, Codex), so feasibility is visible.', main: false, x: 95, y: 340 },
+  { q: 'make early decisions reflect design and engineering?', how: 'Everyone stays updated and gets a say before a change is final.', main: false, x: 375, y: 340 },
+  { q: 'build trust we’re solving the right customer problem?', how: 'Every requirement keeps its reason and source.', main: false, x: 655, y: 340 },
 ]
 
 // where each person sits: step 0 = three across; later = developer on the left, others gone
@@ -66,7 +66,7 @@ export default function PovSlide({ step }) {
       <div className="pv-canvas" style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${s})` }}>
         {PEOPLE.map((p, i) => {
           const [x, y] = SPOT[i][later ? 1 : 0]
-          const gone = later && i > 0
+          const gone = step === 2 || (later && i > 0) // the HMWs get the whole stage
           return (
             <div key={p.role} className={`pv-person${gone ? ' is-gone' : ''}`} style={{ left: x, top: y, '--c': p.color, '--k': p.shade, '--d': `${i * 140}ms` }}>
               <div className="pv-face"><span className="pv-blob" /><img src={faceImg} alt="" draggable="false" /></div>
@@ -96,6 +96,7 @@ export default function PovSlide({ step }) {
 
         {/* step 2: How Might We chips */}
         <div className={`pv-hmws${step === 2 ? ' is-on' : ''}`}>
+          <p className="pv-hmw-from"><small>From the POV</small>{POV}</p>
           {HMW.map((h, i) => (
             <button
               key={i}
