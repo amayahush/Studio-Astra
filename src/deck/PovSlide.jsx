@@ -73,7 +73,7 @@ export default function PovSlide({ step }) {
           </div>
           <div className="pv-others" style={{ left: 480, top: 450 }}>
             <span className="hand">also in the room</span>
-            <p><i>Designer</i> wants to talk with customers early</p>
+            <p><i>Designer</i> wants the why behind a design to survive the handoff</p>
             <p><i>PM</i> wants every stakeholder’s input in one place</p>
           </div>
         </div>
