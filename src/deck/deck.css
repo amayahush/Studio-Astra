@@ -547,7 +547,7 @@
 .mm-taken-card span { display: block; font-family: var(--hand); font-size: 14px; color: #6b6b6b; }
 .mm-taken-card p { margin: 2px 0 0; font-size: 14px; line-height: 1.3; font-weight: 600; color: #111; }
 
-.mm-branch { position: absolute; right: 24px; top: 24px; bottom: 24px; width: 430px; z-index: 5; overflow-y: auto; padding: 20px 22px; border-radius: 16px; background: #fff;
+.mm-branch { position: absolute; right: 24px; top: 24px; max-height: 552px; width: 430px; z-index: 5; overflow-y: auto; padding: 20px 22px; border-radius: 16px; background: #fff;
   box-shadow: 0 18px 50px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.05); animation: mm-slide .35s cubic-bezier(.2,.9,.3,1) both; }
 .mm-branch.is-left { right: auto; left: 24px; }
 .mm-branch > small { display: inline-block; padding: 1px 7px; border-radius: 6px; background: #222; color: #fff; font-size: 11px; font-weight: 600; }
