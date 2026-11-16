@@ -18,7 +18,7 @@ const SETUP = {
   'journey-map': { steps: JOURNEY_STEPS, captions: JOURNEY_CAPTIONS, Body: JourneySlide },
   'pov-user-model-hmw': { steps: POV_STEPS, captions: POV_CAPTIONS, Body: PovSlide },
   'mind-mapping': { steps: MIND_STEPS, captions: MIND_CAPTIONS, Body: MindMapSlide },
-  wireframes: { steps: WIRE_STEPS, captions: WIRE_CAPTIONS, Body: WireframesSlide },
+  wireframes: { steps: WIRE_STEPS, captions: WIRE_CAPTIONS, Body: WireframesSlide, ownScroll: true },
   'competitive-analysis': { steps: COMP_STEPS, captions: COMP_CAPTIONS, Body: CompetitiveSlide },
 }
 
@@ -76,16 +76,29 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
     setIdx(n)
   }, [])
 
+  // On a card's last highlight, → first scrolls down through anything still below the fold,
+  // and ← scrolls back up, before moving to another card or highlight.
+  const scrollSlide = useCallback((dir) => {
+    const sl = slideRefs.current[idx]
+    if (!sl || SETUP[SLIDES[idx].id]?.ownScroll) return false
+    const room = dir > 0 ? sl.scrollHeight - sl.clientHeight - sl.scrollTop : sl.scrollTop
+    if (room <= 40) return false
+    sl.scrollBy({ top: dir * Math.min(room, sl.clientHeight * 0.8), behavior: 'smooth' })
+    return true
+  }, [idx])
+
   const forward = useCallback(() => {
+    if (step === maxStep && scrollSlide(1)) return
     if (step < maxStep) setSteps((s) => s.map((v, k) => (k === idx ? v + 1 : v)))
     else if (idx < SLIDES.length - 1) goTo(idx + 1)
     else onFinish?.()
-  }, [step, maxStep, idx, goTo, onFinish])
+  }, [step, maxStep, idx, goTo, onFinish, scrollSlide])
 
   const back = useCallback(() => {
+    if (step === maxStep && scrollSlide(-1)) return
     if (step > 0) setSteps((s) => s.map((v, k) => (k === idx ? v - 1 : v)))
     else goTo(idx - 1)
-  }, [step, idx, goTo])
+  }, [step, maxStep, idx, goTo, scrollSlide])
 
   const updateMore = useCallback(() => {
     const sl = slideRefs.current[idx]
@@ -168,7 +181,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
                     </div>
                   )}
                   <span className="dk-next hand">
-                    {st < max ? '→ next highlight' : `→ for ${k < SLIDES.length - 1 ? SLIDES[k + 1].label : 'Astra'}`}
+                    {st < max ? '→ next highlight' : k === idx && hasMore && !setup.ownScroll ? '→ more below' : `→ for ${k < SLIDES.length - 1 ? SLIDES[k + 1].label : 'Astra'}`}
                   </span>
                 </div>
                 <div className="dk-main">{Math.abs(k - idx) > 1 ? null : Body ? <Body step={st} onStep={(n) => setSteps((all) => all.map((v, j) => (j === k ? n : v)))} /> : <PlaceholderBody slide={s} />}</div>
