@@ -511,27 +511,29 @@
 .pv-person:hover .pv-sticky { transform: rotate(0deg) scale(1.04); }
 .pv-sticky.is-tucked { opacity: 0; transform: scale(.6) !important; pointer-events: none; }
 
-.pv-puff, .pv-bubble { position: absolute; background: #fff; border: 1.5px solid #222; }
+.pv-puff, .pv-bubble { position: absolute; background: #d5c0ff; }
 .pv-puff { border-radius: 50%; }
-.pv-bubble { width: 560px; padding: 26px 30px; border-radius: 30px; }
-.pv-bubble small { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #8a8a8a; }
-.pv-bubble p { margin: 8px 0 0; font-size: 27px; line-height: 1.4; font-weight: 600; color: #111; text-wrap: pretty; }
+.pv-bubble { width: 560px; padding: 24px 28px 28px; box-shadow: 7px 7px 0 #9275cd; rotate: -1.5deg; }
+.pv-bubble small { font-family: var(--hand); font-size: 18px; color: rgba(0,0,0,.55); }
+.pv-bubble p { margin: 4px 0 0; font-size: 27px; line-height: 1.4; font-weight: 600; color: #111; text-wrap: pretty; }
 .pv-thought.is-on .pv-puff { animation: dot-pop .35s cubic-bezier(.3,1.5,.5,1) .8s both; }
 .pv-thought.is-on .pv-puff + .pv-puff { animation-delay: .95s; }
 .pv-thought.is-on .pv-bubble { transform-origin: 0% 100%; animation: bubble-in .6s cubic-bezier(.3,1.4,.5,1) 1.1s both; }
 
-.pv-chip { position: absolute; width: 250px; padding: 14px 16px; border-radius: 18px; background: #fff; border: 1.5px solid #222; text-align: left; font: inherit; cursor: pointer; transform-origin: 0 100%;
+.pv-chip { position: absolute; width: 250px; padding: 16px 18px; border: 0; border-radius: 0; background: #fff0a8; box-shadow: 5px 5px 0 #d8c66e; rotate: -1.2deg; text-align: left; font: inherit; cursor: pointer; transform-origin: 0 100%;
   transition: background .2s, border-color .2s, box-shadow .2s; }
-.pv-chip:not(.is-main) { border-style: dashed; border-color: #9a9a9a; }
+.pv-chip:nth-child(even) { rotate: 1.4deg; }
+.pv-chip:nth-child(3n) { rotate: -.4deg; }
+.pv-chip:not(.is-main) { background: #fff8d4; box-shadow: 5px 5px 0 #e6dcaa; }
 .pv-hmw-from { position: absolute; left: 95px; top: 28px; width: 810px; margin: 0; font-size: 16px; line-height: 1.4; color: #555; text-wrap: balance; }
-.pv-hmw-from small { margin-right: 8px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #8a8a8a; }
+.pv-hmw-from small { margin-right: 8px; font-family: var(--hand); font-size: 17px; color: #6b6b6b; }
 .pv-hmws.is-on .pv-chip { animation: bubble-in .55s cubic-bezier(.3,1.4,.5,1) calc(.3s + var(--d)) both; }
-.pv-chip:hover { box-shadow: 0 6px 18px rgba(0,0,0,.1); }
+.pv-chip:hover { rotate: 0deg; }
 .pv-chip-q { display: block; font-size: 17px; line-height: 1.35; font-weight: 600; color: #111; }
-.pv-chip-q b { color: #8a8a8a; font-weight: 700; }
+.pv-chip-q b { color: rgba(0,0,0,.45); font-weight: 700; }
 .pv-chip-how { display: block; max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .25s ease, margin .3s ease; font-size: 14px; line-height: 1.4; color: #333; }
 .pv-chip-how em { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: var(--astra); color: #fff; font-style: normal; font-size: 11px; font-weight: 600; }
-.pv-chip.is-open { z-index: 2; background: #fff; border-color: var(--astra); }
+.pv-chip.is-open { z-index: 2; rotate: 0deg; outline: 2px solid var(--astra); outline-offset: 3px; }
 .pv-chip.is-open .pv-chip-how { max-height: 120px; opacity: 1; margin-top: 10px; }
 @media (prefers-reduced-motion: reduce) { .pv-stage * { animation: none !important; } .pv-arrows path { stroke-dashoffset: 0; } }
 
@@ -656,13 +658,13 @@
   .pv-m-sticky p { margin: 0 0 8px; font-size: 15px; line-height: 1.35; font-weight: 600; color: #111; }
   .pv-m-sticky p.is-now { margin: 0; font-weight: 500; }
   .pv-m-pov { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: start; }
-  .pv-m-bubble { padding: 14px 16px; border-radius: 18px; border: 1.5px solid #222; background: #fff; }
+  .pv-m-bubble { padding: 14px 16px; background: #d5c0ff; box-shadow: 4px 4px 0 #9275cd; }
   .pv-m-bubble p { margin: 2px 0 0; font-size: 17px; line-height: 1.4; font-weight: 600; color: #111; }
   .pv-m-from { margin: 0 0 4px; font-size: 14px; line-height: 1.45; color: #555; }
-  .pv-m-hmw { padding: 12px 14px; border-radius: 12px; border: 1.5px dashed #9a9a9a; background: #fff; }
-  .pv-m-hmw.is-main { border-style: solid; border-color: #222; }
+  .pv-m-hmw { padding: 12px 14px; background: #fff8d4; box-shadow: 4px 4px 0 #e6dcaa; }
+  .pv-m-hmw.is-main { background: #fff0a8; box-shadow: 4px 4px 0 #d8c66e; }
   .pv-m-hmw p { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 600; color: #111; }
-  .pv-m-hmw b { color: #8a8a8a; }
+  .pv-m-hmw b { color: rgba(0,0,0,.45); }
   .pv-m-hmw .pv-m-how { margin-top: 6px; font-size: 14px; font-weight: 500; color: #444; }
   .pv-m-how em { font-style: normal; font-weight: 700; color: var(--astra); }
 
