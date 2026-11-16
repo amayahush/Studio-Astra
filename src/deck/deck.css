@@ -24,7 +24,21 @@
 .dk-arrows button:disabled { color: #c9c9c9; cursor: default; }
 
 .dk-prog { margin: 0 44px; display: flex; gap: 4px; flex: none; }
-.dk-prog button { flex: 1; height: 14px; padding: 0; border: 0; background: none; position: relative; cursor: pointer; }
+.dk-prog button { flex: 1; min-width: 0; height: 14px; padding: 0; border: 0; background: none; position: relative; cursor: pointer; text-align: left; }
+/* section names under the bar, so people can see where each card is and jump to it */
+.dk-prog { padding-bottom: 6px; }
+.dk-prog button { height: 34px; }
+.dk-prog-name { position: absolute; left: 0; right: 4px; top: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: 12px; line-height: 1.4; font-weight: 500; color: #a3a3a3; transition: color .2s; }
+.dk-prog button:hover .dk-prog-name { color: var(--ink); }
+.dk-prog button.is-here .dk-prog-name { color: var(--ink); font-weight: 600; }
+.dk-prog button:focus-visible { outline: none; }
+.dk-prog button:focus-visible .dk-prog-name { color: var(--astra); text-decoration: underline; }
+.dk-jump { display: none; position: relative; align-items: center; gap: 6px; color: var(--ink); }
+.dk-jump select { appearance: none; -webkit-appearance: none; border: 0; background: none; padding: 6px 18px 6px 4px; font: inherit; font-size: 15px; font-weight: 600; color: var(--ink); cursor: pointer; max-width: 56vw; text-overflow: ellipsis; }
+.dk-jump svg { position: absolute; right: 2px; pointer-events: none; }
+.dk-jump select:focus-visible { outline: 2px solid var(--astra); border-radius: 6px; }
+.dk-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .dk-prog button::after {
   content: ''; position: absolute; left: 0; right: 0; top: 5px; height: 3px; border-radius: 2px;
   background: #ececec; transition: background 0.4s ease, height 0.2s ease, top 0.2s ease;
@@ -156,7 +170,13 @@
 
 @media (max-width: 899px) {
   .dk-top { padding: 0 20px; }
-  .dk-prog { margin: 0 20px; }
+  .dk-prog { margin: 0 20px; padding-bottom: 0; }
+  .dk-prog button { height: 14px; }
+  .dk-prog-name { display: none; }
+  .dk-count { display: none; }
+  .dk-jump { display: inline-flex; min-width: 0; flex: 0 1 auto; }
+  .dk-jump select { max-width: 44vw; font-size: 14px; }
+  .dk-home { white-space: nowrap; }
   .dk-slide { flex-direction: column; padding: 24px 20px 56px; gap: 24px; }
   .dk-text { position: static; width: auto; height: auto; }
   .dk-main { flex: none; width: 100%; }

@@ -141,6 +141,14 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
       <header className="dk-top dk-fade">
         <button type="button" className="dk-home hand" onClick={close}>← Home</button>
         <span className="dk-count">{slide.label}</span>
+        {/* small screens: the title doubles as a section picker */}
+        <label className="dk-jump">
+          <span className="dk-sr">Go to section</span>
+          <select value={idx} onChange={(e) => goTo(Number(e.target.value))}>
+            {SLIDES.map((s, k) => <option key={s.id} value={k}>{k + 1}. {s.label}</option>)}
+          </select>
+          <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3 4.5 L6 7.5 L9 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </label>
         <div className="dk-arrows">
           <button type="button" onClick={back} disabled={idx === 0 && step === 0} aria-label="Back">‹</button>
           <button type="button" onClick={forward} aria-label="Forward">›</button>
@@ -148,7 +156,10 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
       </header>
       <nav className="dk-prog dk-fade" aria-label="All cards">
         {SLIDES.map((s, k) => (
-          <button key={s.id} type="button" className={k <= idx ? 'is-done' : ''} title={s.label} aria-label={s.label} onClick={() => goTo(k)} />
+          <button key={s.id} type="button" className={`${k <= idx ? 'is-done' : ''}${k === idx ? ' is-here' : ''}`} aria-current={k === idx ? 'step' : undefined}
+            onClick={(e) => { e.currentTarget.blur(); goTo(k) }}>
+            <span className="dk-prog-name">{s.label}</span>
+          </button>
         ))}
       </nav>
 
