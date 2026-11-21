@@ -57,10 +57,17 @@ export const PEOPLE = [
     uses: 'Built their own AI-first workflow with Claude that pulls tasks from their tracker and works through them. Treats it almost like another peer.',
     wish: 'For the intent behind a design to survive the handoff. A ticket marked done with a Figma link still doesn’t mean the developer knows why.',
   },
+  {
+    id: 'P8', role: 'Developer', title: 'Security engineer', context: 'Large tech company · tests code and makes sure audits are met',
+    ai: 0.7, reviews: true,
+    uses: 'Can only use the one AI tool their company approves. Uses it to run security scans, write test scripts straight from API docs and draft bug reports for developers. Checks it less often after a long time using it, but still checks every time the task is critical.',
+    wish: null,
+    standout: 'Their team has a clear owner for requirements. The architect keeps the epic current, approves every spec change, and the team gets notified when it evolves. The specs still change as they learn, and the record keeps up.',
+  },
 ]
 
 export const HEARD = [
-  { text: 'A person has to check AI’s work before anyone trusts it.', who: ['P1', 'P2', 'P4', 'P7'] },
+  { text: 'A person has to check AI’s work before anyone trusts it.', who: ['P1', 'P2', 'P4', 'P7', 'P8'] },
   { text: 'Designers get pulled in after the requirements are already set.', who: ['P3', 'P5'] },
   { text: 'The why behind a decision gets lost between people.', who: ['P6', 'P7'] },
   { text: 'Two people, separately, imagined an AI that drafts requirements from conversations.', who: ['P1', 'P5'], seed: true },

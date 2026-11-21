@@ -2,7 +2,7 @@ import { useState } from 'react'
 import faceImg from '../art/img/face@4x.png'
 import { PEOPLE, HEARD } from './content.js'
 
-// Interviews: the seven hand-drawn faces from the homepage card, grown into the artifact.
+// Interviews: the eight hand-drawn faces from the homepage card, grown into the artifact.
 // Step 0 lands on the group, then → walks through three moments:
 // 1 who they are, 2 where they agreed, 3 where they split on AI.
 export const INTERVIEW_STEPS = 3
@@ -10,15 +10,15 @@ export const INTERVIEW_STEPS = 3
 export const INTERVIEW_CAPTIONS = [
   'Eight people who touch requirements from different sides. Click anyone to hear from them.',
   'Developers, designers and a PM.',
-  'Every developer, and one designer, made a point of checking AI’s work before trusting it.',
+  'Four of the five developers, and one designer, made a point of checking AI’s work before trusting it.',
   'Same kind of work, very different relationships with AI.',
 ]
 
-const GRID = { P1: [20, 36], P2: [40, 36], P3: [60, 36], P4: [80, 36], P5: [30, 68], P6: [50, 68], P7: [70, 68] }
-const GROUPED = { P1: [12, 40], P2: [24, 40], P4: [36, 40], P6: [48, 40], P3: [70, 40], P7: [82, 40], P5: [50, 76] }
+const GRID = { P1: [20, 36], P2: [40, 36], P3: [60, 36], P4: [80, 36], P5: [20, 68], P6: [40, 68], P7: [60, 68], P8: [80, 68] }
+const GROUPED = { P1: [9, 40], P2: [20, 40], P4: [31, 40], P6: [42, 40], P8: [53, 40], P3: [72, 40], P7: [84, 40], P5: [50, 76] }
 const GROUP_LABELS = [
-  { text: 'Developers', x: 30, y: 18 },
-  { text: 'Designers', x: 76, y: 18 },
+  { text: 'Developers', x: 31, y: 18 },
+  { text: 'Designers', x: 78, y: 18 },
   { text: 'PM', x: 50, y: 56 },
 ]
 // spread along the AI line, alternating above and below so nobody overlaps
@@ -89,8 +89,14 @@ export default function InterviewsSlide({ step }) {
                 <h4>How they use AI</h4>
                 <p>{person.uses}</p>
               </>)}
-              <h4>What they wish for</h4>
-              <p>{person.wish}</p>
+              {person.wish && (<>
+                <h4>What they wish for</h4>
+                <p>{person.wish}</p>
+              </>)}
+              {person.standout && (<>
+                <h4>What stood out</h4>
+                <p>{person.standout}</p>
+              </>)}
             </aside>
           )
         })()}
@@ -116,7 +122,7 @@ export default function InterviewsSlide({ step }) {
         <ol className="iv-method">
           <li><b>Recruit</b><span>Cold outreach, a few dead ends and pivots, all kept in my research log.</span></li>
           <li><b>Ask for a story</b><span>“Tell me about the last thing you took from an idea to something built.”</span></li>
-          <li><b>Record</b><span>Recorded and transcribed every conversation, Aug 25 to Oct 3, 2026.</span></li>
+          <li><b>Record</b><span>Recorded and transcribed seven conversations, Aug 25 to Oct 3, 2026, and took notes by hand for the eighth.</span></li>
           <li><b>Clean up</b><span>Anonymized every transcript before tagging it for the thematic analysis.</span></li>
         </ol>
       </section>
