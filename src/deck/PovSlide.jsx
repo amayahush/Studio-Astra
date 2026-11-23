@@ -16,7 +16,7 @@ const W = 1000
 const H = 600
 
 export const PEOPLE = [
-  { role: 'Senior Developer', want: 'One place to see and change requirements', now: 'Late reworks and scattered docs', color: '#d5c0ff', shade: '#9275cd' },
+  { role: 'Senior Developer', want: 'One place to see what changed and why, and flag what won’t work', now: 'Late reworks and scattered docs', color: '#d5c0ff', shade: '#9275cd' },
   { role: 'Designer', want: 'The why behind a design to survive the handoff', now: 'Devs build without the why', color: '#ffa3df', shade: '#db86be' },
   { role: 'Product Manager', want: 'Every stakeholder’s input in one place', now: 'Requirements scattered across tools', color: '#fff0a8', shade: '#d8c66e' },
 ]
