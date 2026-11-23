@@ -89,7 +89,7 @@
 .ar-layer { position: absolute; inset: 0; }
 .ar-dim { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .ar-hot {
-  position: absolute; padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: pointer;
+  position: absolute; padding: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer;
   transition: box-shadow 0.15s ease, background 0.15s ease;
 }
 .ar-hot.is-on { box-shadow: 0 0 0 calc(2px * var(--inv)) var(--c); }

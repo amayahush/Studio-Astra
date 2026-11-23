@@ -197,7 +197,7 @@ function ImageView({ item, zoom, onSize }) {
                   <defs>
                     <mask id={`m-${item.id}`}>
                       <rect x="-5" y="-5" width="110" height="110" fill="#fff" />
-                      {(zone ? [zone] : matches).map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx="0.4" fill="#000" />)}
+                      {(zone ? [zone] : matches).map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} fill="#000" />)}
                     </mask>
                   </defs>
                   <rect x="-5" y="-5" width="110" height="110" fill="rgba(18,18,18,0.62)" mask={`url(#m-${item.id})`} />
