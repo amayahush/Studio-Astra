@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import faceImg from '../art/img/face@4x.png'
 import { PHASES, FOCUS } from './journeyData.js'
 import CompetitiveSlide from './CompetitiveSlide.jsx'
 import { PEOPLE, POV, HMW } from './PovSlide.jsx'
@@ -74,56 +73,61 @@ export function CompetitivePresent() {
   )
 }
 
-// ── Who I designed for: the problem up top, the three people with the developer forward,
-// and the main How Might We questions as the same hover/click chips as the full site.
-export const POV_PRESENT_CAPTIONS = ['Each role wants something different. I designed for the engineer. Hover a question to see how Astra answers it.']
+// ── Who I designed for: the problem, the question I designed around, then the three people
+// as flat sticky notes with the developer forward. Hover or click a note to bring that person
+// forward; hover or click the question to see how Astra answers it.
+export const POV_PRESENT_CAPTIONS = ['Each role wants something different. I designed for the engineer.']
+
+const QUESTION = HMW.find((h) => h.q.startsWith('keep everyone aligned')) ?? HMW[1]
 
 export function PovPresent() {
-  const [open, setOpen] = useState(null)
-  const [pinned, setPinned] = useState(null)
-  const main = HMW.filter((h) => h.main)
+  const [pinned, setPinned] = useState(0)
+  const [hover, setHover] = useState(null)
+  const [qOpen, setQOpen] = useState(false)
+  const [qPinned, setQPinned] = useState(false)
+  const focus = hover ?? pinned
   return (
     <div className="pm-panel pp">
-      <div className="pp-problem">
+      <div className="pp-block">
         <small>The problem</small>
-        <p>{POV}</p>
+        <p className="pp-problem">{POV}</p>
       </div>
-      <div className="pp-people">
+      <div className="pp-block">
+        <small>The question I designed around</small>
+        <button
+          type="button"
+          className={`pp-question${qOpen || qPinned ? ' is-open' : ''}`}
+          aria-expanded={qOpen || qPinned}
+          onMouseEnter={() => setQOpen(true)}
+          onMouseLeave={() => setQOpen(false)}
+          onFocus={() => setQOpen(true)}
+          onBlur={() => setQOpen(false)}
+          onClick={(e) => { e.currentTarget.blur(); setQPinned((v) => !v) }}
+        >
+          <span className="pp-q">How might we {QUESTION.q}</span>
+          <span className="pp-how"><em>Astra</em>{QUESTION.how}</span>
+        </button>
+      </div>
+      <div className="pp-people" onMouseLeave={() => setHover(null)}>
         {PEOPLE.map((p, i) => (
-          <div key={p.role} className={`pp-person${i === 0 ? ' is-main' : ''}`} style={{ '--c': p.color, '--k': p.shade, '--d': `${i * 120}ms` }}>
-            <div className="pp-who">
-              <span className="pp-face"><span className="pp-blob" /><img src={faceImg} alt="" draggable="false" /></span>
-              <b>{p.role}</b>
-            </div>
-            <div className="pp-sticky">
-              <small>wants</small>
-              <p>{p.want}</p>
-              <small>right now</small>
-              <p className="is-now">{p.now}</p>
-            </div>
-          </div>
+          <button
+            key={p.role}
+            type="button"
+            className={`pp-note${focus === i ? ' is-focus' : ''}`}
+            style={{ '--c': p.color, '--d': `${i * 110}ms` }}
+            aria-pressed={pinned === i}
+            onMouseEnter={() => setHover(i)}
+            onFocus={() => setHover(i)}
+            onBlur={() => setHover(null)}
+            onClick={(e) => { e.currentTarget.blur(); setPinned(i) }}
+          >
+            <b>{p.role}</b>
+            <small>wants</small>
+            <span className="pp-want">{p.want}</span>
+            <small>right now</small>
+            <span className="pp-now">{p.now}</span>
+          </button>
         ))}
-      </div>
-      <div className="pp-hmw">
-        <small>The questions I designed around</small>
-        <div className="pp-chips">
-          {main.map((h, i) => (
-            <button
-              key={h.q}
-              type="button"
-              className={`pp-chip${open === i ? ' is-open' : ''}`}
-              onMouseEnter={() => setOpen(i)}
-              onMouseLeave={() => setOpen(pinned)}
-              onFocus={() => setOpen(i)}
-              onBlur={() => setOpen(pinned)}
-              onClick={(e) => { e.currentTarget.blur(); const p = pinned === i ? null : i; setPinned(p); setOpen(p ?? i) }}
-              aria-expanded={open === i}
-            >
-              <span className="pp-q">How might we {h.q}</span>
-              <span className="pp-how"><em>Astra</em>{h.how}</span>
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   )

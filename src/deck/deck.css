@@ -780,45 +780,40 @@
 
 /* Who I designed for */
 .pp { gap: 26px; }
-.pp small { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
-.pp-problem p { margin: 0; font-size: 26px; line-height: 1.3; font-weight: 600; color: #000; text-wrap: balance; }
-.pp-people { display: flex; gap: 18px; align-items: flex-end; }
-.pp-person { flex: 1; display: flex; flex-direction: column; gap: 10px; opacity: .6; animation: pm-in .45s ease var(--d) both; transition: opacity .25s ease; }
-.pp-person.is-main { flex: 1.3; opacity: 1; }
-.pp-person:hover { opacity: 1; }
-.pp-who { display: flex; align-items: center; gap: 10px; }
-.pp-who b { font-size: 15px; font-weight: 600; color: #111; }
-.pp-face { position: relative; flex: none; width: 46px; height: 36px; transition: transform .35s cubic-bezier(.34,1.4,.5,1); }
-.pp-blob { position: absolute; inset: 0; border-radius: 50%; background: #d9d9d9; transition: background .3s ease; }
-.pp-face img { position: absolute; left: 3px; top: -2px; width: 45px; height: 36px; pointer-events: none; }
-.pp-person:hover .pp-face { transform: translateY(-4px) rotate(-4deg); }
-.pp-person:hover .pp-blob { background: var(--c); }
-.pp-sticky { padding: 16px 18px; background: var(--c); box-shadow: 5px 5px 0 var(--k); rotate: -1.2deg; transition: rotate .35s cubic-bezier(.34,1.4,.5,1), transform .35s cubic-bezier(.34,1.4,.5,1); }
-.pp-person:nth-child(2) .pp-sticky { rotate: 1.2deg; }
-.pp-person:nth-child(3) .pp-sticky { rotate: -.6deg; }
-.pp-person:hover .pp-sticky { rotate: 0deg; transform: scale(1.03); }
-.pp-sticky small { margin: 0; font-family: var(--hand); font-size: 16px; font-weight: 400; letter-spacing: 0; text-transform: none; color: rgba(0,0,0,.55); }
-.pp-sticky p { margin: 0 0 10px; font-size: 16px; line-height: 1.3; font-weight: 600; color: #1e1e1e; text-wrap: balance; }
-.pp-person.is-main .pp-sticky p { font-size: 19px; }
-.pp-sticky p.is-now { margin: 0; font-weight: 500; font-size: 14px; }
-.pp-person.is-main .pp-sticky p.is-now { font-size: 15px; }
-.pp-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
-.pp-chip { padding: 14px 16px; border: 0; border-radius: 12px; background: #fff; text-align: left; font: inherit; cursor: pointer; transition: box-shadow .2s ease; }
-.pp-chip:hover, .pp-chip.is-open { box-shadow: 0 0 0 2px var(--astra); }
-.pp-chip:focus-visible { outline: 2px solid var(--astra); outline-offset: 3px; }
-.pp-q { display: block; font-size: 16px; line-height: 1.35; font-weight: 600; color: #7a1fb0; }
-.pp-how { display: block; max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .25s ease, margin .3s ease; font-size: 14px; line-height: 1.4; color: #333; }
-.pp-how em { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: var(--astra); color: #fff; font-style: normal; font-size: 11px; font-weight: 600; }
-.pp-chip.is-open .pp-how { max-height: 120px; opacity: 1; margin-top: 10px; }
+.pp-block small, .pp-note small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.pp-block small { margin-bottom: 8px; }
+.pp-problem { margin: 0; font-size: 26px; line-height: 1.3; font-weight: 600; color: #000; text-wrap: balance; }
+.pp-question { display: block; width: 100%; padding: 0; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; }
+.pp-q { font-size: 20px; line-height: 1.35; font-weight: 500; color: #7a1fb0; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 2px; text-underline-offset: 5px; transition: text-decoration-color .2s ease; }
+.pp-question:hover .pp-q, .pp-question.is-open .pp-q { text-decoration-color: #e3b8ff; }
+.pp-question:focus-visible { outline: 2px solid var(--astra); outline-offset: 4px; border-radius: 4px; }
+.pp-how { display: block; max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .25s ease, margin .3s ease; font-size: 16px; line-height: 1.45; color: #333; }
+.pp-how em { display: inline-block; margin-right: 8px; padding: 1px 9px; border-radius: 999px; background: var(--astra); color: #fff; font-style: normal; font-size: 12px; font-weight: 600; vertical-align: 1px; }
+.pp-question.is-open .pp-how { max-height: 80px; opacity: 1; margin-top: 10px; }
+.pp-people { display: flex; gap: 14px; align-items: stretch; }
+.pp-note {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 6px;
+  padding: 18px; border: 0; border-radius: 0; background: var(--c); text-align: left; font: inherit; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1); opacity: .6;
+  transition: flex-grow .35s cubic-bezier(.3,1.2,.5,1), opacity .25s ease, transform .25s ease;
+  animation: pm-in .45s ease var(--d) both;
+}
+.pp-note.is-focus { flex-grow: 1.35; opacity: 1; transform: translateY(-4px); }
+.pp-note:focus-visible { outline: 2px solid var(--astra); outline-offset: 3px; }
+.pp-note b { font-size: 13px; font-weight: 700; color: #282828; }
+.pp-note small { margin-top: 4px; font-size: 11px; color: #4a4a4a; }
+.pp-want { font-size: 16px; line-height: 1.3; font-weight: 600; color: #000; transition: font-size .25s ease; }
+.pp-note.is-focus .pp-want { font-size: 20px; }
+.pp-now { font-size: 14px; line-height: 1.35; color: #282828; }
 
 @media (max-width: 899px) {
   .pm-panel { min-height: 0; padding: 20px; }
   .pj-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pj-cols, .pp-chips { grid-template-columns: 1fr; }
+  .pj-cols { grid-template-columns: 1fr; }
   .pp-people { flex-direction: column; align-items: stretch; }
   .pc-row { flex-wrap: wrap; }
   .pc-row small { margin-left: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pj-strip li, .pj-card, .pc-row, .pp-person { animation: none; }
+  .pj-strip li, .pj-card, .pc-row, .pp-note { animation: none; }
 }
