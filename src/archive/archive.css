@@ -151,6 +151,7 @@
 .ar-note-nav button:disabled { opacity: 0.35; cursor: default; }
 .ar-hint { position: absolute; left: 14px; bottom: 16px; font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 10px; pointer-events: none; background: rgba(0,0,0,0.35); color: #e8eaed; }
 
+.ar-failed { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #e8eaed; font-size: 14px; }
 .ar-docscroll { position: absolute; inset: 0; overflow: auto; display: flex; padding: 28px; }
 .ar-page {
   margin: auto; width: 612px; min-height: 792px; flex-shrink: 0; box-sizing: border-box; padding: 60px 64px 64px;
@@ -197,7 +198,9 @@
 
 /* tablet and phone: list on top, viewer below */
 @media (max-width: 900px) {
-  .ar-drawer { flex-direction: column; width: 100vw; }
+  .ar-drawer { flex-direction: column; width: 100vw; overflow-y: auto; }
+  .ar-preview { flex: none; }
+  .ar-viewer { flex: none; height: clamp(380px, 64vh, 760px); }
   .ar-list { width: auto; max-height: 34vh; border-right: 0; border-bottom: 1px solid #ececec; }
   .ar-list-head { padding: 18px 20px 6px; }
   .ar-preview { padding: 18px 16px 20px; gap: 14px; min-height: 0; }

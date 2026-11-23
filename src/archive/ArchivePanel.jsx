@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Component, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { DOCS, GROUPS } from './archiveData'
 import { EXPLORE } from './exploreData'
 import './archive.css'
@@ -22,6 +22,17 @@ function useZoom(resetKey) {
     })
   }, [])
   return { v, setV, zoomAt, base, setBase, fit: () => setV({ z: 1, x: 0, y: 0 }) }
+}
+
+// If one artifact fails to render, show a note in the viewer instead of blanking the whole page.
+class ViewerBoundary extends Component {
+  constructor(props) { super(props); this.state = { failed: false } }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidUpdate(prev) { if (prev.resetKey !== this.props.resetKey && this.state.failed) this.setState({ failed: false }) }
+  render() {
+    if (this.state.failed) return <div className="ar-failed">This artifact couldn’t load here. Try another one, or reopen the panel.</div>
+    return this.props.children
+  }
 }
 
 const NOTE_LABEL = { why: 'why I did this', changed: 'what changed', finding: 'what I found' }
@@ -268,25 +279,29 @@ function DocView({ item, zoom, tab, setTab }) {
   const boxRef = useRef(null)
   const pageRef = useRef(null)
   const eff = zoom.base * zoom.v.z
-  const effRef = useRef(eff)
-  effRef.current = eff
   const { setBase } = zoom
   // Fit to page = the whole sheet in view with even gray space around it.
+  // Measure the page at its natural size (zoom 1) so the result never feeds back into itself.
   useLayoutEffect(() => {
     const box = boxRef.current
     const page = pageRef.current
     if (!box || !page) return
     const measure = () => {
-      const h = page.getBoundingClientRect().height / effRef.current
+      const prev = page.style.zoom
+      page.style.zoom = '1'
+      const h = page.offsetHeight
+      page.style.zoom = prev
       const pad = 2 * 28
-      const f = Math.min((box.clientWidth - pad) / 612, (box.clientHeight - pad) / h)
-      if (f > 0 && Math.abs(f - zoom.base) > 0.002) setBase(f)
+      const fw = (box.clientWidth - pad) / 612
+      // small screens: fit the width and scroll down the page; otherwise the whole sheet
+      const f = box.clientWidth < 640 ? fw : Math.min(fw, (box.clientHeight - pad) / h)
+      if (Number.isFinite(f) && f > 0) setBase(Math.max(0.15, Math.round(f * 1000) / 1000))
     }
     measure()
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver(() => measure())
     ro.observe(box)
     return () => ro.disconnect()
-  }, [item.id, tab, setBase, zoom.base])
+  }, [item.id, tab, setBase])
   if (!d) return null
   const ti = d.tabs ? Math.min(tab, d.tabs.length - 1) : 0
   const blocks = d.tabs ? d.tabs[ti].blocks : d.blocks
@@ -435,7 +450,7 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {}, startOpen = 
                   </div>
                 </div>
                 <div className="ar-stage" ref={stageRef}>
-                  {isDoc ? <DocView item={sel} zoom={zoom} tab={tab} setTab={setTab} /> : <ImageView key={sel.id} item={sel} zoom={zoom} onSize={setNat} />}
+                  <ViewerBoundary resetKey={sel.id}>{isDoc ? <DocView item={sel} zoom={zoom} tab={tab} setTab={setTab} /> : <ImageView key={sel.id} item={sel} zoom={zoom} onSize={setNat} />}</ViewerBoundary>
                 </div>
               </div>
 
