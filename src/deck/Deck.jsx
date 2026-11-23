@@ -29,7 +29,7 @@ const PRESENT_SETUP = {
   // ends on the four themes; the relay map step is left for the full site
   'thematic-analysis': { steps: 3, captions: THEMATIC_CAPTIONS, Body: ThematicSlide },
   'journey-map': { steps: 0, captions: JOURNEY_PRESENT_CAPTIONS, Body: JourneyPresent },
-  'competitive-analysis': { steps: 0, captions: COMP_PRESENT_CAPTIONS, Body: CompetitivePresent },
+  'competitive-analysis': { steps: 0, captions: COMP_PRESENT_CAPTIONS, Body: CompetitivePresent, ownScroll: true }, // full comparison is mouse/trackpad scroll only
   'pov-user-model-hmw': { steps: 0, captions: POV_PRESENT_CAPTIONS, Body: PovPresent },
 }
 
