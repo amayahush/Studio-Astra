@@ -2,7 +2,8 @@
 // img: file name in /public/archive (full size .webp plus a -thumb.webp). card: the deck card it links to.
 const H = (t) => ({ h: t })
 const P = (t) => ({ p: t })
-const I = (t, c, badge) => ({ i: t, c: c || '', badge: badge || '' })
+const R = (segs) => ({ r: segs })
+const I = (t, c, badge, url) => ({ i: t, c: c || '', badge: badge || '', url: url || '' })
 
 export const DOCS = {
   guide: { eyebrow: 'Interview guide', title: 'My interview guides', tabs: [
@@ -44,9 +45,9 @@ export const DOCS = {
     P('Context on Codex workflows, data schemas and spec-driven development.'),
     H('Sources'),
     I('What do software engineers do on a daily basis?'),
-    I('Effective Software Development Workflow: From Idea to Delivery'),
-    I('How I AI: 3 Advanced Codex Workflows for Faster, Smarter Development with OpenAI’s Alex Embiricos'),
-    I('A Practical Path to Spec-Driven Development with Codex')
+    I('Effective Software Development Workflow: From Idea to Delivery', '', '', 'https://dev.to/ifechukwuobiezue/effective-software-development-workflow-from-idea-to-delivery-47d8'),
+    I('How I AI: 3 Advanced Codex Workflows for Faster, Smarter Development with OpenAI’s Alex Embiricos', '', '', 'https://chatprd.ai/how-i-ai/advanced-codex-workflows-with-openai-alex-embiricos'),
+    I('A Practical Path to Spec-Driven Development with Codex', '', '', 'https://mmarcosab.medium.com/a-practical-path-to-spec-driven-development-with-codex-a3cec3ef554a')
   ]},
   reframe: { eyebrow: 'Reframing the problem', title: 'Keeping requirements clear as they evolve', blocks: [
     P('My themes showed the problem was not a bad PRD at the start. Requirements keep changing, and the shared record falls behind.'),
@@ -55,6 +56,9 @@ export const DOCS = {
     I('Stakeholder map: PM and designer moved to direct influence; developers to mild, marked as most affected. The PM and designer control the record. Developers feel the lag but don’t control it.'),
     I('Ecosystem map: added a loop from deploy back to identifying needs, and where decisions actually live. Requirements change mid-build (P1, P3, P5).'),
     I('Spec-driven link: no participant used spec-driven development, so I framed it as a consequence, not something I observed.')
+  ]},
+  pov: { eyebrow: 'POV', title: 'My problem statement', blocks: [
+    R([['Senior software developers', 'user'], [' need a way to ', ''], ['trust that the requirements in front of them are grounded in a validated problem', 'need'], [', because ', ''], ['building on an unvalidated assumption wastes implementation time, delays delivery, and erodes confidence that the next set of requirements will hold up either.', 'insight']])
   ]},
   hmw: { eyebrow: 'How might we', title: 'The questions I designed around', blocks: [
       P('How might we…'),
@@ -123,7 +127,7 @@ export const GROUPS = [
     { id: 'comp', kind: 'doc', title: 'Competitive analysis', meta: '7 tools compared', card: 'competitive-analysis', takeaway: 'Most of the pieces already exist. What’s missing is the moment a requirement changes mid-build.' }
   ]},
   { name: 'Framing the problem', items: [
-    { id: 'pov', kind: 'img', img: 'pov', title: 'POV', meta: 'My problem statement', card: 'pov-user-model-hmw', takeaway: 'The senior engineer knows the system best, and still gets the requirements last.' },
+    { id: 'pov', kind: 'doc', title: 'POV', meta: 'My problem statement', card: 'pov-user-model-hmw', takeaway: 'The senior engineer knows the system best, and still gets the requirements last.' },
     { id: 'hmw', kind: 'doc', title: 'How might we', meta: 'Final set of questions', takeaway: 'Keep iteration alive instead of forcing a rigid waterfall.' },
     { id: 'stories', kind: 'doc', title: 'User story', meta: 'Senior developer', takeaway: 'The developer wants to share feasibility early and get settled requirements, so building doesn’t turn into large reworks later.' },
     { id: 'mind', kind: 'img', dark: true, img: 'mind', title: 'Mind map', meta: 'Themes, pains and ideas', card: 'mind-mapping', takeaway: 'What I carried into Astra: a living PRD with change and drift alerts, and a drafting tool that listens to conversations.' }

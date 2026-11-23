@@ -66,8 +66,9 @@
 .ar-tools button { width: 36px; height: 36px; border: 0; border-radius: 18px; background: transparent; cursor: pointer; font-size: 20px; color: #f1f1f1; }
 .ar-tools button:hover { background: rgba(255,255,255,0.1); }
 .ar-pct { min-width: 52px; padding: 4px 0; text-align: center; border-radius: 4px; background: #191b1c; font-size: 12px; }
-.ar-tools .ar-fit { width: auto; height: 32px; margin-left: 6px; padding: 0 12px; border-radius: 16px; background: #4a4e51; font: 600 12px var(--sans); }
-.ar-tools .ar-fit:hover { background: #5a5e61; }
+.ar-seg { display: flex; margin-left: 8px; padding: 2px; border-radius: 18px; background: #191b1c; }
+.ar-tools .ar-seg button { width: auto; min-width: 52px; height: 30px; padding: 0 12px; border-radius: 15px; font: 600 12px var(--sans); color: #f1f1f1; }
+.ar-tools .ar-seg button[aria-pressed='true'] { background: #f1f1f1; color: #202124; }
 .ar-stage { position: relative; flex-grow: 1; min-height: 0; background: #525659; overflow: hidden; }
 
 .ar-view {
@@ -84,29 +85,41 @@
 .ar-sheet.is-dark { background: #1e1e1e; }
 .ar-hint { position: absolute; left: 14px; bottom: 16px; font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 10px; pointer-events: none; background: rgba(0,0,0,0.35); color: #e8eaed; }
 
-.ar-docscroll { position: absolute; inset: 0; overflow: auto; display: flex; align-items: flex-start; }
+.ar-docscroll { position: absolute; inset: 0; overflow: auto; display: flex; padding: 28px; }
 .ar-page {
-  margin: 28px auto; width: 612px; min-height: 792px; flex-shrink: 0; box-sizing: border-box; padding: 60px 64px 64px;
+  margin: auto; width: 612px; min-height: 792px; flex-shrink: 0; box-sizing: border-box; padding: 60px 64px 64px;
   background: #fff; border-radius: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.25);
   display: flex; flex-direction: column; gap: 12px;
 }
-.ar-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9a9a9a; }
+.ar-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #555; }
 .ar-page h3 { margin: 0 0 4px; font-size: 22px; line-height: 1.25; font-weight: 600; color: #000; }
-.ar-page h4 { margin: 12px 0 0; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #6b6b6b; }
-.ar-page p { margin: 0; font-size: 15px; line-height: 1.55; color: #3a3a3a; }
-.ar-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
-.ar-tabs button { min-height: 32px; padding: 6px 12px; border-radius: 999px; border: 1px solid #e3e3e3; background: #fff; color: #4a4a4a; font: 600 12px var(--sans); cursor: pointer; }
-.ar-tabs button[aria-pressed='true'] { border-color: var(--astra); background: #faf0ff; color: #7a1fb0; }
+.ar-page h4 { margin: 12px 0 0; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #000; }
+.ar-page p { margin: 0; font-size: 15px; line-height: 1.55; color: #000; }
+.ar-tabs { display: flex; flex-wrap: wrap; gap: 14px; border-bottom: 1px solid #000; }
+.ar-tabs button { min-height: 32px; padding: 6px 2px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #555; font: 600 12px var(--sans); cursor: pointer; }
+.ar-tabs button[aria-pressed='true'] { border-bottom-color: #000; color: #000; }
 .ar-item { display: flex; align-items: flex-start; gap: 10px; padding: 2px 0; }
-.ar-dot { flex-shrink: 0; margin-top: 7px; width: 6px; height: 6px; border-radius: 3px; background: #bdbdbd; }
-.ar-text { flex: 1; font-size: 14px; line-height: 1.5; color: var(--ink); }
-.ar-badge { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 999px; padding: 3px 8px; background: #f0f0f0; color: #5f5f5f; }
-.ar-item.c-kept { background: #faf0ff; border-radius: 8px; padding: 10px 12px; }
-.ar-item.c-kept .ar-dot { background: var(--astra); }
-.ar-item.c-kept .ar-text { color: #1e1e1e; font-weight: 500; }
-.ar-item.c-kept .ar-badge { background: var(--astra); color: #fff; }
-.ar-item.c-gray .ar-dot { background: #cfcfcf; }
-.ar-item.c-gray .ar-text { color: #5f5f5f; }
+.ar-dot { flex-shrink: 0; margin-top: 7px; width: 7px; height: 7px; border-radius: 4px; background: #000; }
+.ar-text { flex: 1; font-size: 14px; line-height: 1.5; color: #000; }
+.ar-link { color: #000; text-decoration: underline; text-underline-offset: 2px; }
+.ar-link:hover { color: #444; }
+.ar-badge { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 999px; padding: 2px 8px; background: transparent; color: #000; border: 1px solid #000; }
+.ar-item.c-kept .ar-text { font-weight: 600; }
+.ar-dot.c-kept, .ar-item.c-kept .ar-dot { background: #9b3fd6; }
+.ar-dot.c-gray, .ar-item.c-gray .ar-dot { background: #b5b5b5; }
+.ar-dot.c-user, .ar-item.c-user .ar-dot { background: #c62828; }
+.ar-dot.c-need, .ar-item.c-need .ar-dot { background: #1b7f3b; }
+.ar-dot.c-insight, .ar-item.c-insight .ar-dot { background: #1f4fd1; }
+.ar-page p.ar-pov { margin: 4px 0 8px; font-size: 20px; line-height: 1.5; }
+.ar-pov span[class] { font-weight: 700; }
+.pov-user { color: #c62828; }
+.pov-need { color: #1b7f3b; }
+.pov-insight { color: #1f4fd1; }
+.ar-item.c-kept .ar-badge { color: #7a1fb0; border-color: #9b3fd6; }
+.ar-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: -4px; padding: 8px 0; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; font-size: 11px; color: #333; }
+.ar-legend > span { display: flex; align-items: center; gap: 6px; }
+.ar-legend .ar-dot { margin-top: 0; }
+.ar-item.c-gray .ar-text { color: #444; }
 
 /* takeaway */
 .ar-foot { display: flex; gap: 24px; align-items: center; }
@@ -123,7 +136,6 @@
   .ar-list-head { padding: 18px 20px 6px; }
   .ar-preview { padding: 18px 16px 20px; gap: 14px; min-height: 0; }
   .ar-head h2 { font-size: 22px; }
-  .ar-page { width: calc(100% - 32px); min-height: 0; padding: 32px 24px; }
   .ar-pages, .ar-sep, .ar-hint { display: none; }
   .ar-foot { flex-direction: column; align-items: stretch; gap: 8px; }
   .ar-takeaway p { font-size: 15px; }
