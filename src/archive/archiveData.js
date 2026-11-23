@@ -156,8 +156,8 @@ export const GROUPS = [
   { name: 'Designing Astra', items: [
     { id: 'flowfinal', kind: 'img', img: 'flowfinal', title: 'User flow', meta: 'Full flow, and how I scoped the prototype', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.',
       views: [
-        { label: 'Full flow', img: 'flowfinal', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.' },
-        { label: 'How I scoped the prototype', img: 'flow', takeaway: 'Anyone can propose a change. Only the PM finalizes it.' }
+        { label: 'Full flow', img: 'flowfinal', explore: 'flowfull', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.' },
+        { label: 'How I scoped the prototype', img: 'flow', explore: 'flowscope', takeaway: 'Anyone can propose a change. Only the PM finalizes it.' }
       ] },
     { id: 'high', kind: 'img', dark: true, img: 'high', title: 'Wireframes', meta: 'Low-fi to high-fi, four rounds', card: 'wireframes', takeaway: 'Built around one scenario: the PRD says the dashboard refreshes every 15 minutes, but the data only updates once an hour.',
       views: [

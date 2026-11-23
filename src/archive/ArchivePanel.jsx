@@ -92,7 +92,11 @@ function ImageView({ item, zoom, onSize }) {
     const cx = PAD + ((r.x + r.w / 2) / 100) * cw - sw / 2
     const cy = PAD + ((r.y + r.h / 2) / 100) * ch - sh / 2
     const z = Math.max(1, Math.min(4.5, (box.W * 0.72) / rw, (box.H * 0.62) / rh))
-    setV({ z, x: -cx * z, y: -cy * z })
+    // nothing to zoom into (the area already fills the view): stay fitted rather than sliding the sheet off-center
+    if (z < 1.1) { setV({ z: 1, x: 0, y: 0 }); return }
+    // keep the sheet's edges from pulling into view past the viewer
+    const maxX = Math.max(0, (sw * z - box.W) / 2), maxY = Math.max(0, (sh * z - box.H) / 2)
+    setV({ z, x: Math.max(-maxX, Math.min(maxX, -cx * z)), y: Math.max(-maxY, Math.min(maxY, -cy * z)) })
   }
 
   const regions = ex ? ex.regions : []
