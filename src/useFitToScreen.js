@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef } from 'react'
 const MIN_FIT_WIDTH = 900
 const DESIGN_WIDTH = 1250 // 1154px of content plus a little side margin
 
-export default function useFitToScreen() {
+export default function useFitToScreen(deps = []) {
   const ref = useRef(null)
   useLayoutEffect(() => {
     const el = ref.current
@@ -27,6 +27,6 @@ export default function useFitToScreen() {
     document.fonts?.ready.then(fit)
     window.addEventListener('resize', fit)
     return () => window.removeEventListener('resize', fit)
-  }, [])
+  }, deps) // refit when the page's content changes (e.g. presentation mode)
   return ref
 }

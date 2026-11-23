@@ -1,6 +1,7 @@
 import StepMarks from './StepMarks.jsx'
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { SLIDES } from './content.js'
+import { PRESENT } from '../present.js'
 import InterviewsSlide, { INTERVIEW_STEPS, INTERVIEW_CAPTIONS } from './InterviewsSlide.jsx'
 import ThematicSlide, { THEMATIC_STEPS, THEMATIC_CAPTIONS } from './ThematicSlide.jsx'
 import EcosystemSlide, { ECO_STEPS, ECO_CAPTIONS } from './EcosystemSlide.jsx'
@@ -38,9 +39,19 @@ const insetFor = (r) =>
 // The deck: each homepage card is one full-screen slide.
 // ← → change cards (→ steps through a card's highlights first), ↓ ↑ scroll a long card,
 // 1–8 jump, Esc goes home. It opens by growing out of the card that was clicked.
-export default function Deck({ start, originRect, getCardRect, onClose, onFinish, startAtEnd }) {
-  const [idx, setIdx] = useState(start)
-  const [steps, setSteps] = useState(() => SLIDES.map((s, k) => (startAtEnd && k === start ? SETUP[s.id]?.steps ?? 0 : 0)))
+export default function Deck({ start, originRect, getCardRect, onClose, onFinish, startAtEnd, present }) {
+  // Presentation mode: skipped cards drop out of the deck and labels use the plain-language names.
+  const slides = useMemo(
+    () => (present ? SLIDES.filter((s) => !PRESENT[s.id]?.skip).map((s) => ({ ...s, label: PRESENT[s.id]?.label ?? s.label })) : SLIDES),
+    [present],
+  )
+  // start is the homepage card's position; find that card in this deck (a skipped one falls back).
+  const [startIdx] = useState(() => {
+    const k = slides.findIndex((s) => s.id === SLIDES[start]?.id)
+    return k >= 0 ? k : startAtEnd ? slides.length - 1 : 0
+  })
+  const [idx, setIdx] = useState(startIdx)
+  const [steps, setSteps] = useState(() => slides.map((s, k) => (startAtEnd && k === startIdx ? SETUP[s.id]?.steps ?? 0 : 0)))
   const [ready, setReady] = useState(false)
   const [closing, setClosing] = useState(false)
   const [hasMore, setHasMore] = useState(false)
@@ -48,7 +59,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
   const slideRefs = useRef([])
 
   const step = steps[idx]
-  const setup = SETUP[SLIDES[idx].id]
+  const setup = SETUP[slides[idx].id]
   const maxStep = setup?.steps ?? 0
 
   // open: grow out of the clicked card
@@ -66,21 +77,21 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
     if (closing) return
     setClosing(true)
     setReady(false)
-    const r = getCardRect(idx)
+    const r = getCardRect(slides[idx].id)
     if (r) rootRef.current.style.clipPath = insetFor(r)
     setTimeout(onClose, 600)
-  }, [closing, idx, getCardRect, onClose])
+  }, [closing, idx, getCardRect, onClose, slides])
 
   const goTo = useCallback((j) => {
-    const n = Math.max(0, Math.min(SLIDES.length - 1, j))
+    const n = Math.max(0, Math.min(slides.length - 1, j))
     setIdx(n)
-  }, [])
+  }, [slides])
 
   // On a card's last highlight, → first scrolls down through anything still below the fold,
   // and ← scrolls back up, before moving to another card or highlight.
   const scrollSlide = useCallback((dir) => {
     const sl = slideRefs.current[idx]
-    if (!sl || SETUP[SLIDES[idx].id]?.ownScroll) return false
+    if (!sl || SETUP[slides[idx].id]?.ownScroll) return false
     const room = dir > 0 ? sl.scrollHeight - sl.clientHeight - sl.scrollTop : sl.scrollTop
     if (room <= 40) return false
     sl.scrollBy({ top: dir * Math.min(room, sl.clientHeight * 0.8), behavior: 'smooth' })
@@ -90,7 +101,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
   const forward = useCallback(() => {
     if (step === maxStep && scrollSlide(1)) return
     if (step < maxStep) setSteps((s) => s.map((v, k) => (k === idx ? v + 1 : v)))
-    else if (idx < SLIDES.length - 1) goTo(idx + 1)
+    else if (idx < slides.length - 1) goTo(idx + 1)
     else onFinish?.()
   }, [step, maxStep, idx, goTo, onFinish, scrollSlide])
 
@@ -109,7 +120,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
   useEffect(() => {
     updateMore()
     if (typeof window !== 'undefined') {
-      try { history.replaceState(null, '', `#${SLIDES[idx].id}`) } catch (e) { /* ignore */ }
+      try { history.replaceState(null, '', `#${slides[idx].id}`) } catch (e) { /* ignore */ }
     }
   }, [idx, updateMore])
 
@@ -133,8 +144,8 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
     }
   }, [close, forward, back, goTo, idx])
 
-  const slide = SLIDES[idx]
-  const nextLabel = idx < SLIDES.length - 1 ? SLIDES[idx + 1].label : 'Astra'
+  const slide = slides[idx]
+  const nextLabel = idx < slides.length - 1 ? slides[idx + 1].label : 'Astra'
 
   return (
     <div ref={rootRef} className={`deck${ready ? ' is-ready' : ''}${hasMore ? ' has-more' : ''}`} role="dialog" aria-modal="true" aria-label={slide.label}>
@@ -145,7 +156,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
         <label className="dk-jump">
           <span className="dk-sr">Go to section</span>
           <select value={idx} onChange={(e) => goTo(Number(e.target.value))}>
-            {SLIDES.map((s, k) => <option key={s.id} value={k}>{k + 1}. {s.label}</option>)}
+            {slides.map((s, k) => <option key={s.id} value={k}>{k + 1}. {s.label}</option>)}
           </select>
           <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3 4.5 L6 7.5 L9 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </label>
@@ -155,7 +166,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
         </div>
       </header>
       <nav className="dk-prog dk-fade" aria-label="All cards">
-        {SLIDES.map((s, k) => (
+        {slides.map((s, k) => (
           <button key={s.id} type="button" className={`${k <= idx ? 'is-done' : ''}${k === idx ? ' is-here' : ''}`} aria-current={k === idx ? 'step' : undefined}
             onClick={(e) => { e.currentTarget.blur(); goTo(k) }}>
             <span className="dk-prog-name">{s.label}</span>
@@ -165,7 +176,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
 
       <div className="dk-view">
         <div className="dk-track" style={{ transform: `translateX(${-idx * 100}vw)` }}>
-          {SLIDES.map((s, k) => {
+          {slides.map((s, k) => {
             const su = SETUP[s.id]
             const Body = su?.Body
             const st = steps[k]
@@ -192,7 +203,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
                     </div>
                   )}
                   <span className="dk-next hand">
-                    {st < max ? '→ next highlight' : k === idx && hasMore && !setup.ownScroll ? '→ more below' : `→ for ${k < SLIDES.length - 1 ? SLIDES[k + 1].label : 'Astra'}`}
+                    {st < max ? '→ next highlight' : k === idx && hasMore && !setup.ownScroll ? '→ more below' : `→ for ${k < slides.length - 1 ? slides[k + 1].label : 'Astra'}`}
                   </span>
                 </div>
                 <div className="dk-main">{Math.abs(k - idx) > 1 ? null : Body ? <Body step={st} onStep={(n) => setSteps((all) => all.map((v, j) => (j === k ? n : v)))} /> : <PlaceholderBody slide={s} />}</div>

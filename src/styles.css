@@ -305,3 +305,103 @@ html.fit-screen, html.fit-screen body { overflow: hidden; height: 100%; }
 .solution-mark svg { transform-origin: center; transition: transform .7s cubic-bezier(.3, 1.3, .5, 1); }
 .solution:hover .solution-mark svg, .solution:focus-visible .solution-mark svg { transform: rotate(180deg); }
 @media (prefers-reduced-motion: reduce) { .solution-mark svg { transition: none; } }
+
+/* Presentation mode: the condensed talk. Toggle sits top right, on by default. */
+.home { position: relative; }
+.present-toggle {
+  position: absolute;
+  top: 79px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  border: 1px solid #d4d4d4;
+  background: #fafafa;
+  color: #4a4a4a;
+  font: 600 13px/1 var(--sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.present-toggle.is-on { border-color: #e3b8ff; background: #faf0ff; color: #7a1fb0; }
+.present-toggle:focus-visible { outline: 2px solid var(--astra); outline-offset: 3px; }
+.present-track {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: #bdbdbd;
+  transition: background 0.2s ease;
+}
+.present-toggle.is-on .present-track { background: var(--astra); }
+.present-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: #fff;
+  transition: left 0.2s ease;
+}
+.present-toggle.is-on .present-knob { left: 18px; }
+
+.present-def {
+  margin: 14px 0 0;
+  max-width: 963px;
+  font-size: 18px;
+  line-height: 1.45;
+  color: #4a4a4a;
+}
+.present-def b { font-weight: 600; color: #000; }
+
+.card-method {
+  position: absolute;
+  top: 36px;
+  left: 21px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.card-num {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--astra);
+  color: #fff;
+  font: 700 12px/24px var(--sans);
+  text-align: center;
+}
+.card-skip {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #d6d6d6;
+  color: #555;
+  font: 600 11px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.card.is-skipped {
+  background: #f3f3f3;
+  cursor: default;
+  outline: 1.5px dashed #c4c4c4;
+  outline-offset: -1.5px;
+}
+.card.is-skipped .card-stage,
+.card.is-skipped .card-label,
+.card.is-skipped .card-method,
+.card.is-skipped .card-caption { opacity: 0.4; filter: grayscale(1); }
+
+@media (max-width: 899px) {
+  .present-toggle { position: static; margin-bottom: 20px; }
+}
