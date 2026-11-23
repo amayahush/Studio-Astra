@@ -302,6 +302,29 @@ function DocView({ item, zoom, tab, setTab }) {
     ro.observe(box)
     return () => ro.disconnect()
   }, [item.id, tab, setBase])
+  // click a section: zoom the page up and bring that section to the middle, dim the rest
+  const [activeSec, setActiveSec] = useState(-1)
+  useEffect(() => setActiveSec(-1), [item.id, tab])
+  useEffect(() => { if (zoom.v.z === 1) setActiveSec(-1) }, [zoom.v.z])
+  useEffect(() => {
+    if (activeSec < 0) return
+    const id = requestAnimationFrame(() => {
+      const box = boxRef.current
+      const sec = box && box.querySelector(`[data-sec="${activeSec}"]`)
+      if (!sec) return
+      const br = box.getBoundingClientRect(), sr = sec.getBoundingClientRect()
+      box.scrollTo({ top: box.scrollTop + sr.top - br.top - Math.max(24, (br.height - sr.height) / 2), behavior: 'smooth' })
+    })
+    return () => cancelAnimationFrame(id)
+  }, [activeSec, eff])
+  const focusSection = (k, e) => {
+    if (e.target.closest('a, summary, button')) return
+    if (activeSec === k) { setActiveSec(-1); zoom.fit(); return }
+    const box = boxRef.current
+    const fillEff = box ? (box.clientWidth - 56) / 612 : 1
+    zoom.setV({ z: Math.max(zoom.v.z, fillEff / zoom.base), x: 0, y: 0 })
+    setActiveSec(k)
+  }
   if (!d) return null
   const ti = d.tabs ? Math.min(tab, d.tabs.length - 1) : 0
   const blocks = d.tabs ? d.tabs[ti].blocks : d.blocks
@@ -312,24 +335,7 @@ function DocView({ item, zoom, tab, setTab }) {
   if (codes.includes('gray')) legend.push(['gray', 'Partly or not found'])
   if (legend.length) legend.unshift(['none', 'Main point'])
   ;[['user', 'User'], ['need', 'Need'], ['insight', 'Insight']].forEach(([c, label]) => { if (codes.includes(c)) legend.push([c, label]) })
-  return (
-    <div className="ar-docscroll" ref={boxRef}>
-      <article className="ar-page" ref={pageRef} style={{ zoom: eff }}>
-        <span className="ar-eyebrow">{d.eyebrow}</span>
-        <h3>{d.title}</h3>
-        {legend.length > 0 && (
-          <div className="ar-legend">
-            {legend.map(([c, label]) => <span key={c}><span className={`ar-dot c-${c}`} />{label}</span>)}
-          </div>
-        )}
-        {d.tabs && (
-          <div className="ar-tabs">
-            {d.tabs.map((t, i) => (
-              <button key={t.label} type="button" aria-pressed={i === ti} onClick={() => { setTab(i); zoom.fit() }}>{t.label}</button>
-            ))}
-          </div>
-        )}
-        {blocks.map((b, i) => {
+  const renderBlock = (b, i) => {
           if (b.h) return <h4 key={i}>{b.h}</h4>
           if (b.p) return <p key={i}>{b.p}</p>
           if (b.r) return <p key={i} className="ar-pov">{b.r.map(([text, c], j) => <span key={j} className={c ? `pov-${c}` : undefined}>{text}</span>)}</p>
@@ -350,7 +356,48 @@ function DocView({ item, zoom, tab, setTab }) {
               {b.badge && <span className="ar-badge">{b.badge}</span>}
             </div>
           )
-        })}
+  }
+  return (
+    <div className="ar-docscroll" ref={boxRef}>
+      <article className="ar-page" ref={pageRef} style={{ zoom: eff }}>
+        <span className="ar-eyebrow">{d.eyebrow}</span>
+        <h3>{d.title}</h3>
+        {legend.length > 0 && (
+          <div className="ar-legend">
+            {legend.map(([c, label]) => <span key={c}><span className={`ar-dot c-${c}`} />{label}</span>)}
+          </div>
+        )}
+        {d.tabs && (
+          <div className="ar-tabs">
+            {d.tabs.map((t, i) => (
+              <button key={t.label} type="button" aria-pressed={i === ti} onClick={() => { setTab(i); zoom.fit() }}>{t.label}</button>
+            ))}
+          </div>
+        )}
+        {(() => {
+          // group: anything before the first heading is intro; each heading starts a clickable section
+          const groups = []
+          blocks.forEach((b, i) => {
+            if (b.h || !groups.length) groups.push({ h: !!b.h, items: [] })
+            groups[groups.length - 1].items.push([b, i])
+          })
+          let k = -1
+          return groups.map((g, gi) => {
+            if (!g.h) return <div key={gi} className="ar-intro">{g.items.map(([b, i]) => renderBlock(b, i))}</div>
+            k += 1
+            const kk = k
+            return (
+              <section
+                key={gi}
+                data-sec={kk}
+                className={`ar-sec${activeSec === kk ? ' is-active' : ''}${activeSec >= 0 && activeSec !== kk ? ' is-dim' : ''}`}
+                onClick={(e) => focusSection(kk, e)}
+              >
+                {g.items.map(([b, i]) => renderBlock(b, i))}
+              </section>
+            )
+          })
+        })()}
       </article>
     </div>
   )
