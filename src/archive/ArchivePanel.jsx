@@ -409,11 +409,14 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {}, startOpen = 
   const [open, setOpen] = useState(startOpen)
   const [selId, setSelId] = useState(ITEMS[0].id)
   const [tab, setTab] = useState(0)
-  const sel = ITEMS.find((i) => i.id === selId) || ITEMS[0]
-  const zoom = useZoom(selId)
+  const [view, setView] = useState(0)
+  const base = ITEMS.find((i) => i.id === selId) || ITEMS[0]
+  // an artifact with views (e.g. user flow) shows one at a time, picked from tabs above the viewer
+  const sel = base.views ? { ...base, ...base.views[Math.min(view, base.views.length - 1)] } : base
+  const zoom = useZoom(selId + ':' + view)
   const stageRef = useRef(null)
   const [nat, setNat] = useState(null)
-  useEffect(() => setNat(null), [selId])
+  useEffect(() => setNat(null), [selId, view])
   // Fill: the artifact fills the viewer edge to edge (documents: the page width fills it)
   const fillZ = () => {
     const el = stageRef.current
@@ -437,7 +440,7 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {}, startOpen = 
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
-  const pick = (id) => { setSelId(id); setTab(0) }
+  const pick = (id) => { setSelId(id); setTab(0); setView(0) }
   const isDoc = sel.kind === 'doc'
 
   return (
@@ -508,8 +511,15 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {}, startOpen = 
                     </div>
                   </div>
                 </div>
+                {base.views && (
+                  <div className="ar-views" role="tablist" aria-label="Views">
+                    {base.views.map((vw, i) => (
+                      <button key={vw.label} type="button" role="tab" aria-selected={i === view} onClick={() => setView(i)}>{vw.label}</button>
+                    ))}
+                  </div>
+                )}
                 <div className="ar-stage" ref={stageRef}>
-                  <ViewerBoundary resetKey={sel.id}>{isDoc ? <DocView item={sel} zoom={zoom} tab={tab} setTab={setTab} /> : <ImageView key={sel.id} item={sel} zoom={zoom} onSize={setNat} />}</ViewerBoundary>
+                  <ViewerBoundary resetKey={sel.id + ':' + view}>{isDoc ? <DocView item={sel} zoom={zoom} tab={tab} setTab={setTab} /> : <ImageView key={sel.id + ':' + view} item={sel} zoom={zoom} onSize={setNat} />}</ViewerBoundary>
                 </div>
               </div>
 

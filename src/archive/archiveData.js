@@ -154,8 +154,11 @@ export const GROUPS = [
     { id: 'mind', kind: 'img', explore: 'mind', dark: true, img: 'mind', title: 'Mind map', meta: 'Themes, pains and ideas', card: 'mind-mapping', takeaway: 'What I carried into Astra: a living PRD with change and drift alerts, and a drafting tool that listens to conversations.' }
   ]},
   { name: 'Designing Astra', items: [
-    { id: 'flowfinal', kind: 'img', img: 'flowfinal', title: 'User flow', meta: 'VP request to team realigned', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.' },
-    { id: 'flow', kind: 'img', img: 'flow', title: 'User flow: prototype scope', meta: 'Exactly what the prototype shows', takeaway: 'Anyone can propose a change. Only the PM finalizes it.' },
+    { id: 'flowfinal', kind: 'img', img: 'flowfinal', title: 'User flow', meta: 'Full flow, and how I scoped the prototype', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.',
+      views: [
+        { label: 'Full flow', img: 'flowfinal', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.' },
+        { label: 'How I scoped the prototype', img: 'flow', takeaway: 'Anyone can propose a change. Only the PM finalizes it.' }
+      ] },
     { id: 'high', kind: 'img', dark: true, img: 'high', title: 'High-fi wireframes', meta: 'Codex, Figma and PRD views', card: 'wireframes', takeaway: 'Built around one scenario: the PRD says the dashboard refreshes every 15 minutes, but the data only updates once an hour.' }
   ]},
   { name: 'Testing · Nov 2026', items: [
