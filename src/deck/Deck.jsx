@@ -26,6 +26,8 @@ const SETUP = {
 
 // Presentation mode swaps these cards for single-view versions with nothing to click through.
 const PRESENT_SETUP = {
+  // ends on the four themes; the relay map step is left for the full site
+  'thematic-analysis': { steps: 3, captions: THEMATIC_CAPTIONS, Body: ThematicSlide },
   'journey-map': { steps: 0, captions: JOURNEY_PRESENT_CAPTIONS, Body: JourneyPresent },
   'competitive-analysis': { steps: 0, captions: COMP_PRESENT_CAPTIONS, Body: CompetitivePresent },
   'pov-user-model-hmw': { steps: 0, captions: POV_PRESENT_CAPTIONS, Body: PovPresent },
