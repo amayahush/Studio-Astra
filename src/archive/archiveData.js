@@ -151,7 +151,7 @@ export const GROUPS = [
     { id: 'pov', kind: 'doc', title: 'POV', meta: 'My problem statement', card: 'pov-user-model-hmw', takeaway: 'The senior engineer knows the system best, and still gets the requirements last.' },
     { id: 'hmw', kind: 'doc', title: 'How might we', meta: 'Final set of questions', takeaway: 'Keep iteration alive instead of forcing a rigid waterfall.' },
     { id: 'stories', kind: 'doc', title: 'User story', meta: 'Senior developer', takeaway: 'The developer wants to share feasibility early and get settled requirements, so building doesn’t turn into large reworks later.' },
-    { id: 'mind', kind: 'img', dark: true, img: 'mind', title: 'Mind map', meta: 'Themes, pains and ideas', card: 'mind-mapping', takeaway: 'What I carried into Astra: a living PRD with change and drift alerts, and a drafting tool that listens to conversations.' }
+    { id: 'mind', kind: 'img', explore: 'mind', dark: true, img: 'mind', title: 'Mind map', meta: 'Themes, pains and ideas', card: 'mind-mapping', takeaway: 'What I carried into Astra: a living PRD with change and drift alerts, and a drafting tool that listens to conversations.' }
   ]},
   { name: 'Designing Astra', items: [
     { id: 'flowfinal', kind: 'img', img: 'flowfinal', title: 'User flow', meta: 'VP request to team realigned', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.' },
