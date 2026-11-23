@@ -194,7 +194,6 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {} }) {
             <nav className="ar-list" aria-label="Artifacts">
               <div className="ar-list-head">
                 <span className="ar-list-title">Every artifact</span>
-                <span className="ar-list-sub">Everything I made along the way.</span>
               </div>
               <div className="ar-list-scroll">
                 {GROUPS.map((g) => (
