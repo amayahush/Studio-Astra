@@ -11,6 +11,7 @@ import {
 } from './art/Art.jsx'
 import Headline from './Headline.jsx'
 import useFitToScreen from './useFitToScreen.js'
+import ArchivePanel from './archive/ArchivePanel'
 import AstraWindow, { ASTRA_URL } from './AstraWindow.jsx'
 import Deck from './deck/Deck.jsx'
 import { PRESENT, METHOD } from './present.js'
@@ -97,6 +98,8 @@ function Card({ id, label, caption, Art, onOpen, present }) {
   )
 }
 
+const CARD_LABELS = Object.fromEntries(CARDS.map((c) => [c.id, c.label]))
+
 export default function App() {
   // Presentation mode is on by default; switching it off brings back the full site as it was.
   const [present, setPresent] = useState(true)
@@ -177,6 +180,12 @@ export default function App() {
         startAtEnd={deck.atEnd}
         present={present}
         onFinish={() => { closeDeck(); setAstraFromDeck(true); setAstraOpen(true) }}
+      />
+    )}
+    {!present && !deck && !astraOpen && (
+      <ArchivePanel
+        cardLabels={CARD_LABELS}
+        onOpenCard={(id) => { const i = CARDS.findIndex((c) => c.id === id); if (i >= 0) setDeck({ start: i, rect: null }) }}
       />
     )}
     <AstraWindow open={astraOpen} onClose={closeAstra} onBack={astraFromDeck ? backToDeck : undefined} />
