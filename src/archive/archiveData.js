@@ -139,7 +139,7 @@ export const GROUPS = [
   { name: 'Mapping the service · Aug 31 to Sep 11', items: [
     { id: 'stake', kind: 'img', explore: 'stake', dark: true, img: 'stake', title: 'Stakeholder map', meta: 'Influence over the requirements record', takeaway: 'The PM and designer control the record. Developers feel the lag but don’t control it.' },
     { id: 'eco', kind: 'img', explore: 'eco', dark: true, img: 'eco', title: 'Ecosystem map', meta: 'Four phases with a loop back', card: 'ecosystem-map', takeaway: 'The four phases read as one-way, but requirements change mid-build, so I added a loop from deploy back to identifying needs.' },
-    { id: 'blueprint', kind: 'img', img: 'blueprint', title: 'Service blueprint', meta: 'Six phases, frontstage to backstage', takeaway: 'Its last opportunity became the heart of Astra: show how a requirement change ripples to design and code before it’s approved.' }
+    { id: 'blueprint', kind: 'img', explore: 'blueprint', img: 'blueprint', title: 'Service blueprint', meta: 'Six phases, frontstage to backstage', takeaway: 'Its last opportunity became the heart of Astra: show how a requirement change ripples to design and code before it’s approved.' }
   ]},
   { name: 'Synthesis · Sep 11 to Oct 3', items: [
     { id: 'themes', kind: 'img', explore: 'thematic', img: 'themes', title: 'Thematic analysis', meta: 'Four themes, quotes and codes', card: 'thematic-analysis', takeaway: 'I went back and coded every transcript so my themes came from all eight interviews, not just the ones I remembered best.' },
