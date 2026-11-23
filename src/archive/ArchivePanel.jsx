@@ -440,7 +440,7 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {}, startOpen = 
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
-  const pick = (id) => { setSelId(id); setTab(0); setView(0) }
+  const pick = (id) => { const it = ITEMS.find((x) => x.id === id); setSelId(id); setTab(0); setView((it && it.startView) || 0) }
   const isDoc = sel.kind === 'doc'
 
   return (

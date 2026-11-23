@@ -159,7 +159,13 @@ export const GROUPS = [
         { label: 'Full flow', img: 'flowfinal', takeaway: 'Flow 1 starts from a VP request. Flow 2 picks up mid-build, when someone learns something new and proposes a change.' },
         { label: 'How I scoped the prototype', img: 'flow', takeaway: 'Anyone can propose a change. Only the PM finalizes it.' }
       ] },
-    { id: 'high', kind: 'img', dark: true, img: 'high', title: 'High-fi wireframes', meta: 'Codex, Figma and PRD views', card: 'wireframes', takeaway: 'Built around one scenario: the PRD says the dashboard refreshes every 15 minutes, but the data only updates once an hour.' }
+    { id: 'high', kind: 'img', dark: true, img: 'high', title: 'Wireframes', meta: 'Low-fi to high-fi, four rounds', card: 'wireframes', takeaway: 'Built around one scenario: the PRD says the dashboard refreshes every 15 minutes, but the data only updates once an hour.',
+      views: [
+        { label: 'Low-fi', img: 'low', takeaway: 'A developer notices a mismatch, attaches the code as evidence, and the PM validates or denies the change.' },
+        { label: 'Mid-fi', img: 'mid', takeaway: 'Each requirement shows whether the agent drafted it, the PM edited it, or it’s approved.' },
+        { label: 'Mid-fi v2', img: 'mid2', takeaway: 'A fuller version wired into Jira, GitLab, Figma and Teams, so the PRD stays connected to where the work happens.' },
+        { label: 'High-fi', img: 'high', takeaway: 'Built around one scenario: the PRD says the dashboard refreshes every 15 minutes, but the data only updates once an hour.' }
+      ], startView: 3 }
   ]},
   { name: 'Testing · Nov 2026', items: [
     { id: 'test', kind: 'doc', title: 'Usability test', meta: 'Think-aloud · three tasks', takeaway: 'Testers called the Map the strongest part and the designer flow too simple. The confusing part was what moves where on the map.' }
