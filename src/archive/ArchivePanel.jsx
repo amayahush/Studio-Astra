@@ -355,7 +355,7 @@ function DocView({ item, zoom, tab, setTab }) {
   if (codes.includes('kept')) legend.push(['kept', 'What I carried forward'])
   if (codes.includes('gray')) legend.push(['gray', 'Partly or not found'])
   if (legend.length) legend.unshift(['none', 'Main point'])
-  ;[['user', 'User'], ['need', 'Need'], ['insight', 'Insight']].forEach(([c, label]) => { if (codes.includes(c)) legend.push([c, label]) })
+  ;[['user', 'User'], ['need', 'Need'], ['goal', 'So they can'], ['insight', 'Insight']].forEach(([c, label]) => { if (codes.includes(c)) legend.push([c, label]) })
   const renderBlock = (b, i) => {
           if (b.h) return <h4 key={i}>{b.h}</h4>
           if (b.p) return <p key={i}>{b.p}</p>

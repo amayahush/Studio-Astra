@@ -91,8 +91,10 @@ export const DOCS = {
       SUB('build trust that developers and designers are building for the correct customer problem?')
     ]},
   stories: { eyebrow: 'User story', title: 'The senior developer', blocks: [
-      P('The senior software engineer needs a way to easily access and make changes to the requirements and specs, to understand the project scope so they can work spec-driven, align feasibility with stakeholders, and have a proper source of truth for documentation and future AI context.'),
+      R([['The ', ''], ['senior software engineer', 'user'], [' needs a way to ', ''], ['easily access and make changes to the requirements and specs', 'need'], [', to ', ''], ['understand the project scope so they can work spec-driven, align feasibility with stakeholders, and have a proper source of truth for documentation and future AI context.', 'goal']]),
+      H('The problem today'),
       P('The current inability to do this is causing large reworks later in the process, and a lack of cohesive documentation makes it hard to scale similar products and give AI proper context.'),
+      HL('What it would change', 'The value'),
       P('Enabling this would add measurable value by reducing costly late-stage reworks and shortening the overall build cycle.')
     ]},
   comp: { eyebrow: 'Competitive analysis', title: 'What existing tools already cover', blocks: [

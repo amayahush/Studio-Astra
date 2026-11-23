@@ -209,6 +209,8 @@
 .pov-user { text-decoration-color: #f07cc8; }
 .pov-need { text-decoration-color: #f2cf3a; }
 .pov-insight { text-decoration-color: #a98cf0; }
+.pov-goal { text-decoration-color: #7fc8f8; }
+.ar-dot.c-goal { background: #7fc8f8; }
 .ar-item.c-kept .ar-badge { color: #7a1fb0; border-color: #9b3fd6; }
 .ar-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: -4px; padding: 8px 0; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; font-size: 11px; color: #333; }
 .ar-legend > span { display: flex; align-items: center; gap: 6px; }
