@@ -76,7 +76,7 @@ function ImageView({ item, zoom, onSize }) {
   }, [zoomAt])
 
   // sheet = the image fitted with even gray around it, plus an 18px white border
-  const PAD = 18
+  const PAD = 0
   let cw = 0, ch = 0
   if (nat && box.W) {
     const cs = Math.min((box.W - 64 - 2 * PAD) / nat.w, (box.H - 64 - 2 * PAD) / nat.h)

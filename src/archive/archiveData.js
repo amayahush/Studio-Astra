@@ -137,7 +137,7 @@ export const GROUPS = [
     { id: 'blueprint', kind: 'img', img: 'blueprint', title: 'Service blueprint', meta: 'Six phases, frontstage to backstage', takeaway: 'Its last opportunity became the heart of Astra: show how a requirement change ripples to design and code before it’s approved.' }
   ]},
   { name: 'Synthesis · Sep 11 to Oct 3', items: [
-    { id: 'themes', kind: 'img', img: 'themes', title: 'Thematic analysis', meta: 'Four themes, quotes and codes', card: 'thematic-analysis', takeaway: 'I went back and coded every transcript so my themes came from all eight interviews, not just the ones I remembered best.' },
+    { id: 'themes', kind: 'img', explore: 'thematic', img: 'themes', title: 'Thematic analysis', meta: 'Four themes, quotes and codes', card: 'thematic-analysis', takeaway: 'I went back and coded every transcript so my themes came from all eight interviews, not just the ones I remembered best.' },
     { id: 'reframe', kind: 'doc', title: 'Reframing the problem', meta: 'Final center statement', takeaway: 'The problem wasn’t a bad PRD at the start. Requirements keep changing, and the shared record falls behind.' },
     { id: 'journey', kind: 'img', explore: 'journey', img: 'journey', title: 'Journey map', meta: 'Six phases, ask to release', card: 'journey-map', takeaway: 'The low point comes mid-build, when something changes after building has already started.' },
     { id: 'comp', kind: 'doc', title: 'Competitive analysis', meta: '7 tools compared', card: 'competitive-analysis', takeaway: 'Most of the pieces already exist. What’s missing is the moment a requirement changes mid-build.' }
