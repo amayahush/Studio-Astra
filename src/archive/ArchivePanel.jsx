@@ -338,6 +338,7 @@ function DocView({ item, zoom, tab, setTab }) {
   const renderBlock = (b, i) => {
           if (b.h) return <h4 key={i}>{b.h}</h4>
           if (b.p) return <p key={i}>{b.p}</p>
+          if (b.s) return <div key={i} className="ar-callout"><span>{b.label}</span><p>{b.s}</p></div>
           if (b.r) return <p key={i} className="ar-pov">{b.r.map(([text, c], j) => <span key={j} className={c ? `pov-${c}` : undefined}>{text}</span>)}</p>
           if (b.more) return (
             <details key={i} className="ar-more">

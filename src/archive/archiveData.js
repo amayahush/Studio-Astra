@@ -3,6 +3,7 @@
 const H = (t) => ({ h: t })
 const P = (t) => ({ p: t })
 const R = (segs) => ({ r: segs })
+const S = (t, label) => ({ s: t, label, c: 'kept' })
 const I = (t, c, badge, url, more) => ({ i: t, c: c || '', badge: badge || '', url: url || '', more: more || null })
 
 export const DOCS = {
@@ -67,7 +68,7 @@ export const DOCS = {
   ]},
   reframe: { eyebrow: 'Reframing the problem', title: 'Keeping requirements clear as they evolve', blocks: [
     P('My themes showed the problem was not a bad PRD at the start. Requirements keep changing, and the shared record falls behind.'),
-    I('Requirements emerge through conversations and iteration across many roles, but the shared record lags behind the decisions. Spec-driven development depends on that record being current.', 'kept', 'Final'),
+    S('Requirements emerge through conversations and iteration across many roles, but the shared record lags behind the decisions. Spec-driven development depends on that record being current.', 'Final problem statement'),
     H('What I updated to match'),
     I('Stakeholder map: PM and designer moved to direct influence; developers to mild, marked as most affected. The PM and designer control the record. Developers feel the lag but don’t control it.'),
     I('Ecosystem map: added a loop from deploy back to identifying needs, and where decisions actually live. Requirements change mid-build (P1, P3, P5).'),
