@@ -172,6 +172,10 @@
 .ar-callout { margin: 6px 0 4px; padding: 18px 20px; border: 1.5px solid #9b3fd6; border-radius: 8px; background: #faf5ff; }
 .ar-callout span { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7a1fb0; }
 .ar-page .ar-callout p { font-size: 19px; line-height: 1.45; font-weight: 600; color: #000; }
+.ar-sec.is-hl { margin: 14px 0 4px; padding: 16px 20px 14px; border: 1.5px solid #9b3fd6; border-radius: 8px; background: #faf5ff; }
+.ar-sec.is-hl:hover, .ar-sec.is-hl.is-active { background: #f4eaff; }
+.ar-sec.is-hl h4 { margin-top: 0; padding-top: 0; border-top: 0; }
+.ar-hl-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7a1fb0; margin-bottom: -6px; }
 .ar-intro { display: flex; flex-direction: column; gap: 12px; }
 .ar-sec { display: flex; flex-direction: column; gap: 12px; margin: 0 -14px; padding: 0 14px 6px; border-radius: 6px; cursor: zoom-in; transition: opacity 0.2s ease, background 0.2s ease; }
 .ar-sec:hover { background: #f5f5f5; }

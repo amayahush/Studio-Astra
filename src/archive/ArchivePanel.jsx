@@ -379,7 +379,7 @@ function DocView({ item, zoom, tab, setTab }) {
           // group: anything before the first heading is intro; each heading starts a clickable section
           const groups = []
           blocks.forEach((b, i) => {
-            if (b.h || !groups.length) groups.push({ h: !!b.h, items: [] })
+            if (b.h || !groups.length) groups.push({ h: !!b.h, hl: b.hl || '', items: [] })
             groups[groups.length - 1].items.push([b, i])
           })
           let k = -1
@@ -391,9 +391,10 @@ function DocView({ item, zoom, tab, setTab }) {
               <section
                 key={gi}
                 data-sec={kk}
-                className={`ar-sec${activeSec === kk ? ' is-active' : ''}${activeSec >= 0 && activeSec !== kk ? ' is-dim' : ''}`}
+                className={`ar-sec${g.hl ? ' is-hl' : ''}${activeSec === kk ? ' is-active' : ''}${activeSec >= 0 && activeSec !== kk ? ' is-dim' : ''}`}
                 onClick={(e) => focusSection(kk, e)}
               >
+                {g.hl && <span className="ar-hl-label">{g.hl}</span>}
                 {g.items.map(([b, i]) => renderBlock(b, i))}
               </section>
             )

@@ -3,6 +3,8 @@
 const H = (t) => ({ h: t })
 const P = (t) => ({ p: t })
 const R = (segs) => ({ r: segs })
+// a heading that starts a highlighted section (same purple callout as a final statement)
+const HL = (t, label) => ({ h: t, hl: label })
 const S = (t, label) => ({ s: t, label, c: 'kept' })
 const I = (t, c, badge, url, more) => ({ i: t, c: c || '', badge: badge || '', url: url || '', more: more || null })
 
@@ -105,8 +107,8 @@ export const DOCS = {
     H('Keeps the spec current when something changes mid-build'),
     I('Documented: Augment Intent, Jama Connect'),
     I('Partly: Notion AI, Kiro / Spec Kit, Brief · Not found: Jira + Confluence, Productboard', 'gray'),
-    H('Shows a pending change to every role before anyone builds on it, and a PM approves it'),
-    I('Documented: none of the seven', 'kept', 'The gap'),
+    HL('Shows a pending change to every role before anyone builds on it, and a PM approves it', 'The gap'),
+    I('Documented: none of the seven', 'kept'),
     I('Partly: Jira + Confluence, Notion AI, Kiro / Spec Kit, Jama Connect · Not found: Productboard, Augment Intent, Brief', 'gray')
   ]},
   test: { eyebrow: 'Usability test', title: 'Testing Astra with three people', blocks: [
