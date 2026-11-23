@@ -3,7 +3,7 @@
 const H = (t) => ({ h: t })
 const P = (t) => ({ p: t })
 const R = (segs) => ({ r: segs })
-const I = (t, c, badge, url) => ({ i: t, c: c || '', badge: badge || '', url: url || '' })
+const I = (t, c, badge, url, more) => ({ i: t, c: c || '', badge: badge || '', url: url || '', more: more || null })
 
 export const DOCS = {
   guide: { eyebrow: 'Interview guide', title: 'My interview guides', tabs: [
@@ -44,10 +44,26 @@ export const DOCS = {
   secondary: { eyebrow: 'Secondary research', title: 'Filling in what one organization couldn’t show me', blocks: [
     P('Context on Codex workflows, data schemas and spec-driven development.'),
     H('Sources'),
-    I('What do software engineers do on a daily basis?'),
-    I('Effective Software Development Workflow: From Idea to Delivery', '', '', 'https://dev.to/ifechukwuobiezue/effective-software-development-workflow-from-idea-to-delivery-47d8'),
-    I('How I AI: 3 Advanced Codex Workflows for Faster, Smarter Development with OpenAI’s Alex Embiricos', '', '', 'https://chatprd.ai/how-i-ai/advanced-codex-workflows-with-openai-alex-embiricos'),
-    I('A Practical Path to Spec-Driven Development with Codex', '', '', 'https://mmarcosab.medium.com/a-practical-path-to-spec-driven-development-with-codex-a3cec3ef554a')
+    I('What do software engineers do on a daily basis?', '', '', 'https://www.linkedin.com/pulse/what-do-software-engineers-daily-basis-duckki-oe/', [
+      'Work gets split into issues small enough to finish in under a week. Each issue holds the problem, the plan, progress updates and how to test it.',
+      'The goal is that anyone reading a finished issue can tell what was done and how to test it, so the tracker is meant to be the record.',
+      'Ideas and decisions still live across wikis, Google Docs, Slack, email and meetings. The record is spread across tools, like my interviewees described.'
+    ]),
+    I('Effective Software Development Workflow: From Idea to Delivery', '', '', 'https://dev.to/ifechukwuobiezue/effective-software-development-workflow-from-idea-to-delivery-47d8', [
+      'The textbook flow runs in order: ideation, requirements, design, development, testing, deployment, maintenance. Requirements get gathered and approved before design starts.',
+      'It barely covers requirements changing midway. New requests go into a backlog for the product owner to prioritize next sprint.',
+      'Requirement documents are meant to be shared references that stay current. That one-way flow is what my ecosystem map showed before I added the loop.'
+    ]),
+    I('How I AI: 3 Advanced Codex Workflows for Faster, Smarter Development with OpenAI’s Alex Embiricos', '', '', 'https://chatprd.ai/how-i-ai/advanced-codex-workflows-with-openai-alex-embiricos', [
+      'Orient before changing anything: ask Codex how the project runs and where the behavior lives.',
+      'For bigger work, write a plan with verification steps first (a Plans.md file), revise it, then build from the approved plan.',
+      'Keep something reviewable at every step: a diff, a separate branch, the plan file or a PR comment. The person stays in control of the decisions.'
+    ]),
+    I('A Practical Path to Spec-Driven Development with Codex', '', '', 'https://mmarcosab.medium.com/a-practical-path-to-spec-driven-development-with-codex-a3cec3ef554a', [
+      'The spec is the source of truth. A change goes into the spec first, the agent updates the code, then a person reviews it.',
+      'Specs need acceptance criteria. Vague specs like “create a payment system” produce fragile projects.',
+      'Code can drift from the spec without anyone noticing: a review agent caught a field that wasn’t in the spec. A spec only works if it stays current.'
+    ])
   ]},
   reframe: { eyebrow: 'Reframing the problem', title: 'Keeping requirements clear as they evolve', blocks: [
     P('My themes showed the problem was not a bad PRD at the start. Requirements keep changing, and the shared record falls behind.'),

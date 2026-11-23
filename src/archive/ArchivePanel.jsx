@@ -333,6 +333,16 @@ function DocView({ item, zoom, tab, setTab }) {
           if (b.h) return <h4 key={i}>{b.h}</h4>
           if (b.p) return <p key={i}>{b.p}</p>
           if (b.r) return <p key={i} className="ar-pov">{b.r.map(([text, c], j) => <span key={j} className={c ? `pov-${c}` : undefined}>{text}</span>)}</p>
+          if (b.more) return (
+            <details key={i} className="ar-more">
+              <summary>
+                <span className="ar-chev" aria-hidden>›</span>
+                <span className="ar-text">{b.i}</span>
+              </summary>
+              <ul>{b.more.map((m, j) => <li key={j}>{m}</li>)}</ul>
+              {b.url && <a className="ar-link ar-src" href={b.url} target="_blank" rel="noopener noreferrer">Read the source ↗</a>}
+            </details>
+          )
           return (
             <div key={i} className={`ar-item c-${b.c || 'none'}`}>
               <span className="ar-dot" />
