@@ -351,7 +351,7 @@ function DocView({ item, zoom, tab, setTab }) {
             </details>
           )
           return (
-            <div key={i} className={`ar-item c-${b.c || 'none'}`}>
+            <div key={i} className={`ar-item c-${b.c || 'none'}${b.sub ? ' is-sub' : ''}`}>
               <span className="ar-dot" />
               {b.url ? <a className="ar-text ar-link" href={b.url} target="_blank" rel="noopener noreferrer">{b.i} ↗</a> : <span className="ar-text">{b.i}</span>}
               {b.badge && <span className="ar-badge">{b.badge}</span>}

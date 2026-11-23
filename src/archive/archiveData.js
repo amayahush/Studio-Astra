@@ -5,6 +5,8 @@ const P = (t) => ({ p: t })
 const R = (segs) => ({ r: segs })
 // a heading that starts a highlighted section (same purple callout as a final statement)
 const HL = (t, label) => ({ h: t, hl: label })
+// an item tabbed under the one above it
+const SUB = (t, c) => ({ i: t, c: c || '', badge: '', url: '', more: null, sub: true })
 const S = (t, label) => ({ s: t, label, c: 'kept' })
 const I = (t, c, badge, url, more) => ({ i: t, c: c || '', badge: badge || '', url: url || '', more: more || null })
 
@@ -80,13 +82,13 @@ export const DOCS = {
     R([['Senior software developers', 'user'], [' need a way to ', ''], ['trust that the requirements in front of them are grounded in a validated problem', 'need'], [', because ', ''], ['building on an unvalidated assumption wastes implementation time, delays delivery, and erodes confidence that the next set of requirements will hold up either.', 'insight']])
   ]},
   hmw: { eyebrow: 'How might we', title: 'The questions I designed around', blocks: [
-      P('How might we…'),
-      I('help stakeholders and developers arrive at “complete enough” requirements without slowing down iteration?', 'kept'),
-      I('give non-technical stakeholders a lightweight way to see technical feasibility early?'),
-      I('make sure early product decisions reflect both design and engineering judgment?'),
-      I('build trust that developers and designers are building for the correct customer problem?'),
-      I('keep everyone aligned when requirements change mid-process?', 'kept'),
-      I('structure a shared requirements artifact so it also works as reusable context for developers working with AI agents?', 'kept')
+      S('How might we keep everyone aligned when requirements change mid-process?', 'My main How Might We'),
+      P('Supporting questions under it. How might we…'),
+      SUB('help stakeholders and developers arrive at “complete enough” requirements without slowing down iteration?', 'kept'),
+      SUB('structure a shared requirements artifact so it also works as reusable context for developers working with AI agents?', 'kept'),
+      SUB('give non-technical stakeholders a lightweight way to see technical feasibility early?'),
+      SUB('make sure early product decisions reflect both design and engineering judgment?'),
+      SUB('build trust that developers and designers are building for the correct customer problem?')
     ]},
   stories: { eyebrow: 'User story', title: 'The senior developer', blocks: [
       P('The senior software engineer needs a way to easily access and make changes to the requirements and specs, to understand the project scope so they can work spec-driven, align feasibility with stakeholders, and have a proper source of truth for documentation and future AI context.'),
