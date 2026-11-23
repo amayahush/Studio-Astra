@@ -45,7 +45,7 @@ function ImageView({ item, zoom, onSize }) {
   const [box, setBox] = useState({ W: 0, H: 0 })
   const [nat, setNatLocal] = useState(null)
   const ex = item.explore ? EXPLORE[item.explore] : null
-  const [filter, setFilter] = useState('all')
+  const [sel, setSel] = useState([])
   const [hover, setHover] = useState(null)
   const [picked, setPicked] = useState(null)
   const [noteIdx, setNoteIdx] = useState(-1)
@@ -103,18 +103,32 @@ function ImageView({ item, zoom, onSize }) {
   const byId = (id) => regions.find((r) => r.id === id)
   const notes = ex ? ex.notes : []
   const noteRect = (n) => (n.at.startsWith('zone:') ? ex.zones[n.at.slice(5)] : byId(n.at))
-  const f = ex && filter !== 'all' ? ex.filters.find((x) => x.id === filter) : null
-  const zone = f && ex.zones && ex.zones[filter]
-  const matches = f ? regions.filter((r) => r.tags.includes(filter)) : []
+  // filters toggle on and off and combine: area filters (a flow, a phase) narrow the view, type filters pick out pieces.
+  // with both on, only the pieces of that type inside the chosen areas light up
+  const zoneIds = ex ? sel.filter((id) => ex.zones && ex.zones[id]) : []
+  const tagIds = ex ? sel.filter((id) => !(ex.zones && ex.zones[id])) : []
+  const zones = zoneIds.map((id) => ex.zones[id])
+  const inZones = (r) => !zones.length || zones.some((z) => r.x + r.w / 2 >= z.x && r.x + r.w / 2 <= z.x + z.w && r.y + r.h / 2 >= z.y && r.y + r.h / 2 <= z.y + z.h)
+  const tagOf = (r) => tagIds.find((id) => r.tags.includes(id))
+  const matches = tagIds.length ? regions.filter((r) => tagOf(r) && inZones(r)) : []
+  const f = sel.length > 0
+  const zone = f && !tagIds.length
+  const colorOf = (id) => (ex.filters.find((x) => x.id === id) || {}).color
   const active = noteIdx >= 0 ? notes[noteIdx] : null
 
+  const zoomToAreas = (ids) => {
+    const zs = ids.filter((id) => ex.zones && ex.zones[id]).map((id) => ex.zones[id])
+    if (!zs.length) return zoom.fit()
+    const x = Math.min(...zs.map((z) => z.x)), y = Math.min(...zs.map((z) => z.y))
+    zoomToRect({ x, y, w: Math.max(...zs.map((z) => z.x + z.w)) - x, h: Math.max(...zs.map((z) => z.y + z.h)) - y })
+  }
   const chooseFilter = (id) => {
-    setFilter(id)
+    const next = id === 'all' ? [] : sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]
+    setSel(next)
     setPicked(null)
     setNoteIdx(-1)
-    const fz = ex.zones && ex.zones[id]
-    if (fz) zoomToRect(fz)
-    else zoom.fit()
+    // only re-frame when the set of areas changes, so adding a type filter doesn't jump the view
+    if (id === 'all' || (ex.zones && ex.zones[id])) zoomToAreas(next)
   }
   const openNote = (i) => {
     const n = notes[i]
@@ -162,13 +176,16 @@ function ImageView({ item, zoom, onSize }) {
         <div className="ar-explore">
           <span className="ar-explore-label">explore</span>
           <div className="ar-chips" role="group" aria-label="Filter the map">
-            {ex.filters.map((x) => (
-              <button key={x.id} type="button" className={`ar-chip${x.dashed ? ' is-dashed' : ''}`} aria-pressed={filter === x.id} onClick={() => chooseFilter(x.id)}>
+            {ex.filters.filter((x) => x.id !== 'all').map((x) => (
+              <button key={x.id} type="button" className={`ar-chip${x.dashed ? ' is-dashed' : ''}`} aria-pressed={sel.includes(x.id)} onClick={() => chooseFilter(x.id)}>
                 {x.color && <span className="ar-chip-dot" style={{ background: x.color }} />}
                 {x.label}
               </button>
             ))}
           </div>
+          {sel.length > 0 && (
+            <button type="button" className="ar-chip-clear" onClick={() => chooseFilter('all')}>Clear</button>
+          )}
           {notes.length > 0 && (
             <button type="button" className="ar-notes-btn" aria-pressed={noteIdx >= 0} onClick={() => (noteIdx >= 0 ? setNoteIdx(-1) : openNote(0))}>
               My notes · {notes.length}
@@ -201,21 +218,21 @@ function ImageView({ item, zoom, onSize }) {
                   <defs>
                     <mask id={`m-${item.id}`}>
                       <rect x="-5" y="-5" width="110" height="110" fill="#fff" />
-                      {(zone ? [zone] : matches).map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} fill="#000" />)}
+                      {(zone ? zones : matches).map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} fill="#000" />)}
                     </mask>
                   </defs>
                   <rect x="-5" y="-5" width="110" height="110" fill="rgba(18,18,18,0.62)" mask={`url(#m-${item.id})`} />
                 </svg>
               )}
               {regions.map((r) => {
-                const on = f && !zone && r.tags.includes(filter)
+                const on = f && !zone && matches.includes(r)
                 return (
                   <button
                     key={r.id}
                     type="button"
                     tabIndex={-1}
                     className={`ar-hot${on ? ' is-on' : ''}${(hover || picked) === r.id ? ' is-hover' : ''}`}
-                    style={{ ...rectStyle(r), '--c': (f && f.color) || '#c439ff' }}
+                    style={{ ...rectStyle(r), '--c': (on && colorOf(tagOf(r))) || '#c439ff' }}
                     aria-label={r.title}
                     onPointerEnter={() => setHover(r.id)}
                     onPointerLeave={() => setHover((h) => (h === r.id ? null : h))}
