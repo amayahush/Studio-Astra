@@ -215,7 +215,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
                     {st < max ? '→ next highlight' : k === idx && hasMore && !setup.ownScroll ? '→ more below' : `→ for ${k < slides.length - 1 ? slides[k + 1].label : 'Astra'}`}
                   </span>
                 </div>
-                <div className="dk-main">{Math.abs(k - idx) > 1 ? null : Body ? <Body step={st} onStep={(n) => setSteps((all) => all.map((v, j) => (j === k ? n : v)))} /> : <PlaceholderBody slide={s} />}</div>
+                <div className="dk-main">{Math.abs(k - idx) > 1 ? null : Body ? <Body step={st} present={present} onStep={(n) => setSteps((all) => all.map((v, j) => (j === k ? n : v)))} /> : <PlaceholderBody slide={s} />}</div>
               </section>
             )
           })}

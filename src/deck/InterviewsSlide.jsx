@@ -35,7 +35,7 @@ function positionFor(id, step) {
   return GROUPED[id]
 }
 
-export default function InterviewsSlide({ step }) {
+export default function InterviewsSlide({ step, present }) {
   const [open, setOpen] = useState(null)
   const person = PEOPLE.find((p) => p.id === open)
   return (
@@ -117,7 +117,7 @@ export default function InterviewsSlide({ step }) {
         </ul>
       </section>
 
-      <section className="iv-more">
+      {!present && (<section className="iv-more">
         <h3 className="hand">How I ran them</h3>
         <ol className="iv-method">
           <li><b>Recruit</b><span>Cold outreach, a few dead ends and pivots, all kept in my research log.</span></li>
@@ -125,7 +125,7 @@ export default function InterviewsSlide({ step }) {
           <li><b>Record</b><span>Recorded and transcribed seven conversations, Aug 25 to Oct 3, 2026, and took notes by hand for the eighth.</span></li>
           <li><b>Clean up</b><span>Anonymized every transcript before tagging it for the thematic analysis.</span></li>
         </ol>
-      </section>
+      </section>)}
 
       <section className="iv-more iv-stuck">
         <h3 className="hand">A line that stuck with me</h3>
