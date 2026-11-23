@@ -10,6 +10,7 @@ import PovSlide, { POV_STEPS, POV_CAPTIONS } from './PovSlide.jsx'
 import MindMapSlide, { MIND_STEPS, MIND_CAPTIONS } from './MindMapSlide.jsx'
 import WireframesSlide, { WIRE_STEPS, WIRE_CAPTIONS } from './WireframesSlide.jsx'
 import CompetitiveSlide, { COMP_STEPS, COMP_CAPTIONS } from './CompetitiveSlide.jsx'
+import { JourneyPresent, JOURNEY_PRESENT_CAPTIONS, CompetitivePresent, COMP_PRESENT_CAPTIONS, PovPresent, POV_PRESENT_CAPTIONS } from './PresentSlides.jsx'
 
 // Per-slide setup: how many → steps it has before moving on, and the caption for each.
 const SETUP = {
@@ -21,6 +22,13 @@ const SETUP = {
   'mind-mapping': { steps: MIND_STEPS, captions: MIND_CAPTIONS, Body: MindMapSlide },
   wireframes: { steps: WIRE_STEPS, captions: WIRE_CAPTIONS, Body: WireframesSlide, ownScroll: true },
   'competitive-analysis': { steps: COMP_STEPS, captions: COMP_CAPTIONS, Body: CompetitiveSlide },
+}
+
+// Presentation mode swaps these cards for single-view versions with nothing to click through.
+const PRESENT_SETUP = {
+  'journey-map': { steps: 0, captions: JOURNEY_PRESENT_CAPTIONS, Body: JourneyPresent },
+  'competitive-analysis': { steps: 0, captions: COMP_PRESENT_CAPTIONS, Body: CompetitivePresent },
+  'pov-user-model-hmw': { steps: 0, captions: POV_PRESENT_CAPTIONS, Body: PovPresent },
 }
 
 function PlaceholderBody({ slide }) {
@@ -45,13 +53,14 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
     () => (present ? SLIDES.filter((s) => !PRESENT[s.id]?.skip).map((s) => ({ ...s, label: PRESENT[s.id]?.label ?? s.label })) : SLIDES),
     [present],
   )
+  const setupFor = (id) => (present && PRESENT_SETUP[id]) || SETUP[id]
   // start is the homepage card's position; find that card in this deck (a skipped one falls back).
   const [startIdx] = useState(() => {
     const k = slides.findIndex((s) => s.id === SLIDES[start]?.id)
     return k >= 0 ? k : startAtEnd ? slides.length - 1 : 0
   })
   const [idx, setIdx] = useState(startIdx)
-  const [steps, setSteps] = useState(() => slides.map((s, k) => (startAtEnd && k === startIdx ? SETUP[s.id]?.steps ?? 0 : 0)))
+  const [steps, setSteps] = useState(() => slides.map((s, k) => (startAtEnd && k === startIdx ? setupFor(s.id)?.steps ?? 0 : 0)))
   const [ready, setReady] = useState(false)
   const [closing, setClosing] = useState(false)
   const [hasMore, setHasMore] = useState(false)
@@ -59,7 +68,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
   const slideRefs = useRef([])
 
   const step = steps[idx]
-  const setup = SETUP[slides[idx].id]
+  const setup = setupFor(slides[idx].id)
   const maxStep = setup?.steps ?? 0
 
   // open: grow out of the clicked card
@@ -91,7 +100,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
   // and ← scrolls back up, before moving to another card or highlight.
   const scrollSlide = useCallback((dir) => {
     const sl = slideRefs.current[idx]
-    if (!sl || SETUP[slides[idx].id]?.ownScroll) return false
+    if (!sl || setupFor(slides[idx].id)?.ownScroll) return false
     const room = dir > 0 ? sl.scrollHeight - sl.clientHeight - sl.scrollTop : sl.scrollTop
     if (room <= 40) return false
     sl.scrollBy({ top: dir * Math.min(room, sl.clientHeight * 0.8), behavior: 'smooth' })
@@ -177,7 +186,7 @@ export default function Deck({ start, originRect, getCardRect, onClose, onFinish
       <div className="dk-view">
         <div className="dk-track" style={{ transform: `translateX(${-idx * 100}vw)` }}>
           {slides.map((s, k) => {
-            const su = SETUP[s.id]
+            const su = setupFor(s.id)
             const Body = su?.Body
             const st = steps[k]
             const max = su?.steps ?? 0

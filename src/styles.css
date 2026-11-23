@@ -350,15 +350,6 @@ html.fit-screen, html.fit-screen body { overflow: hidden; height: 100%; }
 }
 .present-toggle.is-on .present-knob { left: 18px; }
 
-.present-def {
-  margin: 14px 0 0;
-  max-width: 963px;
-  font-size: 18px;
-  line-height: 1.45;
-  color: #4a4a4a;
-}
-.present-def b { font-weight: 600; color: #000; }
-
 .card-method {
   position: absolute;
   top: 36px;

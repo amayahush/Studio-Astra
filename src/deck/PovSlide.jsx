@@ -15,15 +15,15 @@ export const POV_CAPTIONS = [
 const W = 1000
 const H = 600
 
-const PEOPLE = [
+export const PEOPLE = [
   { role: 'Senior Developer', want: 'One place to see and change requirements', now: 'Late reworks and scattered docs', color: '#d5c0ff', shade: '#9275cd' },
   { role: 'Designer', want: 'The why behind a design to survive the handoff', now: 'Devs build without the why', color: '#ffa3df', shade: '#db86be' },
   { role: 'Product Manager', want: 'Every stakeholder’s input in one place', now: 'Requirements scattered across tools', color: '#fff0a8', shade: '#d8c66e' },
 ]
 
-const POV = 'Senior developers need to know what changed in a requirement and why, because decisions get lost once building starts.'
+export const POV = 'Senior developers need to know what changed in a requirement and why, because decisions get lost once building starts.'
 
-const HMW = [
+export const HMW = [
   { q: 'arrive at “complete enough” requirements without slowing iteration?', how: 'A living PRD: complete enough to start, still free to change.', main: true, x: 95, y: 120 },
   { q: 'keep everyone aligned when requirements change?', how: 'A change shows as pending in every role’s view until the PM approves it.', main: true, x: 375, y: 120 },
   { q: 'make requirements reusable context for AI agents?', how: 'The approved PRD becomes defined context for the agents.', main: true, x: 655, y: 120 },

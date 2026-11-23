@@ -141,9 +141,6 @@ export default function App() {
       </button>
       <header className="intro">
         <Headline />
-        {present && (
-          <p className="present-def">A <b>requirement</b> is the description of what a team is supposed to build. This project follows what happens to one.</p>
-        )}
       </header>
 
       <section className="grid" aria-label="Research process">
