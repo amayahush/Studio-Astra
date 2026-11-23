@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { DOCS, GROUPS } from './archiveData'
+import { EXPLORE } from './exploreData'
 import './archive.css'
 
 const BASE = import.meta.env.BASE_URL + 'archive/'
@@ -23,11 +24,32 @@ function useZoom(resetKey) {
   return { v, setV, zoomAt, base, setBase, fit: () => setV({ z: 1, x: 0, y: 0 }) }
 }
 
+const NOTE_LABEL = { why: 'why I did this', changed: 'what changed', finding: 'what I found' }
+const NOTE_COLOR = { why: '#fff0a8', changed: '#d5c0ff', finding: '#ffa3df' }
+
 function ImageView({ item, zoom, onSize }) {
   const ref = useRef(null)
   const drag = useRef(null)
   const [dragging, setDragging] = useState(false)
+  const [box, setBox] = useState({ W: 0, H: 0 })
+  const [nat, setNatLocal] = useState(null)
+  const ex = item.explore ? EXPLORE[item.explore] : null
+  const [filter, setFilter] = useState('all')
+  const [hover, setHover] = useState(null)
+  const [picked, setPicked] = useState(null)
+  const [noteIdx, setNoteIdx] = useState(-1)
   const { v, setV, zoomAt } = zoom
+
+  // measure the viewing area so the sheet (and its hotspots) can be sized exactly
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const m = () => setBox({ W: el.clientWidth, H: el.clientHeight })
+    m()
+    const ro = new ResizeObserver(m)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   // wheel needs a non-passive listener so the page doesn't scroll underneath
   useEffect(() => {
@@ -42,37 +64,201 @@ function ImageView({ item, zoom, onSize }) {
     return () => el.removeEventListener('wheel', onWheel)
   }, [zoomAt])
 
+  // sheet = the image fitted with even gray around it, plus an 18px white border
+  const PAD = 18
+  let cw = 0, ch = 0
+  if (nat && box.W) {
+    const cs = Math.min((box.W - 64 - 2 * PAD) / nat.w, (box.H - 64 - 2 * PAD) / nat.h)
+    cw = nat.w * cs
+    ch = nat.h * cs
+  }
+  const sw = cw + 2 * PAD, sh = ch + 2 * PAD
+
+  // zoom so a region (in % of the image) fills most of the view
+  const zoomToRect = (r) => {
+    if (!cw) return
+    const rw = (r.w / 100) * cw, rh = (r.h / 100) * ch
+    const cx = PAD + ((r.x + r.w / 2) / 100) * cw - sw / 2
+    const cy = PAD + ((r.y + r.h / 2) / 100) * ch - sh / 2
+    const z = Math.max(1, Math.min(4.5, (box.W * 0.72) / rw, (box.H * 0.62) / rh))
+    setV({ z, x: -cx * z, y: -cy * z })
+  }
+
+  const regions = ex ? ex.regions : []
+  const byId = (id) => regions.find((r) => r.id === id)
+  const notes = ex ? ex.notes : []
+  const noteRect = (n) => (n.at.startsWith('zone:') ? ex.zones[n.at.slice(5)] : byId(n.at))
+  const f = ex && filter !== 'all' ? ex.filters.find((x) => x.id === filter) : null
+  const zone = f && ex.zones && ex.zones[filter]
+  const matches = f ? regions.filter((r) => r.tags.includes(filter)) : []
+  const active = noteIdx >= 0 ? notes[noteIdx] : null
+
+  const chooseFilter = (id) => {
+    setFilter(id)
+    setPicked(null)
+    setNoteIdx(-1)
+    const fz = ex.zones && ex.zones[id]
+    if (fz) zoomToRect(fz)
+    else zoom.fit()
+  }
+  const openNote = (i) => {
+    const n = notes[i]
+    setNoteIdx(i)
+    setPicked(null)
+    const r = noteRect(n)
+    if (r) zoomToRect(r.zoomTo || r)
+  }
+  const pickRegion = (r) => {
+    setPicked(r.id)
+    setNoteIdx(-1)
+    zoomToRect(r.zoomTo || r)
+  }
+
   const down = (e) => {
+    if (e.target.closest('button, .ar-note, .ar-reader')) return
     e.currentTarget.setPointerCapture(e.pointerId)
-    drag.current = { px: e.clientX, py: e.clientY, x: v.x, y: v.y }
+    drag.current = { px: e.clientX, py: e.clientY, x: v.x, y: v.y, moved: false }
     setDragging(true)
   }
   const move = (e) => {
     const d = drag.current
     if (!d) return
+    if (Math.abs(e.clientX - d.px) + Math.abs(e.clientY - d.py) > 4) d.moved = true
     setV((s) => ({ ...s, x: d.x + e.clientX - d.px, y: d.y + e.clientY - d.py }))
   }
-  const up = () => { drag.current = null; setDragging(false) }
+  const up = (e) => {
+    const d = drag.current
+    drag.current = null
+    setDragging(false)
+    // a click that didn't drag zooms in on that spot
+    if (d && !d.moved && e.type === 'pointerup') {
+      const b = ref.current.getBoundingClientRect()
+      zoomAt(2, e.clientX - b.left - b.width / 2, e.clientY - b.top - b.height / 2)
+    }
+  }
+
+  const shown = byId(hover) || byId(picked)
+  const inv = 1 / v.z
+  const rectStyle = (r) => ({ left: r.x + '%', top: r.y + '%', width: r.w + '%', height: r.h + '%' })
 
   return (
-    <div
-      ref={ref}
-      className={`ar-view${dragging ? ' is-dragging' : ''}`}
-      onPointerDown={down}
-      onPointerMove={move}
-      onPointerUp={up}
-      onPointerCancel={up}
-      onDoubleClick={zoom.fit}
-    >
-      <img
-        src={BASE + item.img + '.webp'}
-        alt={item.title}
-        draggable="false"
-        onLoad={(e) => onSize({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
-        className={`ar-sheet${item.dark ? ' is-dark' : ''}`}
-        style={{ transform: `translate(${v.x}px, ${v.y}px) scale(${v.z})`, transition: dragging ? 'none' : undefined }}
-      />
-      <span className="ar-hint">Scroll to zoom · drag to move around</span>
+    <div className="ar-imgwrap">
+      {ex && (
+        <div className="ar-explore">
+          <span className="ar-explore-label">explore</span>
+          <div className="ar-chips" role="group" aria-label="Filter the map">
+            {ex.filters.map((x) => (
+              <button key={x.id} type="button" className={`ar-chip${x.dashed ? ' is-dashed' : ''}`} aria-pressed={filter === x.id} onClick={() => chooseFilter(x.id)}>
+                {x.color && <span className="ar-chip-dot" style={{ background: x.color }} />}
+                {x.label}
+              </button>
+            ))}
+          </div>
+          {notes.length > 0 && (
+            <button type="button" className="ar-notes-btn" aria-pressed={noteIdx >= 0} onClick={() => (noteIdx >= 0 ? setNoteIdx(-1) : openNote(0))}>
+              My notes · {notes.length}
+            </button>
+          )}
+        </div>
+      )}
+      <div
+        ref={ref}
+        className={`ar-view${dragging ? ' is-dragging' : ''}`}
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+      >
+        <div
+          className={`ar-sheet${item.dark ? ' is-dark' : ''}`}
+          style={{ width: sw || undefined, height: sh || undefined, transform: `translate(${v.x}px, ${v.y}px) scale(${v.z})`, transition: dragging ? 'none' : undefined, '--inv': inv }}
+        >
+          <img
+            src={BASE + item.img + '.webp'}
+            alt={item.title}
+            draggable="false"
+            onLoad={(e) => { const n = { w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight }; setNatLocal(n); onSize(n) }}
+          />
+          {ex && cw > 0 && (
+            <div className="ar-layer">
+              {f && (
+                <svg className="ar-dim" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <defs>
+                    <mask id={`m-${item.id}`}>
+                      <rect x="-5" y="-5" width="110" height="110" fill="#fff" />
+                      {(zone ? [zone] : matches).map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx="0.4" fill="#000" />)}
+                    </mask>
+                  </defs>
+                  <rect x="-5" y="-5" width="110" height="110" fill="rgba(18,18,18,0.62)" mask={`url(#m-${item.id})`} />
+                </svg>
+              )}
+              {regions.map((r) => {
+                const on = f && !zone && r.tags.includes(filter)
+                return (
+                  <button
+                    key={r.id}
+                    type="button"
+                    tabIndex={-1}
+                    className={`ar-hot${on ? ' is-on' : ''}${(hover || picked) === r.id ? ' is-hover' : ''}`}
+                    style={{ ...rectStyle(r), '--c': (f && f.color) || '#c439ff' }}
+                    aria-label={r.title}
+                    onPointerEnter={() => setHover(r.id)}
+                    onPointerLeave={() => setHover((h) => (h === r.id ? null : h))}
+                    onClick={() => pickRegion(r)}
+                  />
+                )
+              })}
+              {notes.map((n, i) => {
+                const r = noteRect(n)
+                if (!r) return null
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`ar-pin${noteIdx === i ? ' is-active' : ''}`}
+                    style={{ left: Math.min(98, r.x + r.w) + '%', top: r.y + '%', background: NOTE_COLOR[n.kind] }}
+                    aria-label={`My note: ${n.title}`}
+                    onClick={() => openNote(i)}
+                  >
+                    {i + 1}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        </div>
+
+        {shown && !active && (
+          <div className="ar-reader" aria-live="polite">
+            <span className="ar-reader-kicker">{shown.kicker}</span>
+            <strong>{shown.title}</strong>
+            {shown.body && <p>{shown.body}</p>}
+            {!picked && <span className="ar-reader-hint">Click to zoom in</span>}
+          </div>
+        )}
+
+        {active && (
+          <div className="ar-note" style={{ '--n': NOTE_COLOR[active.kind] }}>
+            <div className="ar-note-top">
+              <span className="ar-note-kind">{NOTE_LABEL[active.kind]}</span>
+              <button type="button" aria-label="Close note" onClick={() => setNoteIdx(-1)}>×</button>
+            </div>
+            <strong>{active.title}</strong>
+            <p>{active.text}</p>
+            {notes.length > 1 && (
+              <div className="ar-note-nav">
+                <button type="button" aria-label="Previous note" disabled={noteIdx === 0} onClick={() => openNote(noteIdx - 1)}>‹</button>
+                <span>{noteIdx + 1} of {notes.length}</span>
+                <button type="button" aria-label="Next note" disabled={noteIdx === notes.length - 1} onClick={() => openNote(noteIdx + 1)}>›</button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!shown && !active && (
+          <span className="ar-hint">{ex ? 'Hover to read · click to zoom · drag to move' : 'Click to zoom · scroll to zoom · drag to move'}</span>
+        )}
+      </div>
     </div>
   )
 }
@@ -145,8 +331,8 @@ function DocView({ item, zoom, tab, setTab }) {
   )
 }
 
-export default function ArchivePanel({ onOpenCard, cardLabels = {} }) {
-  const [open, setOpen] = useState(false)
+export default function ArchivePanel({ onOpenCard, cardLabels = {}, startOpen = false }) {
+  const [open, setOpen] = useState(startOpen)
   const [selId, setSelId] = useState(ITEMS[0].id)
   const [tab, setTab] = useState(0)
   const sel = ITEMS.find((i) => i.id === selId) || ITEMS[0]
@@ -158,12 +344,13 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {} }) {
   const fillZ = () => {
     const el = stageRef.current
     if (!el) return 1
-    const W = el.clientWidth, H = el.clientHeight
+    const W = el.clientWidth
     if (sel.kind === 'doc') return ((W - 56) / 612) / zoom.base
     const img = el.querySelector('.ar-sheet')
-    if (!nat || !img) return 1
+    const view = el.querySelector('.ar-view')
+    if (!nat || !img || !view) return 1
     // offsetWidth/Height: the fitted sheet (padding included), ignoring the current zoom transform
-    return Math.max(W / img.offsetWidth, H / img.offsetHeight)
+    return Math.max(view.clientWidth / img.offsetWidth, view.clientHeight / img.offsetHeight)
   }
   const fill = () => zoom.setV({ z: fillZ(), x: 0, y: 0 })
   const isFit = Math.abs(zoom.v.z - 1) < 0.01 && !zoom.v.x && !zoom.v.y
@@ -211,6 +398,9 @@ export default function ArchivePanel({ onOpenCard, cardLabels = {} }) {
                         <span className="ar-row-text">
                           <span className="ar-row-title">{it.title}</span>
                           <span className="ar-row-meta">{it.meta}</span>
+                        </span>
+                        {it.explore && <span className="ar-row-tag">explore</span>}
+                        <span hidden>
                         </span>
                       </button>
                     ))}

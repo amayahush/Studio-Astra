@@ -102,7 +102,9 @@ const CARD_LABELS = Object.fromEntries(CARDS.map((c) => [c.id, c.label]))
 
 export default function App() {
   // Presentation mode is on by default; switching it off brings back the full site as it was.
-  const [present, setPresent] = useState(true)
+  // #artifacts opens the full site with the Every artifact panel already open
+  const startArtifacts = typeof window !== 'undefined' && window.location.hash === '#artifacts'
+  const [present, setPresent] = useState(!startArtifacts)
   const [astraOpen, setAstraOpen] = useState(false)
   const [astraFromDeck, setAstraFromDeck] = useState(false)
   // Deck: which card it opened on, and that card's spot on screen (it grows out of it).
@@ -184,6 +186,7 @@ export default function App() {
     )}
     {!present && !deck && !astraOpen && (
       <ArchivePanel
+        startOpen={startArtifacts}
         cardLabels={CARD_LABELS}
         onOpenCard={(id) => { const i = CARDS.findIndex((c) => c.id === id); if (i >= 0) setDeck({ start: i, rect: null }) }}
       />
