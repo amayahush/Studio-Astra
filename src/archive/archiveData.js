@@ -113,7 +113,8 @@ export const DOCS = {
     I('Documented: none of the seven', 'kept'),
     I('Partly: Jira + Confluence, Notion AI, Kiro / Spec Kit, Jama Connect · Not found: Productboard, Augment Intent, Brief', 'gray')
   ]},
-  test: { eyebrow: 'Usability test', title: 'Testing Astra with three people', blocks: [
+  test: { eyebrow: 'Usability test', title: 'Testing Astra with three people', tabs: [
+   { label: 'Test and findings', blocks: [
     P('A moderated, task-based test with think-aloud. Each task puts the participant in a different role. I scored each step with the cognitive walkthrough’s four questions.'),
     H('Tasks'),
     I('You’re the engineer. Something in the requirements needs to change. Send a message to Dana, the PM, asking her to update the PRD.'),
@@ -126,6 +127,28 @@ export const DOCS = {
     I('One tester didn’t realize Astra lives inside Codex.'),
     I('On the timeline, empty stretches should jump to the next event.'),
     I('After choosing a role, show which scenario you’re in.')
+   ]},
+   { label: 'What I changed', blocks: [
+    H('Navigation and orientation'),
+    I('Added a home icon to the top nav that takes you back to the scenario picker. P2 used Codex’s own home icon instead of Astra’s.'),
+    I('The current scenario’s name now shows in the nav. P2 picked PM when they meant to pick Designer and couldn’t tell which scenario they were in.'),
+    I('The time skip and end cards now say they’re part of the scenario, so testers don’t mistake them for the platform. This came from P2’s note about the time change.'),
+    I('Scenario cards are styled differently from Astra, and they keep their own buttons in every tool and in light mode.'),
+    H('Task 1 (messaging Dana)'),
+    I('Dana now appears under “Linked to R4”. P1 looked for her among the participants, didn’t find her, and assumed they were in the wrong place.'),
+    I('The submit summary can now be collapsed. P2 spent a long time reading everything before they clicked Propose change.'),
+    H('Task 2 (the Map)'),
+    I('Connectors have arrowheads that show the flow from source to requirement to work. P1 wanted to see where a requirement came from and which way it traveled.'),
+    I('Records that lag behind a decision are drawn dashed, and the tape shows a band for how long each record was out of date. This answers P1’s question of how to show that something is outdated.'),
+    I('During an event, people who aren’t involved fade back. P2 said the map should only show major changes.'),
+    I('Hovering on the timeline now shows a short preview, and the callout gives the full account with the actor. P3 needed the full explanation on the card within the map.'),
+    I('At Live, the Play button reads “Replay from Sep 24” so the jump back in time is announced. There’s also a scope chip showing which requirement and epic the tape covers.'),
+    I('The Live callout was removed. At Live, the transport shows only the epic and requirement chip.'),
+    I('Show insights based on patterns identified on the epic level, where users can drill down to the spec level for specifics.'),
+    H('Polish (not from test feedback)'),
+    I('Fixed light-mode button colors and the text on the “Starts in Figma” chip.'),
+    I('Cleaned up Map card borders and highlight strokes.')
+   ]}
   ]}
 };
 
